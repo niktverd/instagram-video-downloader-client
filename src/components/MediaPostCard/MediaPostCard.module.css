@@ -1,0 +1,41 @@
+.container {
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #000;
+    text-wrap: wrap;
+
+    margin-block-end: 24px;
+    overflow: hidden;
+}
+
+.sourceContainer {
+    display: flex;
+    max-height: 100vh;
+    gap: 20px;
+}
+
+.videoContainer {
+    height: 80vh;
+}
+
+.video {
+    height: 80vh;
+}
+
+.data,
+.users {
+    background-color: #0001;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.field,
+.senderContainer,
+.ownerContainer {
+    background-color: #0001;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 16px;
+}
