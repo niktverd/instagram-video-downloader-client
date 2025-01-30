@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react';
 
-// import logo from './logo.svg';
-import './App.css';
+import {Link, Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 
+// import logo from './logo.svg';
+import {Home} from './pages/Home';
+import {Policy} from './pages/Policy';
+
+import './App.css';
 function App() {
     const [data, setData] = useState([]);
 
@@ -27,6 +31,27 @@ function App() {
         <div className="App">
             <h1>Instagram Schedule And Analytics</h1>
             <pre>{JSON.stringify(data)}</pre>
+            <Router>
+                <div>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to="/">Home</Link>
+                            </li>
+                            <li>
+                                <Link to="/policy">Policy</Link>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/policy" element={<Policy />} />
+                        {/* If you want a default/fallback route when no other route matches */}
+                        <Route path="*" element={<h2>Page Not Found</h2>} />
+                    </Routes>
+                </div>
+            </Router>
         </div>
     );
 }
