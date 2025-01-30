@@ -1,9 +1,13 @@
 import React from 'react';
 
+import {ThemeProvider} from '@gravity-ui/uikit';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
 
+import '@gravity-ui/uikit/styles/fonts.css';
+import '@gravity-ui/uikit/styles/styles.css';
+// eslint-disable-next-line import/order
 import './index.css';
 
 // import reportWebVitals from './reportWebVitals';
@@ -26,9 +30,11 @@ const reportWebVitals = (onPerfEntry?: any) => {
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <ThemeProvider theme="dark">
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </ThemeProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

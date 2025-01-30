@@ -51,6 +51,7 @@
   "devDependencies": {
     "@gravity-ui/eslint-config": "^3.3.0",
     "@gravity-ui/prettier-config": "^1.1.0",
+    "@gravity-ui/uikit": "^6.42.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",

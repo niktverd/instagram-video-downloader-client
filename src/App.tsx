@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {getRootClassName} from '@gravity-ui/uikit/server';
 import {Link, Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 
 // import logo from './logo.svg';
@@ -9,9 +10,12 @@ import {Policy} from './pages/Policy';
 
 import './App.css';
 
+const theme = 'dark';
+const rootClassName = getRootClassName({theme});
+
 function App() {
     return (
-        <div className="App">
+        <div className={`App g-root ${rootClassName}`}>
             <h1>Instagram Schedule And Analytics</h1>
             <Router>
                 <div>
