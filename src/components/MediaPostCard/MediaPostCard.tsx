@@ -1,11 +1,71 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+
+import {Button, useToaster} from '@gravity-ui/uikit';
 
 import {MediaPostModel} from '../../types';
+import {Routes as ProjectRoutes} from '../../utils/constants';
+import {fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './MediaPostCard.module.css';
 
+const actionAllowed = process.env.REACT_APP_AcTION_ALLOWED;
+
 export const MediaPostCard = (props: MediaPostModel) => {
-    const {sources} = props;
+    const {sources, id} = props;
+    const {add} = useToaster();
+
+    const handleSplit = useCallback(async () => {
+        try {
+            const json = await fetchPost({
+                route: ProjectRoutes.splitVideoInTheMiddle,
+                // query: {limit, lastDocumnetId, orderByField, orderDirection},
+                body: {id},
+            });
+
+            if (json.status === 'ok') {
+                add({
+                    name: id + '-split',
+                    title: 'Split is started',
+                });
+            } else {
+                throw new Error('Split problem is on server');
+            }
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(error);
+            add({
+                name: id + '-split-error',
+                title: 'Split errro. Look at console',
+                theme: 'danger',
+            });
+        }
+    }, [add, id]);
+    const handleTestGreen = useCallback(async () => {
+        try {
+            const json = await fetchPost({
+                route: ProjectRoutes.testGreenScreen,
+                // query: {limit, lastDocumnetId, orderByField, orderDirection},
+                body: {id},
+            });
+
+            if (json.status === 'ok') {
+                add({
+                    name: id + '-split',
+                    title: 'Test Green is started',
+                });
+            } else {
+                throw new Error('Test Green problem is on server');
+            }
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(error);
+            add({
+                name: id + '-split-error',
+                title: 'Test green errro. Look at console',
+                theme: 'danger',
+            });
+        }
+    }, [add, id]);
     return (
         <div className={cn.container}>
             <div className={cn.sourceContainer}>
@@ -35,9 +95,16 @@ export const MediaPostCard = (props: MediaPostModel) => {
                         {sources.instagramReel.title}
                     </div>
                     <div className={cn.field}>
-                        <strong>hashtags:</strong>{' '}
+                        <strong>hashtags: </strong>
                         {sources.instagramReel.originalHashtags.join(' ')}
                     </div>
+                    {actionAllowed ? (
+                        <div className={cn.field}>
+                            <h3>Actions</h3>
+                            <Button onClick={handleSplit}>Split & Preproc</Button>
+                            <Button onClick={handleTestGreen}>Test green</Button>
+                        </div>
+                    ) : null}
                 </div>
                 {/* <pre>{JSON.stringify(props.sources, null, 3)}</pre> */}
             </div>
