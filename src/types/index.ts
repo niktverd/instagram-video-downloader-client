@@ -1,7 +1,5 @@
-type Timestamp = {
-    seconds: number;
-    nanoseconds: number;
-};
+import {ScenarioAddBannerAtTheEnd, ScenarioBase} from './scenario';
+import {Timestamp} from './timestamp';
 
 export type SourceInstagramReel = {
     url: string;
@@ -56,3 +54,16 @@ export type MediaPostModelOld = {
     type: string;
     url: string;
 };
+
+export type SourceV3 = {
+    id: string;
+    createdAt: Timestamp;
+    firebaseUrl: string;
+    sources: Sources;
+    randomIndex: number;
+    bodyJSONString: string;
+    attempt: number;
+    scenarios: string[];
+};
+
+export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;

@@ -56,3 +56,14 @@ export const fetchPost = async ({route, query = {}, body = {}}: FetchPost) => {
 
     return json;
 };
+
+export const fetchPatch = async ({route, query = {}, body = {}}: FetchPost) => {
+    const response = await fetch(prepareFetchUrl(route, query), {
+        headers: defaultHeaders,
+        method: Method.Patch,
+        body: JSON.stringify(body),
+    });
+    const json = await response.json();
+
+    return json;
+};

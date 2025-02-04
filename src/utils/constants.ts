@@ -1,6 +1,7 @@
 export enum Method {
     Post = 'POST',
-    Get = 'Get',
+    Get = 'GET',
+    Patch = 'PATCH',
 }
 
 export const defaultHeaders = {
@@ -11,4 +12,7 @@ export enum Routes {
     getMediaPosts = '/ui-get-media-posts',
     splitVideoInTheMiddle = '/ui-split-video-in-the-middle',
     testGreenScreen = '/ui-test-green-screen',
+    getScenarios = '/ui-get-scenarios',
+    patchScenario = '/ui-patch-scenario',
+    addScenario = '/ui-add-scenario',
 }

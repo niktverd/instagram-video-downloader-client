@@ -7,6 +7,7 @@ import {Link, Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import {Home} from './pages/Home';
 import {MediaPosts} from './pages/MediaPosts';
 import {Policy} from './pages/Policy';
+import {Scenarios} from './pages/Scenarios';
 
 import './App.css';
 
@@ -30,6 +31,9 @@ function App() {
                             <li>
                                 <Link to="/media-posts">Media Posts</Link>
                             </li>
+                            <li>
+                                <Link to="/scenarios">Scenarios</Link>
+                            </li>
                         </ul>
                     </nav>
 
@@ -37,6 +41,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/policy" element={<Policy />} />
                         <Route path="/media-posts" element={<MediaPosts />} />
+                        <Route path="/scenarios" element={<Scenarios />} />
                         {/* If you want a default/fallback route when no other route matches */}
                         <Route path="*" element={<h2>Page Not Found</h2>} />
                     </Routes>
