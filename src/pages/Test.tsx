@@ -1,0 +1,35 @@
+import React, {useState} from 'react';
+
+import {Tabs} from '@gravity-ui/uikit';
+
+import {CronTest} from '../components/tabs/Cron';
+
+enum Tab {
+    Cron = 'cron',
+    Video = 'video',
+}
+
+export const Test = () => {
+    const [tab, setTab] = useState<Tab>(Tab.Cron);
+
+    let tabContent = null;
+
+    if (tab === Tab.Cron) {
+        tabContent = <CronTest />;
+    }
+
+    return (
+        <div>
+            <h2>Test</h2>
+            <Tabs
+                activeTab={tab}
+                items={Object.values(Tab).map((t) => ({
+                    id: t,
+                    title: t,
+                }))}
+                onSelectTab={(tabId) => setTab(tabId as Tab)}
+            />
+            {tabContent}
+        </div>
+    );
+};

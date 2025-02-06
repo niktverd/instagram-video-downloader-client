@@ -15,4 +15,6 @@ export enum Routes {
     getScenarios = '/ui-get-scenarios',
     patchScenario = '/ui-patch-scenario',
     addScenario = '/ui-add-scenario',
+    createVideoByScenario = '/ui-create-video-by-scenario',
+    downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
 }

@@ -8,6 +8,7 @@ import {Home} from './pages/Home';
 import {MediaPosts} from './pages/MediaPosts';
 import {Policy} from './pages/Policy';
 import {Scenarios} from './pages/Scenarios';
+import {Test} from './pages/Test';
 
 import './App.css';
 
@@ -34,6 +35,9 @@ function App() {
                             <li>
                                 <Link to="/scenarios">Scenarios</Link>
                             </li>
+                            <li>
+                                <Link to="/test">Test</Link>
+                            </li>
                         </ul>
                     </nav>
 
@@ -42,6 +46,7 @@ function App() {
                         <Route path="/policy" element={<Policy />} />
                         <Route path="/media-posts" element={<MediaPosts />} />
                         <Route path="/scenarios" element={<Scenarios />} />
+                        <Route path="/test" element={<Test />} />
                         {/* If you want a default/fallback route when no other route matches */}
                         <Route path="*" element={<h2>Page Not Found</h2>} />
                     </Routes>

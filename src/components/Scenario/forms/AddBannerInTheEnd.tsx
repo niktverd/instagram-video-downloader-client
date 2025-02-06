@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AddBannerInTheEnd = ({initialValues, onSubmit}: any) => {
     const [values, setValues] = useState(initialValues || {});
 
@@ -26,11 +27,11 @@ export const AddBannerInTheEnd = ({initialValues, onSubmit}: any) => {
                 />
             </div>
             <div>
-                <label htmlFor="extra_url-to-add">extra_url-to-add</label>
+                <label htmlFor="extraBannerUrl">extraBannerUrl</label>
                 <input
-                    name="extra_url-to-add"
+                    name="extraBannerUrl"
                     type="text"
-                    value={values['extra_url-to-add']}
+                    value={values['extraBannerUrl']}
                     onChange={handleChange}
                     autoComplete="off"
                 />
