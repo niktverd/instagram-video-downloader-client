@@ -4,6 +4,7 @@ import {getRootClassName} from '@gravity-ui/uikit/server';
 import {Link, Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 
 // import logo from './logo.svg';
+import {Accounts} from './pages/Accounts';
 import {Home} from './pages/Home';
 import {MediaPosts} from './pages/MediaPosts';
 import {Policy} from './pages/Policy';
@@ -36,6 +37,9 @@ function App() {
                                 <Link to="/scenarios">Scenarios</Link>
                             </li>
                             <li>
+                                <Link to="/accounts">Accounts</Link>
+                            </li>
+                            <li>
                                 <Link to="/test">Test</Link>
                             </li>
                         </ul>
@@ -47,6 +51,7 @@ function App() {
                         <Route path="/media-posts" element={<MediaPosts />} />
                         <Route path="/scenarios" element={<Scenarios />} />
                         <Route path="/test" element={<Test />} />
+                        <Route path="/accounts" element={<Accounts />} />
                         {/* If you want a default/fallback route when no other route matches */}
                         <Route path="*" element={<h2>Page Not Found</h2>} />
                     </Routes>
