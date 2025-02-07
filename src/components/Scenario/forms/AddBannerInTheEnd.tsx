@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import {Checkbox} from '@gravity-ui/uikit';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AddBannerInTheEnd = ({initialValues, onSubmit}: any) => {
     const [values, setValues] = useState(initialValues || {});
@@ -34,6 +36,20 @@ export const AddBannerInTheEnd = ({initialValues, onSubmit}: any) => {
                     value={values['extraBannerUrl']}
                     onChange={handleChange}
                     autoComplete="off"
+                />
+            </div>
+            <div>
+                <Checkbox
+                    checked={values.enabled}
+                    content="Enabled"
+                    onUpdate={(checked) => setValues({...values, enabled: checked})}
+                />
+            </div>
+            <div>
+                <Checkbox
+                    checked={values.onlyOnce}
+                    content="Use each video only once"
+                    onUpdate={(checked) => setValues({...values, onlyOnce: checked})}
                 />
             </div>
 
