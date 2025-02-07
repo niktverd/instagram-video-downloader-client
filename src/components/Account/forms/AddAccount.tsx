@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import {Button, Checkbox} from '@gravity-ui/uikit';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AddAccount = ({initialValues, onSubmit}: any) => {
     const [values, setValues] = useState(initialValues || {});
@@ -12,6 +14,22 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const name = event.target.name;
         setValues({...values, [name]: event.target.value});
+    };
+
+    const handleDeleteAvailableScenario = (index: number) => {
+        setValues({
+            ...values,
+            availableScenarios: values.availableScenarios?.filter(
+                (_val, idx: number) => idx !== index,
+            ),
+        });
+    };
+
+    const handleScenarioChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        const name = Number(event.target.name);
+        const availableScenarios = [...values.availableScenarios];
+        availableScenarios[name] = event.target.value;
+        setValues({...values, availableScenarios});
     };
 
     return (
@@ -34,6 +52,40 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                     value={values['token']}
                     onChange={handleChange}
                     autoComplete="off"
+                />
+            </div>
+
+            <div>
+                <h4>scenarios</h4>
+                <Button
+                    onClick={() => {
+                        setValues({
+                            ...values,
+                            availableScenarios: [...(values.availableScenarios || []), ''].filter(
+                                (val) => typeof val === 'string',
+                            ),
+                        });
+                    }}
+                >
+                    add
+                </Button>
+                <pre>{JSON.stringify(values, null, 2)}</pre>
+                {values.availableScenarios?.map((scenario, index) => {
+                    return (
+                        <div key={`${scenario}-${index}`}>
+                            <input name={index} value={scenario} onChange={handleScenarioChange} />
+                            <Button onClick={() => handleDeleteAvailableScenario(index)}>
+                                delete
+                            </Button>
+                        </div>
+                    );
+                })}
+            </div>
+            <div>
+                <Checkbox
+                    checked={values.disabled}
+                    content="Disabled"
+                    onUpdate={(checked) => setValues({...values, disabled: checked})}
                 />
             </div>
 

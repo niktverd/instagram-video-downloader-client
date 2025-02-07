@@ -13,7 +13,7 @@ import cn from './Account.module.css';
 
 export const Account = (props: AccountV3) => {
     const [openModal, setOpenModal] = useState(false);
-    const {token, id} = props;
+    const {token, id, availableScenarios} = props;
 
     return (
         <div className={cn.container}>
@@ -29,9 +29,18 @@ export const Account = (props: AccountV3) => {
             </div>
             <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
                 <AddAccount
-                    initialValues={{id, token}}
+                    initialValues={{id, token, availableScenarios}}
                     onSubmit={async (values: any) => {
-                        await fetchPatch({route: Routes.patchAccount, body: {id, values}});
+                        await fetchPatch({
+                            route: Routes.patchAccount,
+                            body: {
+                                id,
+                                values: {
+                                    ...values,
+                                    availableScenarios: values.availableScenarios.filter(Boolean),
+                                },
+                            },
+                        });
                         setOpenModal(false);
                     }}
                 />
