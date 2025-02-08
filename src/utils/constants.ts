@@ -20,6 +20,8 @@ export enum Routes {
     getAccounts = '/ui-get-accounts',
     patchAccount = '/ui-patch-account',
     addAccount = '/ui-add-account',
+
+    getInsights = '/ui-get-insights',
     // test
     createVideoByScenario = '/ui-create-video-by-scenario',
     downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
