@@ -23,11 +23,11 @@ export const Scenario = (props: ScenarioV3) => {
                 <div>
                     <h2>{name}</h2>
                     <p>{id}</p>
+                    <div>
+                        <Button onClick={() => setOpenModal(true)}>Edit</Button>
+                    </div>
                 </div>
                 <pre>{JSON.stringify(extra, null, 3)}</pre>
-            </div>
-            <div>
-                <Button onClick={() => setOpenModal(true)}>Edit</Button>
             </div>
             <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
                 <AddBannerInTheEnd
