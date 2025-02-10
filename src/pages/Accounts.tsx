@@ -1,10 +1,11 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Modal, useToaster} from '@gravity-ui/uikit';
 
 import {Account} from '../components/Account/Account';
 import {AddAccount} from '../components/Account/forms/AddAccount';
 // import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
+import {AppEnvContext} from '../contexts/AppEnv';
 import {Routes as ProjectRoutes} from '../utils/constants';
 import {fetchGet, fetchPost} from '../utils/fetchHelpers';
 
@@ -12,11 +13,14 @@ export const Accounts = () => {
     const [accounts, setAccounts] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
+    const {isProd} = useContext(AppEnvContext);
+    console.log({isProd});
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
             route: ProjectRoutes.getAccounts,
             query: {},
+            isProd,
         });
 
         setAccounts(json);
@@ -24,7 +28,7 @@ export const Accounts = () => {
             name: Math.random() + '-split',
             title: 'data loaded',
         });
-    }, [add]);
+    }, [add, isProd]);
 
     return (
         <div>
@@ -44,7 +48,7 @@ export const Accounts = () => {
                     onSubmit={async (values: any) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
-                        await fetchPost({route: ProjectRoutes.addAccount, body: {values}});
+                        await fetchPost({route: ProjectRoutes.addAccount, body: {values}, isProd});
                         setOpenModal(false);
                     }}
                 />

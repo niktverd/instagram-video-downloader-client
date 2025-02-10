@@ -1,7 +1,8 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 
 import {Button, useToaster} from '@gravity-ui/uikit';
 
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {Routes as ProjectRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
@@ -9,11 +10,13 @@ import cn from './Cron.module.css';
 
 export const CronTest = () => {
     const {add} = useToaster();
+    const {isProd} = useContext(AppEnvContext);
 
     const handleDownloadVideoClick = async () => {
         const json = await fetchGet({
             route: ProjectRoutes.downloadVideoFromSourceV3,
             query: {},
+            isProd,
         });
 
         add({
@@ -27,6 +30,7 @@ export const CronTest = () => {
         const json = await fetchGet({
             route: ProjectRoutes.createVideoByScenario,
             query: {},
+            isProd,
         });
 
         add({

@@ -2,6 +2,7 @@ export enum Method {
     Post = 'POST',
     Get = 'GET',
     Patch = 'PATCH',
+    Delete = 'DELETE',
 }
 
 export const defaultHeaders = {
@@ -25,4 +26,5 @@ export enum Routes {
     // test
     createVideoByScenario = '/ui-create-video-by-scenario',
     downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
+    clearPreprodDatabase = '/ui-clear-proprod-database',
 }

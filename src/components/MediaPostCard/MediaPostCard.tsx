@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useContext} from 'react';
 
 import {Button, useToaster} from '@gravity-ui/uikit';
 
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {MediaPostModel} from '../../types';
 import {Routes as ProjectRoutes} from '../../utils/constants';
 import {fetchPost} from '../../utils/fetchHelpers';
@@ -13,6 +14,7 @@ const actionAllowed = process.env.REACT_APP_ACTION_ALLOWED;
 export const MediaPostCard = (props: MediaPostModel) => {
     const {sources, id} = props;
     const {add} = useToaster();
+    const {isProd} = useContext(AppEnvContext);
 
     const handleSplit = useCallback(async () => {
         try {
@@ -20,6 +22,7 @@ export const MediaPostCard = (props: MediaPostModel) => {
                 route: ProjectRoutes.splitVideoInTheMiddle,
                 // query: {limit, lastDocumnetId, orderByField, orderDirection},
                 body: {id},
+                isProd,
             });
 
             if (json.status === 'ok') {
@@ -39,13 +42,14 @@ export const MediaPostCard = (props: MediaPostModel) => {
                 theme: 'danger',
             });
         }
-    }, [add, id]);
+    }, [add, id, isProd]);
     const handleTestGreen = useCallback(async () => {
         try {
             const json = await fetchPost({
                 route: ProjectRoutes.testGreenScreen,
                 // query: {limit, lastDocumnetId, orderByField, orderDirection},
                 body: {id},
+                isProd,
             });
 
             if (json.status === 'ok') {
@@ -65,7 +69,7 @@ export const MediaPostCard = (props: MediaPostModel) => {
                 theme: 'danger',
             });
         }
-    }, [add, id]);
+    }, [add, id, isProd]);
     return (
         <div className={cn.container}>
             <div className={cn.sourceContainer}>

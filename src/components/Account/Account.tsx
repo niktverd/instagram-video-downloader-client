@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {Button, Modal} from '@gravity-ui/uikit';
 
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {AccountV3} from '../../types';
 import {Routes} from '../../utils/constants';
 import {fetchGet, fetchPatch} from '../../utils/fetchHelpers';
@@ -15,9 +16,10 @@ export const Account = (props: AccountV3) => {
     const [openModal, setOpenModal] = useState(false);
     const {token, id, availableScenarios} = props;
     const [insights, setInsights] = useState([]);
+    const {isProd} = useContext(AppEnvContext);
 
     const handleGetInsights = async () => {
-        const data = await fetchGet({route: Routes.getInsights, query: {id}});
+        const data = await fetchGet({route: Routes.getInsights, query: {id}, isProd});
 
         setInsights(data);
     };
@@ -30,6 +32,9 @@ export const Account = (props: AccountV3) => {
                     <p>{token.slice(0, 3)}****</p>
                     <div>
                         <Button onClick={handleGetInsights}>get insights</Button>
+                        <Button view="outlined-action" onClick={() => setOpenModal(true)}>
+                            Edit
+                        </Button>
                     </div>
                     <div>
                         <h1>Insights</h1>
@@ -37,9 +42,6 @@ export const Account = (props: AccountV3) => {
                     </div>
                 </div>
                 <pre>{JSON.stringify(props, null, 3)}</pre>
-            </div>
-            <div>
-                <Button onClick={() => setOpenModal(true)}>Edit</Button>
             </div>
             <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
                 <AddAccount
@@ -54,6 +56,7 @@ export const Account = (props: AccountV3) => {
                                     availableScenarios: values.availableScenarios.filter(Boolean),
                                 },
                             },
+                            isProd,
                         });
                         setOpenModal(false);
                     }}

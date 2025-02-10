@@ -1,8 +1,9 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Select} from '@gravity-ui/uikit';
 
 import {MediaPostCard} from '../components/MediaPostCard/MediaPostCard';
+import {AppEnvContext} from '../contexts/AppEnv';
 import {Routes as ProjectRoutes} from '../utils/constants';
 import {fetchGet} from '../utils/fetchHelpers';
 import {MediaPostModelFilters, OrderDirection} from '../utils/server.constants';
@@ -14,17 +15,19 @@ export const MediaPosts = () => {
     const [limit, setLimit] = useState('3');
     const [orderByField, setOrderByField] = useState(MediaPostModelFilters.CreatedAt);
     const [orderDirection, setOrderDirection] = useState(OrderDirection.Desc);
+    const {isProd} = useContext(AppEnvContext);
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
             route: ProjectRoutes.getMediaPosts,
             query: {limit, lastDocumnetId, orderByField, orderDirection},
+            isProd,
         });
 
         setMediaPosts([...mediaPosts, ...json.mediaPosts]);
         setLastDocumentId(json.lastDocumnetId);
         setHasMore(json.hasMore);
-    }, [lastDocumnetId, limit, mediaPosts, orderByField, orderDirection]);
+    }, [isProd, lastDocumnetId, limit, mediaPosts, orderByField, orderDirection]);
 
     const handleLimit = useCallback(([value]: string[]) => {
         setLimit(value);

@@ -1,9 +1,10 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Modal, useToaster} from '@gravity-ui/uikit';
 
 import {Scenario} from '../components/Scenario/Scenario';
 import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
+import {AppEnvContext} from '../contexts/AppEnv';
 import {Routes as ProjectRoutes} from '../utils/constants';
 import {fetchGet, fetchPost} from '../utils/fetchHelpers';
 
@@ -11,19 +12,22 @@ export const Scenarios = () => {
     const [scenarios, setScenarios] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
+    const {isProd} = useContext(AppEnvContext);
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
             route: ProjectRoutes.getScenarios,
             query: {},
+            isProd,
         });
 
         setScenarios(json);
-    }, []);
+    }, [isProd]);
     const handleCreateVideoClick = useCallback(async () => {
         const json = await fetchGet({
             route: ProjectRoutes.createVideoByScenario,
             query: {},
+            isProd,
         });
 
         add({
@@ -31,7 +35,7 @@ export const Scenarios = () => {
             title: JSON.stringify(json),
             theme: 'info',
         });
-    }, [add]);
+    }, [add, isProd]);
 
     return (
         <div>
@@ -54,7 +58,7 @@ export const Scenarios = () => {
                     onSubmit={async (values: any) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
-                        await fetchPost({route: ProjectRoutes.addScenario, body: {values}});
+                        await fetchPost({route: ProjectRoutes.addScenario, body: {values}, isProd});
                         setOpenModal(false);
                     }}
                 />

@@ -3,10 +3,12 @@ import React, {useState} from 'react';
 import {Tabs} from '@gravity-ui/uikit';
 
 import {CronTest} from '../components/tabs/Cron';
+import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
 
 enum Tab {
     Cron = 'cron',
     Video = 'video',
+    DeletePreprodDatabase = 'DeletePreprodData',
 }
 
 export const Test = () => {
@@ -16,6 +18,10 @@ export const Test = () => {
 
     if (tab === Tab.Cron) {
         tabContent = <CronTest />;
+    }
+
+    if (tab === Tab.DeletePreprodDatabase) {
+        tabContent = <DeletePreprodData />;
     }
 
     return (
