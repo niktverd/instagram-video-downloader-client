@@ -22,8 +22,6 @@ const prepareFetchUrl = (
         throw new Error('API_ENDPOINT is not provided');
     }
 
-    console.log({route, query, isProd, API_ENDPOINT, API_ENDPOINT_PREPROD});
-
     const searchParams = objectToSearchParams(query);
 
     const url = `${isProd ? API_ENDPOINT : API_ENDPOINT_PREPROD}${route}?${searchParams} `;

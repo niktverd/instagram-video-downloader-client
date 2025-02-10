@@ -20,7 +20,6 @@ const rootClassName = getRootClassName({theme});
 
 function App() {
     const [isProd, setIsProd] = useState(false);
-    console.log({isProd}, isProd);
     return (
         <div className={`App g-root ${rootClassName}`}>
             <h1>Instagram Schedule And Analytics</h1>

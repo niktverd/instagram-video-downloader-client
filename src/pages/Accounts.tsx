@@ -14,7 +14,6 @@ export const Accounts = () => {
     const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
-    console.log({isProd});
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
