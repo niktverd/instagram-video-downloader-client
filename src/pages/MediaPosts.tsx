@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Select} from '@gravity-ui/uikit';

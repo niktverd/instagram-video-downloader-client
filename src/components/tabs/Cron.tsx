@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, {Fragment, useContext} from 'react';
 
 import {Button, useToaster} from '@gravity-ui/uikit';
@@ -40,6 +41,20 @@ export const CronTest = () => {
         });
     };
 
+    const handleCreateVideoByInjectScenarioClick = async () => {
+        const json = await fetchGet({
+            route: ProjectRoutes.createInjectVideoByScenario,
+            query: {},
+            isProd,
+        });
+
+        add({
+            name: Math.random() + '-create-video',
+            title: JSON.stringify(json),
+            theme: 'info',
+        });
+    };
+
     return (
         <Fragment>
             <h3>Cron</h3>
@@ -52,6 +67,11 @@ export const CronTest = () => {
                 <div>
                     <Button view="outlined-action" onClick={handleCreateVideoByScenarioClick}>
                         Concat video
+                    </Button>
+                </div>
+                <div>
+                    <Button view="outlined-action" onClick={handleCreateVideoByInjectScenarioClick}>
+                        Inject Scenario
                     </Button>
                 </div>
             </div>

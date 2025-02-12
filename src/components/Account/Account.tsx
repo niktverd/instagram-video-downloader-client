@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useContext, useState} from 'react';
 

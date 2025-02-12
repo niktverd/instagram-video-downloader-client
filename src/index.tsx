@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 
 import {ThemeProvider, ToasterComponent, ToasterProvider} from '@gravity-ui/uikit';

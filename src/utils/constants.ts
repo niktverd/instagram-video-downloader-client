@@ -25,6 +25,7 @@ export enum Routes {
     getInsights = '/ui-get-insights',
     // test
     createVideoByScenario = '/ui-create-video-by-scenario',
+    createInjectVideoByScenario = '/ui-run-injection-scenarios',
     downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
     clearPreprodDatabase = '/ui-clear-proprod-database',
 }

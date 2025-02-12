@@ -71,7 +71,8 @@ export type SourceV3 = {
 export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;
 
 export enum ScenarioType {
-    addBannerInTheEnd = 'addBannerInTheEnd',
+    ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
+    ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
 }
 
 export type PreparedVideoV3 = {

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useContext, useState} from 'react';
 
@@ -8,7 +9,7 @@ import {ScenarioV3} from '../../types';
 import {Routes} from '../../utils/constants';
 import {fetchPatch} from '../../utils/fetchHelpers';
 
-import {AddBannerInTheEnd} from './forms/AddBannerInTheEnd';
+import {ScenarioRouter} from './forms/ScenarioRouter';
 
 import cn from './Scenario.module.css';
 
@@ -30,7 +31,7 @@ export const Scenario = (props: ScenarioV3) => {
                 <pre>{JSON.stringify(extra, null, 3)}</pre>
             </div>
             <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
-                <AddBannerInTheEnd
+                <ScenarioRouter
                     initialValues={{...extra, name}}
                     onSubmit={async (values: any) => {
                         await fetchPatch({route: Routes.patchScenario, body: {id, values}, isProd});

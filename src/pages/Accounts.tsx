@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Modal, useToaster} from '@gravity-ui/uikit';

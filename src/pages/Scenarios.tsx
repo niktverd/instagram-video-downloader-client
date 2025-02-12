@@ -1,10 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Modal, useToaster} from '@gravity-ui/uikit';
 
 import {Scenario} from '../components/Scenario/Scenario';
-import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
+import {ScenarioRouter} from '../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../contexts/AppEnv';
+import {ScenarioType} from '../types';
 import {Routes as ProjectRoutes} from '../utils/constants';
 import {fetchGet, fetchPost} from '../utils/fetchHelpers';
 
@@ -53,7 +55,8 @@ export const Scenarios = () => {
                 return <Scenario key={scenario.id} {...scenario} />;
             })}
             <Modal open={openModal} onClose={() => setOpenModal(false)}>
-                <AddBannerInTheEnd
+                <ScenarioRouter
+                    initialValues={{type: ScenarioType.ScenarioAddBannerAtTheEndType}}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {
                         // eslint-disable-next-line no-console
