@@ -42,7 +42,7 @@ export const Accounts = () => {
             {accounts.map((account) => {
                 return <Account key={account.id} {...account} />;
             })}
-            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+            <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
                 <AddAccount
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {

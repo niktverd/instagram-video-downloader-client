@@ -44,7 +44,12 @@ export const Account = (props: AccountV3) => {
                 </div>
                 <pre>{JSON.stringify(props, null, 3)}</pre>
             </div>
-            <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
+            <Modal
+                open={openModal}
+                contentClassName={cn.modal}
+                onClose={() => setOpenModal(false)}
+                className="modal"
+            >
                 <AddAccount
                     initialValues={{id, token, availableScenarios}}
                     onSubmit={async (values: any) => {

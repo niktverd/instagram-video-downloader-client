@@ -54,7 +54,7 @@ export const Scenarios = () => {
             {scenarios.map((scenario) => {
                 return <Scenario key={scenario.id} {...scenario} />;
             })}
-            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+            <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
                 <ScenarioRouter
                     initialValues={{type: ScenarioType.ScenarioAddBannerAtTheEndType}}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

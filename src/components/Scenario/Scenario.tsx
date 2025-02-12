@@ -30,7 +30,12 @@ export const Scenario = (props: ScenarioV3) => {
                 </div>
                 <pre>{JSON.stringify(extra, null, 3)}</pre>
             </div>
-            <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
+            <Modal
+                className="modal"
+                open={openModal}
+                contentClassName={cn.modal}
+                onClose={() => setOpenModal(false)}
+            >
                 <ScenarioRouter
                     initialValues={{...extra, name}}
                     onSubmit={async (values: any) => {

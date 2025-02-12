@@ -152,7 +152,6 @@ export const ScenarioFormCommon = ({values, setValues, setType}: ScenarioFormCom
                                         );
                                     })}
                                 </div>
-                                <pre>{JSON.stringify(vals)}</pre>
                             </div>
                         );
                     })}
