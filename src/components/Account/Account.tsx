@@ -33,7 +33,9 @@ export const Account = (props: AccountV3) => {
                     <h2>{id}</h2>
                     <p>{token.slice(0, 3)}****</p>
                     <div>
-                        <Button onClick={handleGetInsights}>get insights</Button>
+                        <Button view="outlined-action" onClick={() => setOpenModal(true)}>
+                            Edit
+                        </Button>
                         <Button onClick={handleGetInsights}>get insights</Button>
                         <Button
                             onClick={async () => {
