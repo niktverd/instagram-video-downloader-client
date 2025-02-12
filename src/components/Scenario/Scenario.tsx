@@ -3,11 +3,12 @@
 import React, {useContext, useState} from 'react';
 
 import {Button, Modal} from '@gravity-ui/uikit';
+import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {ScenarioV3} from '../../types';
 import {Routes} from '../../utils/constants';
-import {fetchPatch} from '../../utils/fetchHelpers';
+import {fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import {ScenarioRouter} from './forms/ScenarioRouter';
 
@@ -26,6 +27,19 @@ export const Scenario = (props: ScenarioV3) => {
                     <p>{id}</p>
                     <div>
                         <Button onClick={() => setOpenModal(true)}>Edit</Button>
+                        <Button
+                            onClick={async () => {
+                                await fetchPost({
+                                    route: Routes.addScenario,
+                                    body: {
+                                        values: {...omit(props, 'id'), copiedFrom: props.id},
+                                    } as any,
+                                    isProd: !isProd,
+                                });
+                            }}
+                        >
+                            Copy to {isProd ? 'preprod' : 'prod'}
+                        </Button>
                     </div>
                 </div>
                 <pre>{JSON.stringify(extra, null, 3)}</pre>

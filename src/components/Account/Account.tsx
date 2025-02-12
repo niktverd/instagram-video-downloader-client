@@ -3,11 +3,12 @@
 import React, {useContext, useState} from 'react';
 
 import {Button, Modal} from '@gravity-ui/uikit';
+import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {AccountV3} from '../../types';
 import {Routes} from '../../utils/constants';
-import {fetchGet, fetchPatch} from '../../utils/fetchHelpers';
+import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import {AddAccount} from './forms/AddAccount';
 
@@ -33,8 +34,19 @@ export const Account = (props: AccountV3) => {
                     <p>{token.slice(0, 3)}****</p>
                     <div>
                         <Button onClick={handleGetInsights}>get insights</Button>
-                        <Button view="outlined-action" onClick={() => setOpenModal(true)}>
-                            Edit
+                        <Button onClick={handleGetInsights}>get insights</Button>
+                        <Button
+                            onClick={async () => {
+                                await fetchPost({
+                                    route: Routes.addAccount,
+                                    body: {
+                                        values: {...omit(props, 'id'), copiedFrom: props.id},
+                                    } as any,
+                                    isProd: !isProd,
+                                });
+                            }}
+                        >
+                            Copy to {isProd ? 'preprod' : 'prod'}
                         </Button>
                     </div>
                     <div>
