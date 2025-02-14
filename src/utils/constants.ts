@@ -23,6 +23,9 @@ export enum Routes {
     addAccount = '/ui-add-account',
 
     getInsights = '/ui-get-insights',
+    getMedia = '/ui-get-media',
+    getUserById = '/ui-get-user-by-id',
+    getOwnerByMediaId = '/ui-get-owner-by--media-id',
     // test
     createVideoByScenario = '/ui-create-video-by-scenario',
     createInjectVideoByScenario = '/ui-run-injection-scenarios',

@@ -5,11 +5,13 @@ import {Tabs} from '@gravity-ui/uikit';
 
 import {CronTest} from '../components/tabs/Cron';
 import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
+import {GetUserById} from '../components/tabs/GetUserById';
 
 enum Tab {
     Cron = 'cron',
     Video = 'video',
     DeletePreprodDatabase = 'DeletePreprodData',
+    GetUserByIdTab = 'uiGetInstagramUserById',
 }
 
 export const Test = () => {
@@ -23,6 +25,10 @@ export const Test = () => {
 
     if (tab === Tab.DeletePreprodDatabase) {
         tabContent = <DeletePreprodData />;
+    }
+
+    if (tab === Tab.GetUserByIdTab) {
+        tabContent = <GetUserById />;
     }
 
     return (

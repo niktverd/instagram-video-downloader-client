@@ -18,6 +18,7 @@ export const Account = (props: AccountV3) => {
     const [openModal, setOpenModal] = useState(false);
     const {token, id, availableScenarios} = props;
     const [insights, setInsights] = useState([]);
+    const [media, setMedia] = useState([]);
     const {isProd} = useContext(AppEnvContext);
 
     const handleGetInsights = async () => {
@@ -25,6 +26,15 @@ export const Account = (props: AccountV3) => {
 
         setInsights(data);
     };
+
+    const handleGetMedia = async () => {
+        const data = await fetchGet({route: Routes.getMedia, query: {id}, isProd});
+
+        setMedia(data);
+    };
+
+    // eslint-disable-next-line no-console
+    console.log(media);
 
     return (
         <div className={cn.container}>
@@ -37,6 +47,7 @@ export const Account = (props: AccountV3) => {
                             Edit
                         </Button>
                         <Button onClick={handleGetInsights}>get insights</Button>
+                        <Button onClick={handleGetMedia}>get media</Button>
                         <Button
                             onClick={async () => {
                                 await fetchPost({
