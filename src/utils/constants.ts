@@ -31,4 +31,6 @@ export enum Routes {
     createInjectVideoByScenario = '/ui-run-injection-scenarios',
     downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
     clearPreprodDatabase = '/ui-clear-proprod-database',
+    // utils
+    convertImageToVideo = '/ui-convert-image-to-video',
 }

@@ -72,7 +72,10 @@ export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;
 
 export enum ScenarioType {
     ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
+    ScenarioAddBannerAtTheEndUniqueType = 'ScenarioAddBannerAtTheEndUnique',
     ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
+    ScenarioShortifyType = 'ScenarioShortifyType',
+    ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
 }
 
 export type PreparedVideoV3 = {
@@ -89,6 +92,7 @@ export type AccountV3 = {
     token: string;
     disabled: boolean;
     availableScenarios: string[];
+    accountBackgrounMusic?: string;
 };
 
 export type AccountMediaContainerV3 = {

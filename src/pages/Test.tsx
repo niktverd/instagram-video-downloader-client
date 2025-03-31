@@ -3,15 +3,19 @@ import React, {useState} from 'react';
 
 import {Tabs} from '@gravity-ui/uikit';
 
+import {ConvertImageToVideo} from '../components/tabs/ConvertImageToVideo';
 import {CronTest} from '../components/tabs/Cron';
 import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
 import {GetUserById} from '../components/tabs/GetUserById';
+import {UniDecode} from '../components/tabs/Unidecode';
 
 enum Tab {
     Cron = 'cron',
     Video = 'video',
     DeletePreprodDatabase = 'DeletePreprodData',
     GetUserByIdTab = 'uiGetInstagramUserById',
+    Unidecode = 'Unidecode',
+    Convert = 'Convert',
 }
 
 export const Test = () => {
@@ -29,6 +33,12 @@ export const Test = () => {
 
     if (tab === Tab.GetUserByIdTab) {
         tabContent = <GetUserById />;
+    }
+    if (tab === Tab.Unidecode) {
+        tabContent = <UniDecode />;
+    }
+    if (tab === Tab.Convert) {
+        tabContent = <ConvertImageToVideo />;
     }
 
     return (

@@ -43,7 +43,7 @@ export const Accounts = () => {
             });
 
             if (!data) {
-                return;
+                continue;
             }
 
             for (const parameter of data) {

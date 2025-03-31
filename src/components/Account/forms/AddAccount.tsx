@@ -55,9 +55,30 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                     autoComplete="off"
                 />
             </div>
+            <div>
+                <label htmlFor="accountBackgrounMusic">accountBackgrounMusic</label>
+                <input
+                    name="accountBackgrounMusic"
+                    type="text"
+                    value={values['accountBackgrounMusic']}
+                    onChange={handleChange}
+                    autoComplete="off"
+                />
+            </div>
 
             <div>
                 <h4>scenarios</h4>
+                <pre>{JSON.stringify(values, null, 2)}</pre>
+                {values.availableScenarios?.map((scenario, index) => {
+                    return (
+                        <div key={`${scenario}-${index}`}>
+                            <input name={index} value={scenario} onChange={handleScenarioChange} />
+                            <Button onClick={() => handleDeleteAvailableScenario(index)}>
+                                delete
+                            </Button>
+                        </div>
+                    );
+                })}
                 <Button
                     onClick={() => {
                         setValues({
@@ -70,17 +91,6 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                 >
                     add
                 </Button>
-                <pre>{JSON.stringify(values, null, 2)}</pre>
-                {values.availableScenarios?.map((scenario, index) => {
-                    return (
-                        <div key={`${scenario}-${index}`}>
-                            <input name={index} value={scenario} onChange={handleScenarioChange} />
-                            <Button onClick={() => handleDeleteAvailableScenario(index)}>
-                                delete
-                            </Button>
-                        </div>
-                    );
-                })}
             </div>
             <div>
                 <Checkbox
