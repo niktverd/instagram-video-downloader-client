@@ -26,6 +26,7 @@ export const Registration = () => {
 
     return (
         <>
+            <Navigate to="#registration" />
             {userLoggedIn && <Navigate to={'/'} replace={true} />}
 
             <main className="w-full h-screen flex self-center place-content-center place-items-center">
@@ -98,7 +99,7 @@ export const Registration = () => {
                         <div className="text-sm text-center">
                             Already have an account? {'   '}
                             <Link
-                                to={'/login'}
+                                to={'/auth#login'}
                                 className="text-center text-sm hover:underline font-bold"
                             >
                                 Continue

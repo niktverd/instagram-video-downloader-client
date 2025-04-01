@@ -4,7 +4,7 @@ import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
 import {useAuth} from '../../contexts/AuthContext';
 import {Accounts} from '../Accounts';
-import {AuthPage} from '../AuthPage';
+import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {MediaPosts} from '../MediaPosts';
 import {Policy} from '../Policy';
