@@ -11,6 +11,8 @@ import {Policy} from '../Policy';
 import {Scenarios} from '../Scenarios';
 import {Test} from '../Test';
 
+import cl from './Main.module.css';
+
 type IsAllowedArgs = {
     userLoggedIn: boolean;
     isProtected?: boolean | string[];
@@ -83,7 +85,7 @@ export const MainNavigation = () => {
 
     return (
         <nav>
-            <ul>
+            <ul className={cl.ul}>
                 {mainMenuConfig.map(({text, to, isProtected}) => {
                     if (isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid})) {
                         return (

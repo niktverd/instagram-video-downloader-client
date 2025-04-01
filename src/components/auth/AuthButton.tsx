@@ -12,6 +12,7 @@ export const AuthButton = () => {
 
     return (
         <Button
+            view={userLoggedIn ? 'normal' : 'action'}
             onClick={() => {
                 if (userLoggedIn) {
                     doSignOut();

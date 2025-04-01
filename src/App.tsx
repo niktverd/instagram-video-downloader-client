@@ -20,16 +20,19 @@ function App() {
         <div className={`App g-root ${rootClassName}`}>
             <AuthProfider>
                 <h1>Instagram Schedule And Analytics</h1>
-                <div>
-                    <span>Preprod</span>
-                    <Switch checked={isProd} onUpdate={(cheched) => setIsProd(cheched)}>
-                        Prod
-                    </Switch>
-                </div>
-                {/* <Router> */}
-                <div>
+                {process.env.REACT_APP_APP_ENV ? (
+                    <div>
+                        <span>Preprod</span>
+                        <Switch checked={isProd} onUpdate={(cheched) => setIsProd(cheched)}>
+                            Prod
+                        </Switch>
+                    </div>
+                ) : null}
+                <div className="navigation">
                     <MainNavigation />
                     <AuthButton />
+                </div>
+                <div>
                     <AppEnvContext.Provider value={{isProd}}>
                         <MainNavigationRoutes />
                         {/* If you want a default/fallback route when no other route matches */}
