@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {JSX} from 'react';
 
 import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
@@ -11,46 +11,88 @@ import {Policy} from '../Policy';
 import {Scenarios} from '../Scenarios';
 import {Test} from '../Test';
 
-export const mainMenuConfig = [
+type IsAllowedArgs = {
+    userLoggedIn: boolean;
+    isProtected?: boolean | string[];
+    userLogin?: string;
+};
+
+const isAllowed = ({isProtected, userLoggedIn, userLogin}: IsAllowedArgs) => {
+    if (isProtected) {
+        if (userLoggedIn) {
+            if (typeof isProtected === 'boolean') {
+                return true;
+            } else if (userLogin) {
+                return isProtected.includes(userLogin);
+            }
+        } else {
+            return false;
+        }
+        return false;
+    } else {
+        return true;
+    }
+};
+
+type MainMenuConfigType = {
+    text: string;
+    to: string;
+    Component: () => JSX.Element;
+    isProtected?: boolean | string[];
+};
+
+export const mainMenuConfig: MainMenuConfigType[] = [
     {text: 'Home', to: '/', Component: Home},
     {text: 'Policy', to: '/policy', Component: Policy},
-    {text: 'Media Posts', to: '/media-posts', Component: MediaPosts, isProtected: true},
-    {text: 'Scenarios', to: '/scenarios', Component: Scenarios, isProtected: true},
-    {text: 'Accounts', to: '/accounts', Component: Accounts, isProtected: true},
-    {text: 'Test', to: '/tests', Component: Test, isProtected: true},
+    {
+        text: 'Media Posts',
+        to: '/media-posts',
+        Component: MediaPosts,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+    },
+    {
+        text: 'Scenarios',
+        to: '/scenarios',
+        Component: Scenarios,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+    },
+    {
+        text: 'Accounts',
+        to: '/accounts',
+        Component: Accounts,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+    },
+    {text: 'Test', to: '/tests', Component: Test, isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2']},
 ];
 
 const ProtectedRoute = ({children, isProtected}) => {
-    const {userLoggedIn} = useAuth();
+    const {userLoggedIn, currentUser} = useAuth();
     if (isProtected) {
-        return userLoggedIn ? children : <Navigate to="/" />;
+        return isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid}) ? (
+            children
+        ) : (
+            <Navigate to="/" />
+        );
     } else {
         return children;
     }
 };
 
 export const MainNavigation = () => {
-    const {userLoggedIn} = useAuth();
+    const {userLoggedIn, currentUser} = useAuth();
+
     return (
         <nav>
             <ul>
                 {mainMenuConfig.map(({text, to, isProtected}) => {
-                    if (isProtected) {
-                        if (userLoggedIn) {
-                            return (
-                                <li key={`${text}-${to}`}>
-                                    <Link to={to}>{text}</Link>
-                                </li>
-                            );
-                        } else {
-                            return null;
-                        }
-                    } else {
+                    if (isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid})) {
                         return (
                             <li key={`${text}-${to}`}>
                                 <Link to={to}>{text}</Link>
                             </li>
                         );
+                    } else {
+                        return null;
                     }
                 })}
             </ul>
