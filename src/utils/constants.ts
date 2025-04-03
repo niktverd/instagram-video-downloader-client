@@ -33,4 +33,6 @@ export enum Routes {
     clearPreprodDatabase = '/ui-clear-proprod-database',
     // utils
     convertImageToVideo = '/ui-convert-image-to-video',
+    getUserContent = '/ui-get-user-content',
+    savePostForAnalysis = '/ui-save-post-for-futher-analysis',
 }

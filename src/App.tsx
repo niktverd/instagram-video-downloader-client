@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {Switch} from '@gravity-ui/uikit';
-import {getRootClassName} from '@gravity-ui/uikit/server';
+// import {getRootClassName} from '@gravity-ui/uikit/server';
 
 import {AuthButton} from './components/auth/AuthButton';
 import {AppEnvContext} from './contexts/AppEnv';
@@ -10,14 +10,14 @@ import {MainNavigation, MainNavigationRoutes} from './pages/Navigation/Main';
 
 import './App.css';
 
-const theme = 'dark';
-const rootClassName = getRootClassName({theme});
+// const theme = 'dark';
+// const rootClassName = getRootClassName({theme});
 
 function App() {
     const [isProd, setIsProd] = useState(false);
 
     return (
-        <div className={`App g-root ${rootClassName}`}>
+        <div className={`App g-root`}>
             <AuthProfider>
                 <h1>Instagram Schedule And Analytics</h1>
                 {process.env.REACT_APP_APP_ENV ? (

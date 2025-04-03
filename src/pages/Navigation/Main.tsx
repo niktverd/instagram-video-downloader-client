@@ -4,6 +4,7 @@ import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
 import {useAuth} from '../../contexts/AuthContext';
 import {Accounts} from '../Accounts';
+import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {MediaPosts} from '../MediaPosts';
@@ -65,6 +66,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
     },
     {text: 'Test', to: '/tests', Component: Test, isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2']},
+    {
+        text: 'Analize User Content',
+        to: '/analize-user-content',
+        Component: AnalizeUserContent,
+        isProtected: true,
+    },
 ];
 
 const ProtectedRoute = ({children, isProtected}) => {

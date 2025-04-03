@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 
-import {ThemeProvider, ToasterComponent, ToasterProvider} from '@gravity-ui/uikit';
+import {ThemeProvider, Toaster, ToasterComponent, ToasterProvider} from '@gravity-ui/uikit';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
@@ -10,8 +10,6 @@ import '@gravity-ui/uikit/styles/fonts.css';
 import '@gravity-ui/uikit/styles/styles.css';
 // eslint-disable-next-line import/order
 import './index.css';
-
-// import reportWebVitals from './reportWebVitals';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reportWebVitals = (onPerfEntry?: any) => {
@@ -29,11 +27,13 @@ const reportWebVitals = (onPerfEntry?: any) => {
     }
 };
 
+export const toaster = new Toaster();
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <ThemeProvider theme="dark">
         <React.StrictMode>
-            <ToasterProvider>
+            <ToasterProvider toaster={toaster}>
                 <App />
                 <ToasterComponent />
             </ToasterProvider>
