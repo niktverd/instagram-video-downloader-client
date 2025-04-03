@@ -11,6 +11,7 @@ export const ConvertImageToVideo = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [pathToSave, setPathToSave] = useState('assets/');
     const [duration, setDuration] = useState(1);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [response, setResponse] = useState<any>(null);
     const {isProd} = useContext(AppEnvContext);
 
