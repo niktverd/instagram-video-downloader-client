@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 
 import {Tab, TabList, TabPanel, TabProvider} from '@gravity-ui/uikit';
 
+import PerformanceMonitor from '../components/PerformanceMonitor/PerformanceMonitor';
 import {ConvertImageToVideo} from '../components/tabs/ConvertImageToVideo';
 import {CronTest} from '../components/tabs/Cron';
 import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
@@ -10,25 +11,26 @@ import {GetUserById} from '../components/tabs/GetUserById';
 import {UniDecode} from '../components/tabs/Unidecode';
 
 enum TabEnum {
-    Cron = 'cron',
-    Video = 'video',
-    DeletePreprodDatabase = 'DeletePreprodData',
+    CronTab = 'cron',
+    VideoTab = 'video',
+    DeletePreprodDatabaseTab = 'DeletePreprodData',
     GetUserByIdTab = 'uiGetInstagramUserById',
-    Unidecode = 'Unidecode',
-    Convert = 'Convert',
+    UnidecodeTab = 'Unidecode',
+    ConvertTab = 'Convert',
+    PerformanceMonitorTab = 'performanceMonitor',
 }
 
 export const Test = () => {
-    const [tab, setTab] = useState<TabEnum>(TabEnum.Cron);
+    const [tab, setTab] = useState<TabEnum>(TabEnum.CronTab);
 
     const config = [
         {
-            id: TabEnum.Cron,
+            id: TabEnum.CronTab,
             title: 'Cron',
             content: <CronTest />,
         },
         {
-            id: TabEnum.DeletePreprodDatabase,
+            id: TabEnum.DeletePreprodDatabaseTab,
             title: 'DeletePreprodDatabase',
             content: <DeletePreprodData />,
         },
@@ -38,14 +40,19 @@ export const Test = () => {
             content: <GetUserById />,
         },
         {
-            id: TabEnum.Unidecode,
+            id: TabEnum.UnidecodeTab,
             title: 'Unidecode',
             content: <UniDecode />,
         },
         {
-            id: TabEnum.Convert,
+            id: TabEnum.ConvertTab,
             title: 'Convert',
             content: <ConvertImageToVideo />,
+        },
+        {
+            id: TabEnum.PerformanceMonitorTab,
+            title: 'Memory Usage',
+            content: <PerformanceMonitor />,
         },
     ];
     return (
