@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useContext, useState} from 'react';
 
-import {Button, Modal} from '@gravity-ui/uikit';
+import {ArrowDown, ArrowUp} from '@gravity-ui/icons';
+import {Button, Card, Modal} from '@gravity-ui/uikit';
 import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
@@ -16,34 +17,47 @@ import cn from './Scenario.module.css';
 
 export const Scenario = (props: ScenarioV3) => {
     const [openModal, setOpenModal] = useState(false);
+    const [expanded, setExpanded] = useState(false);
     const {name, id, ...extra} = props;
     const {isProd} = useContext(AppEnvContext);
 
     return (
-        <div className={cn.container}>
-            <div>
-                <div>
+        <Card className={cn.container} type="container" view="outlined">
+            <div className={cn.header}>
+                <div className={cn.title}>
                     <h2>{name}</h2>
-                    <p>{id}</p>
-                    <div>
-                        <Button onClick={() => setOpenModal(true)}>Edit</Button>
-                        <Button
-                            onClick={async () => {
-                                await fetchPost({
-                                    route: Routes.addScenario,
-                                    body: {
-                                        values: {...omit(props, 'id'), copiedFrom: props.id},
-                                    } as any,
-                                    isProd: !isProd,
-                                });
-                            }}
-                        >
-                            Copy to {isProd ? 'preprod' : 'prod'}
-                        </Button>
-                    </div>
+                    <p className={cn.id}>{id}</p>
                 </div>
-                <pre>{JSON.stringify(extra, null, 3)}</pre>
+                <div className={cn.actions}>
+                    <Button onClick={() => setOpenModal(true)}>Edit</Button>
+                    <Button
+                        onClick={async () => {
+                            await fetchPost({
+                                route: Routes.addScenario,
+                                body: {
+                                    values: {...omit(props, 'id'), copiedFrom: props.id},
+                                } as any,
+                                isProd: !isProd,
+                            });
+                        }}
+                    >
+                        Copy to {isProd ? 'preprod' : 'prod'}
+                    </Button>
+                    <Button
+                        view="flat"
+                        onClick={() => setExpanded(!expanded)}
+                        className={cn.toggleButton}
+                    >
+                        {expanded ? <ArrowUp /> : <ArrowDown />}
+                    </Button>
+                </div>
             </div>
+
+            {expanded && (
+                <div className={cn.details}>
+                    <pre>{JSON.stringify(extra, null, 3)}</pre>
+                </div>
+            )}
             <Modal
                 className="modal"
                 open={openModal}
@@ -58,6 +72,6 @@ export const Scenario = (props: ScenarioV3) => {
                     }}
                 />
             </Modal>
-        </div>
+        </Card>
     );
 };
