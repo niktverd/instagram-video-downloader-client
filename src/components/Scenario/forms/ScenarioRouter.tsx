@@ -38,7 +38,10 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
         );
     }
 
-    if ((type as ScenarioType) === ScenarioType.ScenarioShortifyType) {
+    if (
+        (type as ScenarioType) === ScenarioType.ScenarioShortifyType ||
+        (type as ScenarioType) === ScenarioType.ScenarioShortifyUniqueType
+    ) {
         return <Shortify initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
     }
 

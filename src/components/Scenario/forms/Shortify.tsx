@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, {useState} from 'react';
 
+import {Button} from '@gravity-ui/uikit';
+
 import {ScenarioFormCommon} from './ScenarioFormCommon';
 
 const numberFields = ['minDuration', 'maxDuration'];
@@ -21,6 +23,28 @@ export const Shortify = ({initialValues, onSubmit, setType}: any) => {
         });
     };
 
+    const handleChangeInjection =
+        (index: number): React.ChangeEventHandler<HTMLInputElement> =>
+        (event) => {
+            const extraBannerUrls = [...(values.extraBannerUrls || [])];
+            extraBannerUrls[index] = event.target.value;
+
+            setValues({
+                ...values,
+                extraBannerUrls,
+            });
+        };
+
+    const handleAddInjectionClick = () => {
+        const extraBannerUrls = [...(values.extraBannerUrls || [])];
+        extraBannerUrls.push('');
+
+        setValues({
+            ...values,
+            extraBannerUrls,
+        });
+    };
+
     return (
         <form onSubmit={onSubmitLocal}>
             <ScenarioFormCommon values={values} setValues={setValues} setType={setType} />
@@ -32,6 +56,7 @@ export const Shortify = ({initialValues, onSubmit, setType}: any) => {
                     value={values['finalBanner']}
                     onChange={handleChange}
                     autoComplete="off"
+                    disabled
                 />
                 <input
                     name="minDuration"
@@ -47,6 +72,24 @@ export const Shortify = ({initialValues, onSubmit, setType}: any) => {
                     onChange={handleChange}
                     autoComplete="off"
                 />
+            </div>
+            <div>
+                <h4>extraBannerUrls</h4>
+                <div>
+                    {(values.extraBannerUrls || []).map((extraBannerUrl: string, index) => {
+                        return (
+                            <div key={extraBannerUrl + index}>
+                                <input
+                                    value={extraBannerUrl || ''}
+                                    onChange={handleChangeInjection(index)}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                <div>
+                    <Button onClick={handleAddInjectionClick}>add</Button>
+                </div>
             </div>
 
             <input type="submit" />

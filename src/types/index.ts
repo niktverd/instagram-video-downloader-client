@@ -75,6 +75,7 @@ export enum ScenarioType {
     ScenarioAddBannerAtTheEndUniqueType = 'ScenarioAddBannerAtTheEndUnique',
     ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
     ScenarioShortifyType = 'ScenarioShortifyType',
+    ScenarioShortifyUniqueType = 'ScenarioShortifyUnique',
     ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
 }
 

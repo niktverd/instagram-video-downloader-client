@@ -5,27 +5,38 @@ import {ThemeProvider, Toaster, ToasterComponent, ToasterProvider} from '@gravit
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
+import {reportWebVitals} from './utils/reportWebVitals';
 
 import '@gravity-ui/uikit/styles/fonts.css';
 import '@gravity-ui/uikit/styles/styles.css';
 // eslint-disable-next-line import/order
 import './index.css';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reportWebVitals = (onPerfEntry?: any) => {
-    // Изменили тип на any
-    if (onPerfEntry && typeof onPerfEntry === 'function') {
-        // Проверяем тип функции
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        import('web-vitals').then(({getCLS, getFID, getFCP, getLCP, getTTFB}: any) => {
-            getCLS(onPerfEntry);
-            getFID(onPerfEntry);
-            getFCP(onPerfEntry);
-            getLCP(onPerfEntry);
-            getTTFB(onPerfEntry);
-        });
-    }
+// Add error handler to suppress ResizeObserver errors
+const silenceResizeObserverErrors = () => {
+    // Original error handler
+    const originalHandler = window.onerror;
+
+    // Override the error handler to filter out ResizeObserver loop errors
+    window.onerror = (message, source, lineno, colno, error) => {
+        // Check if the error is a ResizeObserver loop error
+        if (message && typeof message === 'string' && message.includes('ResizeObserver loop')) {
+            // Suppress the error
+            return true;
+        }
+
+        // Call the original handler for other errors
+        if (typeof originalHandler === 'function') {
+            return originalHandler(message, source, lineno, colno, error);
+        }
+
+        // Return false to let the error propagate
+        return false;
+    };
 };
+
+// Call the function to set up the error handler
+silenceResizeObserverErrors();
 
 export const toaster = new Toaster();
 
