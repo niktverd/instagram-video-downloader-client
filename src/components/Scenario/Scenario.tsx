@@ -44,6 +44,23 @@ export const Scenario = (props: ScenarioV3) => {
                         Copy to {isProd ? 'preprod' : 'prod'}
                     </Button>
                     <Button
+                        onClick={async () => {
+                            await fetchPost({
+                                route: Routes.addScenario,
+                                body: {
+                                    values: {
+                                        ...omit(props, 'id'),
+                                        name: `${name} (clone)`,
+                                        copiedFrom: props.id,
+                                    },
+                                } as any,
+                                isProd,
+                            });
+                        }}
+                    >
+                        Clone
+                    </Button>
+                    <Button
                         view="flat"
                         onClick={() => setExpanded(!expanded)}
                         className={cn.toggleButton}
