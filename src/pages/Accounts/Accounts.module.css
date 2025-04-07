@@ -1,0 +1,40 @@
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.insights {
+    margin-bottom: 20px;
+    background-color: #0001;
+    padding: 15px;
+    border-radius: 4px;
+    overflow: auto;
+}
+
+.accountsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.filter {
+    margin: 20px 0;
+    max-width: 400px;
+}

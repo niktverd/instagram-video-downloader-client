@@ -39,10 +39,10 @@ export const Account = (props: AccountV3) => {
     return (
         <div className={cn.container}>
             <div>
-                <div>
+                <div className={cn.header}>
                     <h2>{id}</h2>
-                    <p>{token.slice(0, 3)}****</p>
-                    <div>
+                    <p className={cn.token}>{token.slice(0, 3)}****</p>
+                    <div className={cn.actions}>
                         <Button view="outlined-action" onClick={() => setOpenModal(true)}>
                             Edit
                         </Button>
@@ -62,12 +62,14 @@ export const Account = (props: AccountV3) => {
                             Copy to {isProd ? 'preprod' : 'prod'}
                         </Button>
                     </div>
-                    <div>
-                        <h1>Insights</h1>
-                        <pre>{JSON.stringify(insights)}</pre>
-                    </div>
+                    {insights.length > 0 && (
+                        <div className={cn.insights}>
+                            <h1>Insights</h1>
+                            <pre className={cn.insightsData}>{JSON.stringify(insights)}</pre>
+                        </div>
+                    )}
                 </div>
-                <pre>{JSON.stringify(props, null, 3)}</pre>
+                <pre className={cn.details}>{JSON.stringify(props, null, 3)}</pre>
             </div>
             <Modal
                 open={openModal}

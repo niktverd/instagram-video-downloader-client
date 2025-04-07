@@ -1,14 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, {useCallback, useContext, useState} from 'react';
 
-import {Button, Modal, useToaster} from '@gravity-ui/uikit';
+import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 
-import {Account} from '../components/Account/Account';
-import {AddAccount} from '../components/Account/forms/AddAccount';
+import {Account} from '../../components/Account/Account';
+import {AddAccount} from '../../components/Account/forms/AddAccount';
 // import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
-import {AppEnvContext} from '../contexts/AppEnv';
-import {Routes as ProjectRoutes} from '../utils/constants';
-import {fetchGet, fetchPost} from '../utils/fetchHelpers';
+import {AppEnvContext} from '../../contexts/AppEnv';
+import {Routes as ProjectRoutes} from '../../utils/constants';
+import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
+
+import styles from './Accounts.module.css';
 
 export const Accounts = () => {
     const [accounts, setAccounts] = useState([]);
@@ -16,6 +18,7 @@ export const Accounts = () => {
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
     const [insights, setInsights] = useState<unknown>({});
+    const [filterValue, setFilterValue] = useState('');
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
@@ -65,22 +68,59 @@ export const Accounts = () => {
         setInsights({totalReach, totalImpressions});
     };
 
+    const filteredAccounts = accounts.filter((account) => {
+        if (!filterValue) return true;
+        const lowercasedFilter = filterValue.toLowerCase();
+
+        // Filter by ID
+        if (account.id && account.id.toLowerCase().includes(lowercasedFilter)) {
+            return true;
+        }
+
+        // Filter by available scenarios
+        if (account.availableScenarios && Array.isArray(account.availableScenarios)) {
+            return account.availableScenarios.some(
+                (scenario) => scenario && scenario.toLowerCase().includes(lowercasedFilter),
+            );
+        }
+
+        return false;
+    });
+
     return (
-        <div>
-            <h2>Accounts</h2>
-            <Button view="action" onClick={handleLoadClick}>
-                Get Data
-            </Button>
-            <Button view="outlined-action" onClick={() => setOpenModal(true)}>
-                add
-            </Button>
-            <Button view="outlined-action" onClick={handleGetInsights}>
-                get insights
-            </Button>
-            <pre>{JSON.stringify(insights, null, 3)}</pre>
-            {accounts.map((account) => {
-                return <Account key={account.id} {...account} />;
-            })}
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h2>Accounts</h2>
+                <div className={styles.actions}>
+                    <Button view="action" onClick={handleLoadClick}>
+                        Get Data
+                    </Button>
+                    <Button view="outlined-action" onClick={() => setOpenModal(true)}>
+                        add
+                    </Button>
+                    <Button view="outlined-action" onClick={handleGetInsights}>
+                        get insights
+                    </Button>
+                </div>
+            </div>
+
+            <pre className={styles.insights}>{JSON.stringify(insights, null, 3)}</pre>
+
+            <div className={styles.filter}>
+                <TextInput
+                    placeholder="Filter by ID or scenario..."
+                    value={filterValue}
+                    onChange={(e) => setFilterValue(e.target.value)}
+                    size="m"
+                />
+            </div>
+
+            <div className={styles.accountsGrid}>
+                {filteredAccounts.map((account) => {
+                    return <Account key={account.id} {...account} />;
+                })}
+            </div>
+
             <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
                 <AddAccount
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
