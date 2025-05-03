@@ -24,7 +24,7 @@ const prepareFetchUrl = (
 
     const searchParams = objectToSearchParams(query);
 
-    const url = `${isProd ? API_ENDPOINT : API_ENDPOINT_PREPROD}${route}?${searchParams} `;
+    const url = `${isProd ? API_ENDPOINT : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
     // eslint-disable-next-line no-console
     console.log(url);
 

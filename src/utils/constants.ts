@@ -10,29 +10,29 @@ export const defaultHeaders = {
 };
 
 export enum Routes {
-    getMediaPosts = '/ui-get-media-posts',
-    splitVideoInTheMiddle = '/ui-split-video-in-the-middle',
-    testGreenScreen = '/ui-test-green-screen',
+    getMediaPosts = '/ui/get-media-posts',
+    splitVideoInTheMiddle = '/ui/split-video-in-the-middle',
+    testGreenScreen = '/ui/test-green-screen',
     // scenarios
-    getScenarios = '/ui-get-scenarios',
-    patchScenario = '/ui-patch-scenario',
-    addScenario = '/ui-add-scenario',
+    getScenarios = '/ui/get-scenarios',
+    patchScenario = '/ui/patch-scenario',
+    addScenario = '/ui/add-scenario',
     // accounts
-    getAccounts = '/ui-get-accounts',
-    patchAccount = '/ui-patch-account',
-    addAccount = '/ui-add-account',
+    getAccounts = '/ui/get-accounts',
+    patchAccount = '/ui/patch-account',
+    addAccount = '/ui/add-account',
 
-    getInsights = '/ui-get-insights',
-    getMedia = '/ui-get-media',
-    getUserById = '/ui-get-user-by-id',
-    getOwnerByMediaId = '/ui-get-owner-by--media-id',
+    getInsights = '/ui/get-insights',
+    getMedia = '/ui/get-media',
+    getUserById = '/ui/get-user-by-id',
+    getOwnerByMediaId = '/ui/get-owner-by--media-id',
     // test
-    createVideoByScenario = '/ui-create-video-by-scenario',
-    createInjectVideoByScenario = '/ui-run-injection-scenarios',
-    downloadVideoFromSourceV3 = '/ui-download-video-from-source-v3',
-    clearPreprodDatabase = '/ui-clear-proprod-database',
+    createVideoByScenario = '/ui/create-video-by-scenario',
+    createInjectVideoByScenario = '/ui/run-injection-scenarios',
+    downloadVideoFromSourceV3 = '/ui/download-video-from-source-v3',
+    clearPreprodDatabase = '/ui/clear-proprod-database',
     // utils
-    convertImageToVideo = '/ui-convert-image-to-video',
-    getUserContent = '/ui-get-user-content',
-    savePostForAnalysis = '/ui-save-post-for-futher-analysis',
+    convertImageToVideo = '/ui/convert-image-to-video',
+    getUserContent = '/ui/get-user-content',
+    savePostForAnalysis = '/ui/save-post-for-futher-analysis',
 }
