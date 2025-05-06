@@ -89,7 +89,8 @@ export type PreparedVideoV3 = {
 };
 
 export type AccountV3 = {
-    id: string;
+    id: number;
+    slug: string;
     token: string;
     disabled: boolean;
     availableScenarios: string[];

@@ -16,7 +16,7 @@ import cn from './Account.module.css';
 
 export const Account = (props: AccountV3) => {
     const [openModal, setOpenModal] = useState(false);
-    const {token, id, availableScenarios} = props;
+    const {token, id, availableScenarios, slug} = props;
     const [insights, setInsights] = useState([]);
     const [media, setMedia] = useState([]);
     const {isProd} = useContext(AppEnvContext);
@@ -78,16 +78,13 @@ export const Account = (props: AccountV3) => {
                 className="modal"
             >
                 <AddAccount
-                    initialValues={{id, token, availableScenarios}}
+                    initialValues={{id, slug, token, availableScenarios}}
                     onSubmit={async (values: any) => {
                         await fetchPatch({
                             route: Routes.patchAccount,
                             body: {
-                                id,
-                                values: {
-                                    ...values,
-                                    availableScenarios: values.availableScenarios.filter(Boolean),
-                                },
+                                ...values,
+                                availableScenarios: values.availableScenarios?.filter(Boolean),
                             },
                             isProd,
                         });

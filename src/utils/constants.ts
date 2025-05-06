@@ -19,8 +19,11 @@ export enum Routes {
     addScenario = '/ui/add-scenario',
     // accounts
     getAccounts = '/ui/get-accounts',
-    patchAccount = '/ui/patch-account',
+    getAccountById = '/ui/get-account-by-id',
+    getAccountBySlug = '/ui/get-account-by-slug',
     addAccount = '/ui/add-account',
+    patchAccount = '/ui/patch-account',
+    deleteAccount = '/ui/delete-account',
 
     getInsights = '/ui/get-insights',
     getMedia = '/ui/get-media',

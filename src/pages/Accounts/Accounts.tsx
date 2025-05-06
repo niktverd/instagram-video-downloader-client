@@ -127,7 +127,11 @@ export const Accounts = () => {
                     onSubmit={async (values: any) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
-                        await fetchPost({route: ProjectRoutes.addAccount, body: {values}, isProd});
+                        await fetchPost({
+                            route: ProjectRoutes.addAccount,
+                            body: {...values},
+                            isProd,
+                        });
                         setOpenModal(false);
                     }}
                 />

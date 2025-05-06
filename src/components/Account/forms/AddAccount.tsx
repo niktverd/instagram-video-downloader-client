@@ -36,11 +36,11 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
     return (
         <form onSubmit={onSubmitLocal}>
             <div>
-                <label htmlFor="id">ID</label>
+                <label htmlFor="slug">Slug</label>
                 <input
-                    name="id"
+                    name="slug"
                     type="text"
-                    value={values.id}
+                    value={values.slug}
                     onChange={handleChange}
                     autoComplete="off"
                 />
