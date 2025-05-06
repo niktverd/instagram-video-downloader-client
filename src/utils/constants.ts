@@ -24,7 +24,7 @@ export enum Routes {
 
     getInsights = '/ui/get-insights',
     getMedia = '/ui/get-media',
-    getUserById = '/ui/get-user-by-id',
+    // getUserById = '/ui/get-user-by-id',
     getOwnerByMediaId = '/ui/get-owner-by--media-id',
     // test
     createVideoByScenario = '/ui/create-video-by-scenario',
@@ -35,4 +35,12 @@ export enum Routes {
     convertImageToVideo = '/ui/convert-image-to-video',
     getUserContent = '/ui/get-user-content',
     savePostForAnalysis = '/ui/save-post-for-futher-analysis',
+    // pubsub
+    pubsubPushTest = '/pubsub/push-test',
+    // users
+    createUser = '/ui/create-user',
+    getUserById = '/ui/get-user-by-id',
+    getUserByEmail = '/ui/get-user-by-email',
+    getAllUsers = '/ui/get-all-users',
+    deleteUser = '/ui/delete-user',
 }

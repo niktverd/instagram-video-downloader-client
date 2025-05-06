@@ -8,7 +8,9 @@ import {ConvertImageToVideo} from '../components/tabs/ConvertImageToVideo';
 import {CronTest} from '../components/tabs/Cron';
 import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
 import {GetUserById} from '../components/tabs/GetUserById';
+import {PushToPubSub} from '../components/tabs/PushToPubSub';
 import {UniDecode} from '../components/tabs/Unidecode';
+import {Users} from '../components/tabs/Users';
 
 enum TabEnum {
     CronTab = 'cron',
@@ -18,6 +20,8 @@ enum TabEnum {
     UnidecodeTab = 'Unidecode',
     ConvertTab = 'Convert',
     PerformanceMonitorTab = 'performanceMonitor',
+    PubSubTab = 'pubsub',
+    UsersTab = 'users',
 }
 
 export const Test = () => {
@@ -53,6 +57,16 @@ export const Test = () => {
             id: TabEnum.PerformanceMonitorTab,
             title: 'Memory Usage',
             content: <PerformanceMonitor />,
+        },
+        {
+            id: TabEnum.PubSubTab,
+            title: 'PubSub',
+            content: <PushToPubSub />,
+        },
+        {
+            id: TabEnum.UsersTab,
+            title: 'Users',
+            content: <Users />,
         },
     ];
     return (
