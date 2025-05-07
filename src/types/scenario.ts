@@ -1,15 +1,10 @@
 export type ScenarioBase = {
     id: string;
-    name: ScenarioName;
+    slug: string;
     onlyOnce: boolean;
     enabled: boolean;
     texts: Record<string, string[]>;
 };
-
-export enum ScenarioName {
-    ScenarioAddBannerAtTheEnd1 = 'add-banner-at-the-end-1',
-    ScenarioAddBannerAtTheEnd2 = 'add-banner-at-the-end-2',
-}
 
 export type ScenarioAddBannerAtTheEnd = {
     type: 'ScenarioAddBannerAtTheEnd';

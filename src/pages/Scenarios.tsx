@@ -8,7 +8,7 @@ import {ScenarioRouter} from '../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../contexts/AppEnv';
 import {ScenarioType} from '../types';
 import {Routes as ProjectRoutes} from '../utils/constants';
-import {fetchGet, fetchPost} from '../utils/fetchHelpers';
+import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../utils/fetchHelpers';
 
 export const Scenarios = () => {
     const [scenarios, setScenarios] = useState([]);
@@ -26,6 +26,7 @@ export const Scenarios = () => {
 
         setScenarios(json);
     }, [isProd]);
+
     const handleCreateVideoClick = useCallback(async () => {
         const json = await fetchGet({
             route: ProjectRoutes.createVideoByScenario,
@@ -40,11 +41,51 @@ export const Scenarios = () => {
         });
     }, [add, isProd]);
 
+    const handleDeleteScenario = useCallback(
+        async (id) => {
+            await fetchDelete({
+                route: ProjectRoutes.deleteScenario,
+                query: {id},
+                isProd,
+            });
+
+            // Refresh the scenarios list
+            handleLoadClick();
+
+            add({
+                name: Math.random() + '-delete-scenario',
+                title: 'Scenario deleted successfully',
+                theme: 'success',
+            });
+        },
+        [add, handleLoadClick, isProd],
+    );
+
+    const handleUpdateScenario = useCallback(
+        async (values) => {
+            await fetchPatch({
+                route: ProjectRoutes.patchScenario,
+                body: {...values},
+                isProd,
+            });
+
+            // Refresh the scenarios list
+            handleLoadClick();
+
+            add({
+                name: Math.random() + '-update-scenario',
+                title: 'Scenario updated successfully',
+                theme: 'success',
+            });
+        },
+        [add, handleLoadClick, isProd],
+    );
+
     const filteredScenarios = scenarios.filter((scenario) => {
         if (!filterText) return true;
         const search = filterText.toLowerCase();
         return (
-            scenario.name.toLowerCase().includes(search) ||
+            scenario.slug.toLowerCase().includes(search) ||
             scenario.type.toLowerCase().includes(search)
         );
     });
@@ -71,18 +112,31 @@ export const Scenarios = () => {
             </div>
             <div style={{margin: 64, maxWidth: 1000}}>
                 {filteredScenarios.map((scenario) => {
-                    return <Scenario key={scenario.id} {...scenario} />;
+                    return (
+                        <Scenario
+                            key={scenario.id}
+                            {...scenario}
+                            onDelete={() => handleDeleteScenario(scenario.id)}
+                            onUpdate={(values) => handleUpdateScenario(values)}
+                        />
+                    );
                 })}
             </div>
             <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
                 <ScenarioRouter
-                    initialValues={{type: ScenarioType.ScenarioAddBannerAtTheEndType}}
+                    initialValues={{type: ScenarioType.ScenarioAddBannerAtTheEndUnique}}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
-                        await fetchPost({route: ProjectRoutes.addScenario, body: {values}, isProd});
+                        await fetchPost({
+                            route: ProjectRoutes.addScenario,
+                            body: {...values},
+                            isProd,
+                        });
                         setOpenModal(false);
+                        // Refresh scenarios after adding
+                        handleLoadClick();
                     }}
                 />
             </Modal>

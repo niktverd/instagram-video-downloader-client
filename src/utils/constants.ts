@@ -17,6 +17,7 @@ export enum Routes {
     getScenarios = '/ui/get-scenarios',
     patchScenario = '/ui/patch-scenario',
     addScenario = '/ui/add-scenario',
+    deleteScenario = '/ui/delete-scenario',
     // accounts
     getAccounts = '/ui/get-accounts',
     getAccountById = '/ui/get-account-by-id',

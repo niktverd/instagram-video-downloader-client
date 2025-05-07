@@ -79,13 +79,15 @@ export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPo
 type FetchDelete = {
     route: Routes;
     query?: Record<string, string | number | boolean | null>;
+    body?: Record<string, any>;
     isProd: boolean;
 };
 
-export const fetchDelete = async ({route, query = {}, isProd = false}: FetchDelete) => {
+export const fetchDelete = async ({route, query = {}, body = {}, isProd = false}: FetchDelete) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
         headers: defaultHeaders,
         method: Method.Delete,
+        body: JSON.stringify(body),
     });
     const json = await response.json();
 

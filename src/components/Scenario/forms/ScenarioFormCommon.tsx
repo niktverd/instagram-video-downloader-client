@@ -84,11 +84,11 @@ export const ScenarioFormCommon = ({values, setValues, setType}: ScenarioFormCom
         <Fragment>
             <div style={{border: '1px solid white', padding: 10, marginBlock: 20}}>
                 <div>
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="slug">Name</label>
                     <input
-                        name="name"
+                        name="slug"
                         type="text"
-                        value={values.name}
+                        value={values.slug}
                         onChange={handleChange}
                         autoComplete="off"
                     />

@@ -71,12 +71,12 @@ export type SourceV3 = {
 export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;
 
 export enum ScenarioType {
-    ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
-    ScenarioAddBannerAtTheEndUniqueType = 'ScenarioAddBannerAtTheEndUnique',
-    ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
-    ScenarioShortifyType = 'ScenarioShortifyType',
-    ScenarioShortifyUniqueType = 'ScenarioShortifyUnique',
-    ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
+    // ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
+    ScenarioAddBannerAtTheEndUnique = 'ScenarioAddBannerAtTheEndUnique',
+    // ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
+    // ScenarioShortifyType = 'ScenarioShortifyType',
+    ScenarioShortifyUnique = 'ScenarioShortifyUnique',
+    // ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
 }
 
 export type PreparedVideoV3 = {
