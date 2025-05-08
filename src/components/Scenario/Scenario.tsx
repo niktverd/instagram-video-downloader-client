@@ -103,11 +103,11 @@ export const Scenario = (props: ScenarioProps) => {
                     initialValues={{...extra, slug, id}}
                     onSubmit={async (values: any) => {
                         if (onUpdate) {
-                            onUpdate(values);
+                            onUpdate({...values, id});
                         } else {
                             await fetchPatch({
                                 route: Routes.patchScenario,
-                                body: {id, values},
+                                body: {id, slug, ...values},
                                 isProd,
                             });
                         }

@@ -3,12 +3,13 @@ import React, {useCallback, useContext, useState} from 'react';
 
 import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 
-import {Scenario} from '../components/Scenario/Scenario';
-import {ScenarioRouter} from '../components/Scenario/forms/ScenarioRouter';
-import {AppEnvContext} from '../contexts/AppEnv';
-import {ScenarioType} from '../types';
-import {Routes as ProjectRoutes} from '../utils/constants';
-import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../utils/fetchHelpers';
+import {Scenario} from '../../components/Scenario/Scenario';
+import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
+import {AppEnvContext} from '../../contexts/AppEnv';
+import {Routes as ProjectRoutes} from '../../utils/constants';
+import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
+
+import cn from './Scenarios.module.css';
 
 export const Scenarios = () => {
     const [scenarios, setScenarios] = useState([]);
@@ -122,13 +123,10 @@ export const Scenarios = () => {
                     );
                 })}
             </div>
-            <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
+            <Modal open={openModal} onClose={() => setOpenModal(false)} contentClassName={cn.modal}>
                 <ScenarioRouter
-                    initialValues={{type: ScenarioType.ScenarioAddBannerAtTheEndUnique}}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {
-                        // eslint-disable-next-line no-console
-                        console.log(values);
                         await fetchPost({
                             route: ProjectRoutes.addScenario,
                             body: {...values},

@@ -1,12 +1,14 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, {useState} from 'react';
 
 import {Button} from '@gravity-ui/uikit';
 
-import {ScenarioFormCommon} from './ScenarioFormCommon';
+// import {ScenarioFormCommon} from './ScenarioFormCommon';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const LongScenarioWithInjections = ({initialValues, onSubmit, setType}: any) => {
+    console.log({setType});
     const [values, setValues] = useState(initialValues || {});
 
     const onSubmitLocal: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -46,7 +48,7 @@ export const LongScenarioWithInjections = ({initialValues, onSubmit, setType}: a
 
     return (
         <form onSubmit={onSubmitLocal}>
-            <ScenarioFormCommon values={values} setValues={setValues} setType={setType} />
+            {/* <ScenarioFormCommon values={values} setValues={setValues} setType={setType} /> */}
             <div>
                 <label htmlFor="adsBannerUrl">adsBannerUrl</label>
                 <input

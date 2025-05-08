@@ -3,11 +3,13 @@ import React, {useState} from 'react';
 
 import {Button} from '@gravity-ui/uikit';
 
-import {ScenarioFormCommon} from './ScenarioFormCommon';
+// import {ScenarioFormCommon} from './ScenarioFormCommon';
 
 const numberFields = ['minDuration', 'maxDuration'];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Shortify = ({initialValues, onSubmit, setType}: any) => {
+    // eslint-disable-next-line no-console
+    console.log({initialValues, onSubmit, setType});
     const [values, setValues] = useState(initialValues || {});
 
     const onSubmitLocal: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -47,7 +49,7 @@ export const Shortify = ({initialValues, onSubmit, setType}: any) => {
 
     return (
         <form onSubmit={onSubmitLocal}>
-            <ScenarioFormCommon values={values} setValues={setValues} setType={setType} />
+            {/* <ScenarioFormCommon values={values} setValues={setValues} setType={setType} /> */}
             <div>
                 <label htmlFor="finalBanner">finalBanner</label>
                 <input

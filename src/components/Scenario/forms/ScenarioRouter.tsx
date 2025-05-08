@@ -3,31 +3,34 @@ import React, {useState} from 'react';
 
 import {ScenarioType} from '../../../types';
 
-import {AddBannerInTheEnd} from './AddBannerInTheEnd';
+// import {AddBannerInTheEnd} from './AddBannerInTheEnd';
 // import {CoverWithImage} from './CoverWithImage';
 // import {LongScenarioWithInjections} from './LongScenarioWithInjections';
-import {Shortify} from './Shortify';
+// import {Shortify} from './Shortify';
+import {ShortifyNew} from './ShortifyNew';
 
 type ScenarioRouterArgs = {
-    initialValues: any;
+    initialValues?: any;
     onSubmit: any;
 };
 
 export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) => {
-    const [type, setType] = useState<null | ScenarioType>(initialValues.type);
+    const [type, setType] = useState<null | ScenarioType>(
+        initialValues?.type || ScenarioType.ScenarioShortifyUnique,
+    );
 
-    if (
-        // (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndType ||
-        (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndUnique
-    ) {
-        return (
-            <AddBannerInTheEnd
-                initialValues={initialValues}
-                onSubmit={onSubmit}
-                setType={setType}
-            />
-        );
-    }
+    // if (
+    //     // (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndType ||
+    //     (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndUnique
+    // ) {
+    //     return (
+    //         <AddBannerInTheEnd
+    //             initialValues={initialValues}
+    //             onSubmit={onSubmit}
+    //             setType={setType}
+    //         />
+    //     );
+    // }
     // if ((type as ScenarioType) === ScenarioType.ScenarioLongVideoWithInjectionsType) {
     //     return (
     //         <LongScenarioWithInjections
@@ -42,7 +45,8 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
         // (type as ScenarioType) === ScenarioType.ScenarioShortifyType ||
         (type as ScenarioType) === ScenarioType.ScenarioShortifyUnique
     ) {
-        return <Shortify initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
+        return <ShortifyNew initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
+        // return <Shortify initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
     }
 
     // if ((type as ScenarioType) === ScenarioType.ScenarioCoverWithImageType) {
@@ -51,5 +55,7 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
     //     );
     // }
 
-    return null;
+    return <ShortifyNew initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
+
+    // return null;
 };

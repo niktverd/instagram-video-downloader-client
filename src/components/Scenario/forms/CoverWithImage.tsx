@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, {useState} from 'react';
 
-import {ScenarioFormCommon} from './ScenarioFormCommon';
+// import {ScenarioFormCommon} from './ScenarioFormCommon';
 
 const numberFields = [
     'imageTop',
@@ -15,6 +15,8 @@ const numberFields = [
 ];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CoverWithImage = ({initialValues, onSubmit, setType}: any) => {
+    // eslint-disable-next-line no-console
+    console.log({initialValues, onSubmit, setType});
     const [values, setValues] = useState(initialValues || {});
 
     const onSubmitLocal: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -32,7 +34,7 @@ export const CoverWithImage = ({initialValues, onSubmit, setType}: any) => {
 
     return (
         <form onSubmit={onSubmitLocal}>
-            <ScenarioFormCommon values={values} setValues={setValues} setType={setType} />
+            {/* <ScenarioFormCommon values={values} setValues={setValues} setType={setType} /> */}
             <div>
                 <label htmlFor="imageUrl">imageUrl</label>
                 <input

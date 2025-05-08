@@ -9,7 +9,7 @@ import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {MediaPosts} from '../MediaPosts';
 import {Policy} from '../Policy';
-import {Scenarios} from '../Scenarios';
+import {Scenarios} from '../Scenarios/Scenarios';
 import {Test} from '../Test';
 
 import cl from './Main.module.css';
