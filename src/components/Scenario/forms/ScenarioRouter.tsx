@@ -2,12 +2,12 @@
 import React, {useState} from 'react';
 
 import {ScenarioType} from '../../../types';
-
-// import {AddBannerInTheEnd} from './AddBannerInTheEnd';
 // import {CoverWithImage} from './CoverWithImage';
 // import {LongScenarioWithInjections} from './LongScenarioWithInjections';
 // import {Shortify} from './Shortify';
-import {ShortifyNew} from './ShortifyNew';
+
+import {AddBannerInTheEnd} from './AddBannerInTheEnd';
+import {Shortify} from './Shortify';
 
 type ScenarioRouterArgs = {
     initialValues?: any;
@@ -19,18 +19,18 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
         initialValues?.type || ScenarioType.ScenarioShortifyUnique,
     );
 
-    // if (
-    //     // (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndType ||
-    //     (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndUnique
-    // ) {
-    //     return (
-    //         <AddBannerInTheEnd
-    //             initialValues={initialValues}
-    //             onSubmit={onSubmit}
-    //             setType={setType}
-    //         />
-    //     );
-    // }
+    if (
+        // (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndType ||
+        (type as ScenarioType) === ScenarioType.ScenarioAddBannerAtTheEndUnique
+    ) {
+        return (
+            <AddBannerInTheEnd
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+                setType={setType}
+            />
+        );
+    }
     // if ((type as ScenarioType) === ScenarioType.ScenarioLongVideoWithInjectionsType) {
     //     return (
     //         <LongScenarioWithInjections
@@ -45,7 +45,7 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
         // (type as ScenarioType) === ScenarioType.ScenarioShortifyType ||
         (type as ScenarioType) === ScenarioType.ScenarioShortifyUnique
     ) {
-        return <ShortifyNew initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
+        return <Shortify initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
         // return <Shortify initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
     }
 
@@ -55,7 +55,24 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
     //     );
     // }
 
-    return <ShortifyNew initialValues={initialValues} onSubmit={onSubmit} setType={setType} />;
+    return (
+        <div>
+            <h1>There is no form for selected type</h1>
+            <h2>{type}</h2>
 
-    // return null;
+            {initialValues ? null : (
+                <div>
+                    <select onChange={(event) => setType(event.target.value as ScenarioType)}>
+                        {Object.entries(ScenarioType).map(([key, value]) => {
+                            return (
+                                <option key={key} value={value}>
+                                    {key}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+            )}
+        </div>
+    );
 };

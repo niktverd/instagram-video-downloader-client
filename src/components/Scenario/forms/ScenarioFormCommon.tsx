@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {Fragment} from 'react';
 
 import {ScenarioType} from '../../../types';
@@ -6,12 +7,19 @@ import {CustomField} from '../../CustomField/CustomField';
 import {ScenarioTexts} from './components/ScenarioTexts';
 
 type ScenarioFormCommonProps = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     values: any;
     updateOnly?: boolean;
+    setType?: any;
 };
 
-export const ScenarioFormCommon = ({values, updateOnly = false}: ScenarioFormCommonProps) => {
+export const ScenarioFormCommon = ({
+    values,
+    updateOnly = false,
+    setType,
+}: ScenarioFormCommonProps) => {
+    React.useEffect(() => {
+        setType(values.type);
+    }, [setType, values.type]);
     return (
         <Fragment>
             <div style={{backgroundColor: 'rgb(0 0 0 / 0.5)', padding: 10, marginBlock: 20}}>
