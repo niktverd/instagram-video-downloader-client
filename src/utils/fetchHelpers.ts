@@ -79,6 +79,7 @@ export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPo
 type FetchDelete = {
     route: Routes;
     query?: Record<string, string | number | boolean | null>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: Record<string, any>;
     isProd: boolean;
 };

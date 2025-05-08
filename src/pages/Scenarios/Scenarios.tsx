@@ -6,7 +6,7 @@ import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 import {Scenario} from '../../components/Scenario/Scenario';
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes as ProjectRoutes} from '../../utils/constants';
+import {Routes} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './Scenarios.module.css';
@@ -20,7 +20,7 @@ export const Scenarios = () => {
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet({
-            route: ProjectRoutes.getScenarios,
+            route: Routes.getScenarios,
             query: {},
             isProd,
         });
@@ -30,7 +30,7 @@ export const Scenarios = () => {
 
     const handleCreateVideoClick = useCallback(async () => {
         const json = await fetchGet({
-            route: ProjectRoutes.createVideoByScenario,
+            route: Routes.createVideoByScenario,
             query: {},
             isProd,
         });
@@ -45,7 +45,7 @@ export const Scenarios = () => {
     const handleDeleteScenario = useCallback(
         async (id) => {
             await fetchDelete({
-                route: ProjectRoutes.deleteScenario,
+                route: Routes.deleteScenario,
                 query: {id},
                 isProd,
             });
@@ -65,7 +65,7 @@ export const Scenarios = () => {
     const handleUpdateScenario = useCallback(
         async (values) => {
             await fetchPatch({
-                route: ProjectRoutes.patchScenario,
+                route: Routes.patchScenario,
                 body: {...values},
                 isProd,
             });
@@ -128,7 +128,7 @@ export const Scenarios = () => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {
                         await fetchPost({
-                            route: ProjectRoutes.addScenario,
+                            route: Routes.addScenario,
                             body: {...values},
                             isProd,
                         });

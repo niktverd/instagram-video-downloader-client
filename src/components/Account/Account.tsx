@@ -21,6 +21,10 @@ export const Account = (props: AccountV3) => {
     const [media, setMedia] = useState([]);
     const {isProd} = useContext(AppEnvContext);
 
+    const scenarioIds = availableScenarios.map((scenario) =>
+        typeof scenario === 'number' ? scenario : scenario.id,
+    );
+
     const handleGetInsights = async () => {
         const data = await fetchGet({route: Routes.getInsights, query: {id}, isProd});
 
@@ -71,21 +75,13 @@ export const Account = (props: AccountV3) => {
                 </div>
                 <pre className={cn.details}>{JSON.stringify(props, null, 3)}</pre>
             </div>
-            <Modal
-                open={openModal}
-                contentClassName={cn.modal}
-                onClose={() => setOpenModal(false)}
-                className="modal"
-            >
+            <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
                 <AddAccount
-                    initialValues={{id, slug, token, availableScenarios}}
+                    initialValues={{id, slug, token, availableScenarios: scenarioIds}}
                     onSubmit={async (values: any) => {
                         await fetchPatch({
                             route: Routes.patchAccount,
-                            body: {
-                                ...values,
-                                availableScenarios: values.availableScenarios?.filter(Boolean),
-                            },
+                            body: values,
                             isProd,
                         });
                         setOpenModal(false);

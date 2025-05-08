@@ -10,7 +10,7 @@ import {AppEnvContext} from '../../contexts/AppEnv';
 import {Routes as ProjectRoutes} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
-import styles from './Accounts.module.css';
+import cn from './Accounts.module.css';
 
 export const Accounts = () => {
     const [accounts, setAccounts] = useState([]);
@@ -88,10 +88,10 @@ export const Accounts = () => {
     });
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
+        <div className={cn.container}>
+            <div className={cn.header}>
                 <h2>Accounts</h2>
-                <div className={styles.actions}>
+                <div className={cn.actions}>
                     <Button view="action" onClick={handleLoadClick}>
                         Get Data
                     </Button>
@@ -104,9 +104,9 @@ export const Accounts = () => {
                 </div>
             </div>
 
-            <pre className={styles.insights}>{JSON.stringify(insights, null, 3)}</pre>
+            <pre className={cn.insights}>{JSON.stringify(insights, null, 3)}</pre>
 
-            <div className={styles.filter}>
+            <div className={cn.filter}>
                 <TextInput
                     placeholder="Filter by ID or scenario..."
                     value={filterValue}
@@ -115,13 +115,13 @@ export const Accounts = () => {
                 />
             </div>
 
-            <div className={styles.accountsGrid}>
+            <div className={cn.accountsGrid}>
                 {filteredAccounts.map((account) => {
                     return <Account key={account.id} {...account} />;
                 })}
             </div>
 
-            <Modal className="modal" open={openModal} onClose={() => setOpenModal(false)}>
+            <Modal contentClassName={cn.modal} open={openModal} onClose={() => setOpenModal(false)}>
                 <AddAccount
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {

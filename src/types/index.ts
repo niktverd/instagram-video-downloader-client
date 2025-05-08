@@ -93,7 +93,7 @@ export type AccountV3 = {
     slug: string;
     token: string;
     disabled: boolean;
-    availableScenarios: string[];
+    availableScenarios: number[] | ScenarioV3[];
     accountBackgrounMusic?: string;
 };
 
