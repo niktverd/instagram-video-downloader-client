@@ -25,7 +25,6 @@ export const Scenario = (props: ScenarioProps) => {
     const [expanded, setExpanded] = useState(false);
     const {slug, id, onDelete, onUpdate, ...extra} = props;
     const {isProd} = useContext(AppEnvContext);
-    console.log(props);
 
     return (
         <Card className={cn.container} type="container" view="outlined">
@@ -101,7 +100,7 @@ export const Scenario = (props: ScenarioProps) => {
                 onClose={() => setOpenModal(false)}
             >
                 <ScenarioRouter
-                    initialValues={{...extra, name}}
+                    initialValues={{...extra, slug, id}}
                     onSubmit={async (values: any) => {
                         if (onUpdate) {
                             onUpdate(values);
