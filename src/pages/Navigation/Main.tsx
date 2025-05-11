@@ -58,15 +58,15 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Scenarios',
         to: '/scenarios',
         Component: Scenarios,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+        isProtected: true,
     },
     {
         text: 'Accounts',
         to: '/accounts',
         Component: Accounts,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+        isProtected: true,
     },
-    {text: 'Test', to: '/tests', Component: Test, isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2']},
+    {text: 'Test', to: '/tests', Component: Test, isProtected: true},
     {
         text: 'Analize User Content',
         to: '/analize-user-content',
