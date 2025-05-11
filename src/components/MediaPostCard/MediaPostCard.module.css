@@ -22,8 +22,19 @@
     height: 80vh;
 }
 
+.noVideo {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #666;
+    font-style: italic;
+}
+
 .data,
-.users {
+.users,
+.sourceData {
     background-color: #0001;
     padding: 24px;
     display: flex;
@@ -38,4 +49,13 @@
     border-radius: 8px;
     overflow: hidden;
     padding: 16px;
+}
+
+.sourceData pre {
+    max-height: 300px;
+    overflow: auto;
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
 }

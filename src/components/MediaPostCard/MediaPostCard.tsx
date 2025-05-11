@@ -71,38 +71,72 @@ export const MediaPostCard = (props: MediaPostModel) => {
             });
         }
     }, [add, id, isProd]);
+
+    // Check if sources is available
+    const hasInstagramReel = sources?.instagramReel !== undefined;
+    const hasYoutubeShort = sources?.youtubeShort !== undefined;
+
+    // Function to render the appropriate video source
+    const renderVideoSource = () => {
+        if (hasInstagramReel) {
+            return <video className={cn.video} src={sources.instagramReel.url} controls={true} />;
+        } else if (hasYoutubeShort) {
+            return <video className={cn.video} src={sources.youtubeShort.url} controls={true} />;
+        }
+        return <div className={cn.noVideo}>No video source available</div>;
+    };
+
     return (
         <div className={cn.container}>
             <div className={cn.sourceContainer}>
-                <div className={cn.videoContainer}>
-                    <video className={cn.video} src={sources.instagramReel.url} controls={true} />
-                </div>
+                <div className={cn.videoContainer}>{renderVideoSource()}</div>
                 <div className={cn.users}>
                     <h2>users</h2>
                     <div className={cn.senderContainer}>
                         <h3>sender</h3>
-                        senderId: {sources.instagramReel.senderId}
-                        <br />
-                        <br />
-                        no data available about message sender, before app verification is
-                        incomplete. we can only answer to him with thanks-message by id
+                        {hasInstagramReel ? (
+                            <>
+                                senderId: {sources.instagramReel.senderId}
+                                <br />
+                                <br />
+                                no data available about message sender, before app verification is
+                                incomplete. we can only answer to him with thanks-message by id
+                            </>
+                        ) : (
+                            <span>No sender information available</span>
+                        )}
                     </div>
                     <div className={cn.ownerContainer}>
                         <h3>owner</h3>
-                        no data available about author of the video, before app verification is
-                        incomplete
+                        {hasInstagramReel ? (
+                            <>
+                                no data available about author of the video, before app verification
+                                is incomplete
+                            </>
+                        ) : (
+                            <span>No owner information available</span>
+                        )}
                     </div>
                 </div>
                 <div className={cn.data}>
                     <h2>video data</h2>
-                    <div className={cn.field}>
-                        <strong>title: </strong>
-                        {sources.instagramReel.title}
-                    </div>
-                    <div className={cn.field}>
-                        <strong>hashtags: </strong>
-                        {sources.instagramReel.originalHashtags.join(' ')}
-                    </div>
+                    {hasInstagramReel && (
+                        <>
+                            <div className={cn.field}>
+                                <strong>title: </strong>
+                                {sources.instagramReel.title}
+                            </div>
+                            <div className={cn.field}>
+                                <strong>hashtags: </strong>
+                                {sources.instagramReel.originalHashtags?.join(' ') || 'No hashtags'}
+                            </div>
+                        </>
+                    )}
+                    {!hasInstagramReel && !hasYoutubeShort && (
+                        <div className={cn.field}>
+                            <strong>No video data available</strong>
+                        </div>
+                    )}
                     {actionAllowed ? (
                         <div className={cn.field}>
                             <h3>Actions</h3>
@@ -111,7 +145,10 @@ export const MediaPostCard = (props: MediaPostModel) => {
                         </div>
                     ) : null}
                 </div>
-                {/* <pre>{JSON.stringify(props.sources, null, 3)}</pre> */}
+                <div className={cn.sourceData}>
+                    <h3>Source Data</h3>
+                    <pre>{JSON.stringify(props.sources, null, 3)}</pre>
+                </div>
             </div>
             <div>system data</div>
             {/* <pre>{JSON.stringify(props)}</pre> */}

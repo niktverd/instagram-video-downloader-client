@@ -25,6 +25,9 @@ export enum Routes {
     addAccount = '/ui/add-account',
     patchAccount = '/ui/patch-account',
     deleteAccount = '/ui/delete-account',
+    // sources
+    getAllSources = '/ui/get-all-sources',
+    getOneSource = '/ui/get-one-source',
 
     getInsights = '/ui/get-insights',
     getMedia = '/ui/get-media',

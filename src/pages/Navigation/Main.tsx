@@ -11,6 +11,8 @@ import {InstagramCallback} from '../InstagramCallback';
 import {MediaPosts} from '../MediaPosts';
 import {Policy} from '../Policy';
 import {Scenarios} from '../Scenarios/Scenarios';
+import {SourceDetails} from '../SourceDetails';
+import {Sources} from '../Sources';
 import {Test} from '../Test';
 
 import cl from './Main.module.css';
@@ -64,6 +66,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Accounts',
         to: '/accounts',
         Component: Accounts,
+        isProtected: true,
+    },
+    {
+        text: 'Sources',
+        to: '/sources',
+        Component: Sources,
         isProtected: true,
     },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},
@@ -129,6 +137,14 @@ export const MainNavigationRoutes = () => {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/instagram-callback" element={<InstagramCallback />} />
             <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
+            <Route
+                path="/sources/:id"
+                element={
+                    <ProtectedRoute isProtected={true}>
+                        <SourceDetails />
+                    </ProtectedRoute>
+                }
+            />
             <Route path="*" element={<h2>Page Not Found</h2>} />
         </Routes>
     );
