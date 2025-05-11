@@ -214,7 +214,7 @@ export const SourceDetails = () => {
                                 {source.duration !== undefined && (
                                     <div>
                                         <Text variant="subheader-2">Duration</Text>
-                                        <Text>{source.duration.toFixed(2)}s</Text>
+                                        <Text>{source.duration?.toFixed(2)}s</Text>
                                     </div>
                                 )}
                             </Flex>
