@@ -92,9 +92,11 @@ export type AccountV3 = {
     id: number;
     slug: string;
     token: string;
+    userIdIG: string;
     disabled: boolean;
     availableScenarios: number[] | ScenarioV3[];
     accountBackgrounMusic?: string;
+    userId?: string;
 };
 
 export type AccountMediaContainerV3 = {

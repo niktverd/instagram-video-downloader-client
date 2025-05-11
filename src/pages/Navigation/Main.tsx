@@ -7,6 +7,7 @@ import {Accounts} from '../Accounts';
 import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
+import {InstagramCallback} from '../InstagramCallback';
 import {MediaPosts} from '../MediaPosts';
 import {Policy} from '../Policy';
 import {Scenarios} from '../Scenarios/Scenarios';
@@ -126,6 +127,8 @@ export const MainNavigationRoutes = () => {
                 );
             })}
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/instagram-callback" element={<InstagramCallback />} />
+            <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
             <Route path="*" element={<h2>Page Not Found</h2>} />
         </Routes>
     );

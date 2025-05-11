@@ -10,13 +10,14 @@ import {AccountV3} from '../../types';
 import {Routes} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
+import {InstagramConnect} from './InstagramConnect';
 import {AddAccount} from './forms/AddAccount';
 
 import cn from './Account.module.css';
 
 export const Account = (props: AccountV3) => {
     const [openModal, setOpenModal] = useState(false);
-    const {token, id, availableScenarios, slug} = props;
+    const {token, id, availableScenarios, slug, token: instagramToken, userIdIG} = props;
     const [insights, setInsights] = useState([]);
     const [media, setMedia] = useState([]);
     const {isProd} = useContext(AppEnvContext);
@@ -45,7 +46,8 @@ export const Account = (props: AccountV3) => {
             <div>
                 <div className={cn.header}>
                     <h2>{id}</h2>
-                    <p className={cn.token}>{token.slice(0, 3)}****</p>
+                    {token && <p className={cn.token}>Token: {token.slice(0, 3)}****</p>}
+                    {userIdIG && <p className={cn.token}>IG User ID: {userIdIG}</p>}
                     <div className={cn.actions}>
                         <Button view="outlined-action" onClick={() => setOpenModal(true)}>
                             Edit
@@ -65,6 +67,11 @@ export const Account = (props: AccountV3) => {
                         >
                             Copy to {isProd ? 'preprod' : 'prod'}
                         </Button>
+                        <InstagramConnect
+                            accountId={String(id)}
+                            token={instagramToken}
+                            slug={slug}
+                        />
                     </div>
                     {insights.length > 0 && (
                         <div className={cn.insights}>
@@ -77,7 +84,13 @@ export const Account = (props: AccountV3) => {
             </div>
             <Modal open={openModal} contentClassName={cn.modal} onClose={() => setOpenModal(false)}>
                 <AddAccount
-                    initialValues={{id, slug, token, availableScenarios: scenarioIds}}
+                    initialValues={{
+                        id,
+                        slug,
+                        token,
+                        availableScenarios: scenarioIds,
+                        instagramToken,
+                    }}
                     onSubmit={async (values: any) => {
                         await fetchPatch({
                             route: Routes.patchAccount,
