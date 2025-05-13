@@ -18,12 +18,15 @@ const prepareFetchUrl = (
     query: Record<string, string | number | boolean>,
     isProd: boolean,
 ) => {
+    console.log('prepareFetchUrl', route, query, isProd);
     if (!API_ENDPOINT_PROD) {
         throw new Error('API_ENDPOINT is not provided');
     }
 
     const searchParams = objectToSearchParams(query);
 
+    console.log('API_ENDPOINT_PROD', API_ENDPOINT_PROD);
+    console.log('API_ENDPOINT_PREPROD', API_ENDPOINT_PREPROD);
     const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
     // eslint-disable-next-line no-console
     console.log(url);
@@ -38,6 +41,7 @@ type FetchGet = {
 };
 
 export const fetchGet = async ({route, query = {}, isProd = false}: FetchGet) => {
+    console.log('fetchGet', route, query, isProd);
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
         headers: defaultHeaders,
         method: Method.Get,
