@@ -15,6 +15,13 @@ import './App.css';
 
 function App() {
     const [isProd, setIsProd] = useState(process.env.REACT_APP_APP_ENV === 'prod');
+    console.log('process.env.REACT_APP_APP_ENV', process.env.REACT_APP_APP_ENV);
+    console.log(
+        'process.env.REACT_APP_API_ENDPOINT_PREPROD',
+        process.env.REACT_APP_API_ENDPOINT_PREPROD,
+    );
+    console.log('process.env.REACT_APP_API_ENDPOINT_PROD', process.env.REACT_APP_API_ENDPOINT_PROD);
+    console.log('process.env', process.env);
 
     return (
         <div className={`App g-root`}>
