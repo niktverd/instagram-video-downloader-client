@@ -1,6 +1,6 @@
 import {Method, Routes, defaultHeaders} from './constants';
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
 
 const objectToSearchParams = (obj: Record<string, string | number | boolean>): URLSearchParams => {
@@ -18,13 +18,13 @@ const prepareFetchUrl = (
     query: Record<string, string | number | boolean>,
     isProd: boolean,
 ) => {
-    if (!API_ENDPOINT) {
+    if (!API_ENDPOINT_PROD) {
         throw new Error('API_ENDPOINT is not provided');
     }
 
     const searchParams = objectToSearchParams(query);
 
-    const url = `${isProd ? API_ENDPOINT : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
+    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
     // eslint-disable-next-line no-console
     console.log(url);
 
