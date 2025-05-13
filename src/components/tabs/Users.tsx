@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {
     Button,
@@ -16,6 +16,7 @@ import {
     withTableSelection,
 } from '@gravity-ui/uikit';
 
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {Routes} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
@@ -63,10 +64,13 @@ export const Users = () => {
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+    const {isProd} = useContext(AppEnvContext);
 
     // Fetch users on component mount and when successful actions happen
     useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         fetchUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [success]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +100,7 @@ export const Users = () => {
             const response = await fetchPost({
                 route: Routes.createUser,
                 body: userData,
-                isProd: false,
+                isProd,
             });
 
             if (response.error) {
@@ -129,7 +133,7 @@ export const Users = () => {
         try {
             const response = await fetchGet({
                 route: Routes.getAllUsers,
-                isProd: false,
+                isProd,
             });
 
             if (response.error) {
@@ -159,7 +163,7 @@ export const Users = () => {
             const response = await fetchDelete({
                 route: Routes.deleteUser,
                 query: {id: userToDelete.id},
-                isProd: false,
+                isProd,
             });
 
             if (response.error) {

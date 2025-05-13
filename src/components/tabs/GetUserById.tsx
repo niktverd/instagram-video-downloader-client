@@ -1,12 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {Button} from '@gravity-ui/uikit';
 
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {Routes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 export const GetUserById = () => {
+    const {isProd} = useContext(AppEnvContext);
     const [userId, setUserId] = useState('');
     const [mediaId, setMediaId] = useState('');
 
@@ -14,7 +16,7 @@ export const GetUserById = () => {
         await fetchGet({
             route: Routes.getUserById,
             query: {id: 'carcar.kz', userId},
-            isProd: false,
+            isProd,
         });
     };
 
@@ -22,7 +24,7 @@ export const GetUserById = () => {
         await fetchGet({
             route: Routes.getOwnerByMediaId,
             query: {id: 'carcar.kz', reelVideoId: mediaId},
-            isProd: false,
+            isProd,
         });
     };
 

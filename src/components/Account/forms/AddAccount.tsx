@@ -1,10 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {Xmark} from '@gravity-ui/icons';
 import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {FieldArray, Form, Formik} from 'formik';
 
+import {AppEnvContext} from '../../../contexts/AppEnv';
 import {Routes} from '../../../utils/constants';
 import {fetchGet} from '../../../utils/fetchHelpers';
 import {CustomField} from '../../CustomField/CustomField';
@@ -12,20 +13,21 @@ import {CustomField} from '../../CustomField/CustomField';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AddAccount = ({initialValues, onSubmit}: any) => {
     const [scenarios, setScenarios] = useState([]);
+    const {isProd} = useContext(AppEnvContext);
 
     useEffect(() => {
         const fetchData = async () => {
             const json = await fetchGet({
                 route: Routes.getScenarios,
                 query: {},
-                isProd: false,
+                isProd,
             });
 
             setScenarios(json);
         };
 
         fetchData();
-    }, []);
+    }, [isProd]);
 
     return (
         <div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import {ArrowLeft, ChevronDown, ChevronUp} from '@gravity-ui/icons';
@@ -152,6 +153,7 @@ export const SourceDetails = () => {
                       }}
                   >
                       <pre style={{overflowX: 'auto'}}>
+                          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
                           {JSON.stringify(source.sources![key], null, 2)}
                       </pre>
                   </div>
