@@ -45,7 +45,8 @@ export const Account = (props: AccountV3) => {
         <div className={cn.container}>
             <div>
                 <div className={cn.header}>
-                    <h2>{id}</h2>
+                    <h2>{slug}</h2>
+                    <p>{id}</p>
                     {token && <p className={cn.token}>Token: {token.slice(0, 3)}****</p>}
                     {userIdIG && <p className={cn.token}>IG User ID: {userIdIG}</p>}
                     <div className={cn.actions}>

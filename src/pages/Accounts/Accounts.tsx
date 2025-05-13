@@ -73,14 +73,15 @@ export const Accounts = () => {
         const lowercasedFilter = filterValue.toLowerCase();
 
         // Filter by ID
-        if (account.id && account.id.toLowerCase().includes(lowercasedFilter)) {
+        if (account.slug && account.slug.toLowerCase().includes(lowercasedFilter)) {
             return true;
         }
 
         // Filter by available scenarios
         if (account.availableScenarios && Array.isArray(account.availableScenarios)) {
             return account.availableScenarios.some(
-                (scenario) => scenario && scenario.toLowerCase().includes(lowercasedFilter),
+                (scenario) =>
+                    scenario?.slug && scenario.slug.toLowerCase().includes(lowercasedFilter),
             );
         }
 
