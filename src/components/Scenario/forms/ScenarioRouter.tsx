@@ -8,6 +8,7 @@ import React, {useState} from 'react';
 import {ScenarioType} from '../../../sharedTypes/types/enums';
 
 import {AddBannerInTheEnd} from './AddBannerInTheEnd';
+import {CoverWithGreen} from './CoverWithGreen';
 import {Shortify} from './Shortify';
 
 type ScenarioRouterArgs = {
@@ -55,6 +56,12 @@ export const ScenarioRouter = ({initialValues, onSubmit}: ScenarioRouterArgs) =>
     //         <CoverWithImage initialValues={initialValues} onSubmit={onSubmit} setType={setType} />
     //     );
     // }
+
+    if ((type as ScenarioType) === ScenarioType.ScenarioCoverWithGreenUnique) {
+        return (
+            <CoverWithGreen initialValues={initialValues} onSubmit={onSubmit} setType={setType} />
+        );
+    }
 
     return (
         <div>
