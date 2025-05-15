@@ -6,7 +6,7 @@ import {Button, Modal} from '@gravity-ui/uikit';
 import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {AccountV3} from '../../types';
+import {IAccount} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
@@ -15,7 +15,7 @@ import {AddAccount} from './forms/AddAccount';
 
 import cn from './Account.module.css';
 
-export const Account = (props: AccountV3) => {
+export const Account = (props: IAccount) => {
     const [openModal, setOpenModal] = useState(false);
     const {token, id, availableScenarios, slug, token: instagramToken, userIdIG} = props;
     const [insights, setInsights] = useState([]);

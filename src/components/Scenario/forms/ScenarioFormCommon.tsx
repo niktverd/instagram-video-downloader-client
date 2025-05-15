@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {Fragment} from 'react';
 
-import {ScenarioType} from '../../../types';
+import {ScenarioType} from '../../../sharedTypes/types/enums';
 import {CustomField} from '../../CustomField/CustomField';
 
 import {ScenarioTexts} from './components/ScenarioTexts';

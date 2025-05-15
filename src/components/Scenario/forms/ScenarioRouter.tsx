@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useState} from 'react';
 
-import {ScenarioType} from '../../../types';
 // import {CoverWithImage} from './CoverWithImage';
 // import {LongScenarioWithInjections} from './LongScenarioWithInjections';
 // import {Shortify} from './Shortify';
+
+import {ScenarioType} from '../../../sharedTypes/types/enums';
 
 import {AddBannerInTheEnd} from './AddBannerInTheEnd';
 import {Shortify} from './Shortify';

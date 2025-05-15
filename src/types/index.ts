@@ -1,4 +1,4 @@
-import {ScenarioAddBannerAtTheEnd, ScenarioBase} from './scenario';
+// import {ScenarioAddBannerAtTheEnd, ScenarioBase} from './scenario';
 import {Timestamp} from './timestamp';
 
 export type SourceInstagramReel = {
@@ -43,65 +43,65 @@ export type MediaPostModel = {
     randomIndex: number;
 };
 
-export type MediaPostModelOld = {
-    id: string;
-    account: string;
-    createdAt: Timestamp;
-    firebaseUrl: string;
-    mediaContainerId: string;
-    senderId: string;
-    status: string;
-    type: string;
-    url: string;
-};
+// export type MediaPostModelOld = {
+//     id: string;
+//     account: string;
+//     createdAt: Timestamp;
+//     firebaseUrl: string;
+//     mediaContainerId: string;
+//     senderId: string;
+//     status: string;
+//     type: string;
+//     url: string;
+// };
 
-export type SourceV3 = {
-    id: string;
-    createdAt: Timestamp;
-    firebaseUrl: string;
-    sources: Sources;
-    randomIndex: number;
-    bodyJSONString: string;
-    attempt: number;
-    scenarios: string[];
-    lastUsed: Timestamp;
-    timesUsed: number;
-};
+// export type SourceV3 = {
+//     id: string;
+//     createdAt: Timestamp;
+//     firebaseUrl: string;
+//     sources: Sources;
+//     randomIndex: number;
+//     bodyJSONString: string;
+//     attempt: number;
+//     scenarios: string[];
+//     lastUsed: Timestamp;
+//     timesUsed: number;
+// };
 
-export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;
+// export type ScenarioV3 = ScenarioBase & ScenarioAddBannerAtTheEnd;
 
-export enum ScenarioType {
-    // ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
-    ScenarioAddBannerAtTheEndUnique = 'ScenarioAddBannerAtTheEndUnique',
-    // ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
-    // ScenarioShortifyType = 'ScenarioShortifyType',
-    ScenarioShortifyUnique = 'ScenarioShortifyUnique',
-    // ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
-}
+// export enum ScenarioType {
+//     // ScenarioAddBannerAtTheEndType = 'ScenarioAddBannerAtTheEnd',
+//     ScenarioAddBannerAtTheEndUnique = 'ScenarioAddBannerAtTheEndUnique',
+//     // ScenarioLongVideoWithInjectionsType = 'ScenarioLongVideoWithInjections',
+//     // ScenarioShortifyType = 'ScenarioShortifyType',
+//     ScenarioShortifyUnique = 'ScenarioShortifyUnique',
+//     // ScenarioCoverWithImageType = 'ScenarioCoverWithImageType',
+// }
 
-export type PreparedVideoV3 = {
-    firebaseUrl: string;
-    scenarioType: ScenarioType;
-    scenarioName: string;
-    title: string;
-    originalHashtags: string[];
-    accounts: string[];
-};
+// export type PreparedVideoV3 = {
+//     firebaseUrl: string;
+//     scenarioType: ScenarioType;
+//     scenarioName: string;
+//     title: string;
+//     originalHashtags: string[];
+//     accounts: string[];
+// };
 
-export type AccountV3 = {
-    id: number;
-    slug: string;
-    token: string;
-    userIdIG: string;
-    disabled: boolean;
-    availableScenarios: number[] | ScenarioV3[];
-    accountBackgrounMusic?: string;
-    userId?: string;
-};
+// export type AccountV3 = {
+//     id: number;
+//     slug: string;
+//     token: string;
+//     userIdIG: string;
+//     disabled: boolean;
+//     availableScenarios: number[] | ScenarioV3[];
+//     accountBackgrounMusic?: string;
+//     userId?: string;
+// };
 
-export type AccountMediaContainerV3 = {
-    id: string;
-    mediaContainerId: string;
-    createdAt: Timestamp;
-    status: 'created' | 'published';
-};
+// export type AccountMediaContainerV3 = {
+//     id: string;
+//     mediaContainerId: string;
+//     createdAt: Timestamp;
+//     status: 'created' | 'published';
+// };

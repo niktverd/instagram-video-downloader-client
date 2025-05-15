@@ -7,7 +7,7 @@ import {Button, Card, Modal} from '@gravity-ui/uikit';
 import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {ScenarioV3} from '../../types';
+import {IScenario} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
 import {fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
@@ -15,7 +15,7 @@ import {ScenarioRouter} from './forms/ScenarioRouter';
 
 import cn from './Scenario.module.css';
 
-interface ScenarioProps extends ScenarioV3 {
+interface ScenarioProps extends IScenario {
     onDelete?: () => void;
     onUpdate?: (values: any) => void;
 }

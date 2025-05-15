@@ -37,6 +37,7 @@ export const PerformanceMonitor: React.FC = () => {
     // Get current memory usage
     const getMemoryUsage = (): PerformanceData | null => {
         if (window.performance && 'memory' in window.performance) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const memory = (window.performance as any).memory;
             return {
                 jsHeapSizeLimit: memory.jsHeapSizeLimit,
