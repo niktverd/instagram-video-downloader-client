@@ -9,6 +9,7 @@ import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
 import {Policy} from '../Policy';
+import {PreparedVideos} from '../PreparedVideos';
 import {Scenarios} from '../Scenarios/Scenarios';
 import {SourceDetails} from '../SourceDetails';
 import {Sources} from '../Sources';
@@ -65,6 +66,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Sources',
         to: '/sources',
         Component: Sources,
+        isProtected: true,
+    },
+    {
+        text: 'Prepared Videos',
+        to: '/prepared-videos',
+        Component: PreparedVideos,
         isProtected: true,
     },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},

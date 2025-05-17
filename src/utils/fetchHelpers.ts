@@ -44,7 +44,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
     });
     const json = await response.json();
 
-    return json.data as T;
+    return json as T;
 };
 
 type FetchPost = {

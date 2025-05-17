@@ -50,4 +50,7 @@ export enum Routes {
     getUserByEmail = '/ui/get-user-by-email',
     getAllUsers = '/ui/get-all-users',
     deleteUser = '/ui/delete-user',
+
+    // prepared videos
+    getAllPreparedVideos = '/ui/get-all-prepared-videos',
 }
