@@ -90,7 +90,6 @@ export const Account = (props: IAccount) => {
                         slug,
                         token,
                         availableScenarios: scenarioIds,
-                        instagramToken,
                     }}
                     onSubmit={async (values: any) => {
                         await fetchPatch({
