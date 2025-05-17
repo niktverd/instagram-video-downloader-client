@@ -6,18 +6,19 @@ import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {FieldArray, Form, Formik} from 'formik';
 
 import {AppEnvContext} from '../../../contexts/AppEnv';
+import {GetAllScenariosResponse, IScenario} from '../../../sharedTypes';
 import {Routes} from '../../../utils/constants';
 import {fetchGet} from '../../../utils/fetchHelpers';
 import {CustomField} from '../../CustomField/CustomField';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AddAccount = ({initialValues, onSubmit}: any) => {
-    const [scenarios, setScenarios] = useState([]);
+    const [scenarios, setScenarios] = useState<IScenario[]>([]);
     const {isProd} = useContext(AppEnvContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            const json = await fetchGet({
+            const json = await fetchGet<GetAllScenariosResponse>({
                 route: Routes.getScenarios,
                 query: {},
                 isProd,

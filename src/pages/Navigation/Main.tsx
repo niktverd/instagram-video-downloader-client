@@ -8,7 +8,6 @@ import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
-import {MediaPosts} from '../MediaPosts';
 import {Policy} from '../Policy';
 import {Scenarios} from '../Scenarios/Scenarios';
 import {SourceDetails} from '../SourceDetails';
@@ -50,12 +49,6 @@ type MainMenuConfigType = {
 export const mainMenuConfig: MainMenuConfigType[] = [
     {text: 'Home', to: '/', Component: Home},
     {text: 'Policy', to: '/policy', Component: Policy},
-    {
-        text: 'Media Posts',
-        to: '/media-posts',
-        Component: MediaPosts,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
-    },
     {
         text: 'Scenarios',
         to: '/scenarios',

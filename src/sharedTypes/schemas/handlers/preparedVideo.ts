@@ -15,11 +15,26 @@ export declare const GetPreparedVideoByIdParamsSchema: z.ZodObject<
     }
 >;
 export declare const GetAllPreparedVideosParamsSchema: z.ZodObject<
-    {},
+    {
+        page: z.ZodOptional<z.ZodString>;
+        limit: z.ZodOptional<z.ZodString>;
+        sortBy: z.ZodOptional<z.ZodString>;
+        sortOrder: z.ZodOptional<z.ZodString>;
+    },
     'strict',
     z.ZodTypeAny,
-    {},
-    {}
+    {
+        limit?: string;
+        page?: string;
+        sortBy?: string;
+        sortOrder?: string;
+    },
+    {
+        limit?: string;
+        page?: string;
+        sortBy?: string;
+        sortOrder?: string;
+    }
 >;
 export declare const UpdatePreparedVideoParamsSchema: any;
 export declare const DeletePreparedVideoParamsSchema: z.ZodObject<

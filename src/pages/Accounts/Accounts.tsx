@@ -7,13 +7,14 @@ import {Account} from '../../components/Account/Account';
 import {AddAccount} from '../../components/Account/forms/AddAccount';
 // import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
 import {AppEnvContext} from '../../contexts/AppEnv';
+import {GetAllAccountsResponse, IAccount} from '../../sharedTypes';
 import {Routes as ProjectRoutes} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './Accounts.module.css';
 
 export const Accounts = () => {
-    const [accounts, setAccounts] = useState([]);
+    const [accounts, setAccounts] = useState<IAccount[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
@@ -21,7 +22,7 @@ export const Accounts = () => {
     const [filterValue, setFilterValue] = useState('');
 
     const handleLoadClick = useCallback(async () => {
-        const json = await fetchGet({
+        const json = await fetchGet<GetAllAccountsResponse>({
             route: ProjectRoutes.getAccounts,
             query: {},
             isProd,
@@ -39,7 +40,8 @@ export const Accounts = () => {
         const totalImpressions: Record<string, number> = {};
 
         for (const account of accounts) {
-            const {data} = await fetchGet({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const data = await fetchGet<any>({
                 route: ProjectRoutes.getInsights,
                 query: {id: account.id},
                 isProd,

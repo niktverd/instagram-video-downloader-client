@@ -131,7 +131,8 @@ export const Users = () => {
         setError(null);
 
         try {
-            const response = await fetchGet({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const response = await fetchGet<any>({
                 route: Routes.getAllUsers,
                 isProd,
             });

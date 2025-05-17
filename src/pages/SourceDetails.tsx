@@ -17,30 +17,14 @@ import {
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {AppEnvContext} from '../contexts/AppEnv';
+import {GetOneSourceResponse, ISource} from '../sharedTypes';
 import {Routes} from '../utils/constants';
 import {fetchGet} from '../utils/fetchHelpers';
-
-interface SourceData {
-    id: string;
-    name: string;
-    url: string;
-    type: string;
-    description?: string;
-    metadata?: Record<string, any>;
-    createdAt: string;
-    updatedAt: string;
-    firebaseUrl?: string;
-    sender?: string;
-    recipient?: string;
-    duration?: number;
-    sources?: Record<string, any>;
-    bodyJSONString?: Record<string, any>;
-}
 
 export const SourceDetails = () => {
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
-    const [source, setSource] = useState<SourceData | null>(null);
+    const [source, setSource] = useState<ISource | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {isProd} = useContext(AppEnvContext);
@@ -53,19 +37,15 @@ export const SourceDetails = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetchGet({
+            const response = await fetchGet<GetOneSourceResponse>({
                 route: Routes.getOneSource,
                 query: {id},
                 isProd,
             });
 
-            if (response.error) {
-                setError(response.error);
-            } else {
-                setSource(response || null);
-                if (response.sources && Object.keys(response.sources).length > 0) {
-                    setActiveSourceTab(Object.keys(response.sources)[0]);
-                }
+            setSource(response || null);
+            if (response.sources && Object.keys(response.sources).length > 0) {
+                setActiveSourceTab(Object.keys(response.sources)[0]);
             }
         } catch (err) {
             setError(err.message || 'Failed to load source details');
@@ -175,14 +155,18 @@ export const SourceDetails = () => {
             <Card className="source-details-card">
                 <Flex direction="column" gap={4} style={{padding: '20px'}}>
                     <Flex justifyContent="space-between" alignItems="center">
-                        <Text variant="header-1">{source.name}</Text>
-                        <Text color="secondary">{source.type}</Text>
+                        <Text variant="header-1">{source.id}</Text>
                     </Flex>
 
                     <div style={{marginTop: '20px'}}>
                         <Text variant="subheader-2">URL</Text>
-                        <Text as="a" href={source.url} target="_blank" rel="noopener noreferrer">
-                            {source.url}
+                        <Text
+                            as="a"
+                            href={source.firebaseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {source.firebaseUrl}
                         </Text>
                     </div>
 
@@ -245,29 +229,6 @@ export const SourceDetails = () => {
                         </div>
                     )}
 
-                    {source.description && (
-                        <div style={{marginTop: '16px'}}>
-                            <Text variant="subheader-2">Description</Text>
-                            <Text>{source.description}</Text>
-                        </div>
-                    )}
-
-                    {source.metadata && (
-                        <div style={{marginTop: '16px'}}>
-                            <Text variant="subheader-2">Metadata</Text>
-                            <pre
-                                style={{
-                                    background: '#f5f5f5',
-                                    padding: '12px',
-                                    borderRadius: '4px',
-                                    overflowX: 'auto',
-                                }}
-                            >
-                                {JSON.stringify(source.metadata, null, 2)}
-                            </pre>
-                        </div>
-                    )}
-
                     <div style={{marginTop: '20px'}}>
                         <Button
                             view="flat"
@@ -290,21 +251,6 @@ export const SourceDetails = () => {
                             </pre>
                         )}
                     </div>
-
-                    <Flex gap={4} style={{marginTop: '16px'}}>
-                        <div>
-                            <Text variant="caption-1" color="secondary">
-                                Created
-                            </Text>
-                            <Text>{new Date(source.createdAt).toLocaleString()}</Text>
-                        </div>
-                        <div>
-                            <Text variant="caption-1" color="secondary">
-                                Last Updated
-                            </Text>
-                            <Text>{new Date(source.updatedAt).toLocaleString()}</Text>
-                        </div>
-                    </Flex>
 
                     <Flex justifyContent="flex-end" style={{marginTop: '24px'}}>
                         <Button view="action" size="m" onClick={fetchSourceDetails}>

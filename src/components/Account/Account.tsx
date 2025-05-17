@@ -27,13 +27,13 @@ export const Account = (props: IAccount) => {
     );
 
     const handleGetInsights = async () => {
-        const data = await fetchGet({route: Routes.getInsights, query: {id}, isProd});
+        const data = await fetchGet<any>({route: Routes.getInsights, query: {id}, isProd});
 
         setInsights(data);
     };
 
     const handleGetMedia = async () => {
-        const data = await fetchGet({route: Routes.getMedia, query: {id}, isProd});
+        const data = await fetchGet<any>({route: Routes.getMedia, query: {id}, isProd});
 
         setMedia(data);
     };

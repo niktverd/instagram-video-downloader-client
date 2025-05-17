@@ -37,14 +37,14 @@ type FetchGet = {
     isProd: boolean;
 };
 
-export const fetchGet = async ({route, query = {}, isProd = false}: FetchGet) => {
+export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
         headers: defaultHeaders,
         method: Method.Get,
     });
     const json = await response.json();
 
-    return json;
+    return json.data as T;
 };
 
 type FetchPost = {

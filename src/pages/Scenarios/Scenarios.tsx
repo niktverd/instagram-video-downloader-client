@@ -6,20 +6,21 @@ import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 import {Scenario} from '../../components/Scenario/Scenario';
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../../contexts/AppEnv';
+import {GetAllScenariosResponse, IScenario} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './Scenarios.module.css';
 
 export const Scenarios = () => {
-    const [scenarios, setScenarios] = useState([]);
+    const [scenarios, setScenarios] = useState<IScenario[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [filterText, setFilterText] = useState('');
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
 
     const handleLoadClick = useCallback(async () => {
-        const json = await fetchGet({
+        const json = await fetchGet<GetAllScenariosResponse>({
             route: Routes.getScenarios,
             query: {},
             isProd,

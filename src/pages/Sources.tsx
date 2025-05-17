@@ -14,22 +14,14 @@ import {
 import {Link} from 'react-router-dom';
 
 import {AppEnvContext} from '../contexts/AppEnv';
+import {GetAllSourcesResponse, ISource} from '../sharedTypes';
 import {Routes} from '../utils/constants';
 import {fetchGet} from '../utils/fetchHelpers';
-
-interface Source {
-    id: string;
-    name: string;
-    firebaseUrl: string;
-    type: string;
-    createdAt: string;
-    updatedAt: string;
-}
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
 
 export const Sources = () => {
-    const [sources, setSources] = useState<Source[]>([]);
+    const [sources, setSources] = useState<ISource[]>([]);
     const [_loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
@@ -45,7 +37,7 @@ export const Sources = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetchGet({
+            const response = await fetchGet<GetAllSourcesResponse>({
                 route: Routes.getAllSources,
                 query: {
                     page,
@@ -56,12 +48,8 @@ export const Sources = () => {
                 isProd,
             });
 
-            if (response.error) {
-                setError(response.error);
-            } else {
-                setSources(response.sources || []);
-                setTotalItems(response.count || 0);
-            }
+            setSources(response.sources || []);
+            setTotalItems(response.count || 0);
         } catch (err) {
             setError(err.message || 'Failed to load sources');
         } finally {
@@ -97,7 +85,7 @@ export const Sources = () => {
         {
             id: 'firebaseUrl',
             name: 'URL',
-            template: (item: Source) => (
+            template: (item: ISource) => (
                 <a href={item.firebaseUrl} target="_blank" rel="noopener noreferrer">
                     watch
                 </a>
@@ -110,12 +98,13 @@ export const Sources = () => {
         {
             id: 'updatedAt',
             name: 'Updated At',
-            template: (item: Source) => new Date(item.createdAt).toLocaleString(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            template: (item: any) => new Date(item.updatedAt).toLocaleString(),
         },
         {
             id: 'actions',
             name: 'Actions',
-            template: (item: Source) => (
+            template: (item: ISource) => (
                 <Link to={`/sources/${item.id}`}>
                     <Button view="normal" size="s">
                         View Details
