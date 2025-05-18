@@ -87,8 +87,7 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                                                     </option>
                                                 ))}
                                         </select>
-                                        {values.availableScenarios.map((id, index) => {
-                                            const option = scenarios.find((opt) => opt.id === id);
+                                        {values.availableScenarios.map((option, index) => {
                                             return (
                                                 <div
                                                     key={index}
@@ -101,7 +100,7 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                                                         alignItems: 'center',
                                                     }}
                                                 >
-                                                    {option?.slug}
+                                                    {option.slug}
                                                     <Button onClick={() => remove(index)}>
                                                         <ButtonIcon>
                                                             <Xmark />
