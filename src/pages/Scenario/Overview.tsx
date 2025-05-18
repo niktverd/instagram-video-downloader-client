@@ -115,6 +115,17 @@ export const Overview: React.FC = () => {
             ],
         },
         {
+            title: 'Prepared Videos',
+            description: 'Click button to see prepared videos',
+            colSpan: 1 as const,
+            actions: [
+                {
+                    text: 'See Prepared Videos',
+                    link: `/prepared-videos?scenarioIds=${id}`,
+                },
+            ],
+        },
+        {
             title: 'Delete',
             description: 'Delete this scenario',
             colSpan: 1 as const,

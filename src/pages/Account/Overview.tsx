@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 
 import {
+    Binoculars,
     ChartAreaStackedNormalized,
     Display,
     Filmstrip,
@@ -99,6 +100,18 @@ export const Overview = () => {
                 text: `See: ${scenario.slug}`,
                 link: `/scenario/${scenario.id}`,
             })),
+            colSpan: 1,
+        },
+        {
+            title: 'Prepared Videos',
+            description: 'Click the Button to see all prepared videos',
+            icon: <Binoculars />,
+            actions: [
+                {
+                    text: `Go to Prepared Videos`,
+                    link: `/prepared-videos/?accountIds=${accId}`,
+                },
+            ],
             colSpan: 1,
         },
         {

@@ -87,7 +87,7 @@ const List: React.FC = () => {
     useEffect(() => {
         loadPreparedVideos();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [page, pageSize]);
 
     const handlePageChange = (newPage: number) => setPage(newPage);
     const handlePageSizeChange = ([value]: string[]) => {
@@ -242,6 +242,7 @@ const List: React.FC = () => {
                     navigate(`/prepared-video/${row.id}`);
                 }}
             />
+            <h3>Total Items: {totalItems}</h3>
             <div style={{marginTop: 20, display: 'flex', justifyContent: 'center'}}>
                 <Pagination
                     page={page}
