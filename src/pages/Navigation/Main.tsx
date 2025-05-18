@@ -10,7 +10,7 @@ import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
 import {Policy} from '../Policy';
 import {PreparedVideos} from '../PreparedVideos';
-import {Scenarios} from '../Scenarios/Scenarios';
+import {Root as ScenarioRoot} from '../Scenario';
 import {Root as SourceRoot} from '../Source';
 import {Test} from '../Test';
 
@@ -51,8 +51,8 @@ export const mainMenuConfig: MainMenuConfigType[] = [
     {text: 'Policy', to: '/policy', Component: Policy},
     {
         text: 'Scenarios',
-        to: '/scenarios',
-        Component: Scenarios,
+        to: '/scenario/*',
+        Component: ScenarioRoot,
         isProtected: true,
     },
     {

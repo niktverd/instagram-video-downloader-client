@@ -50,7 +50,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
 type FetchPost = {
     route: Routes;
     query?: Record<string, string | number | boolean>;
-    body?: Record<string, string | number | boolean>;
+    body?: unknown;
     isProd: boolean;
 };
 
