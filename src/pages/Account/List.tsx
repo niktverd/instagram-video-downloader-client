@@ -1,11 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
+import {Button, Modal, Table, TextInput, useToaster} from '@gravity-ui/uikit';
+import {useNavigate} from 'react-router-dom';
 
-import {Account} from '../../components/Account/Account';
 import {AddAccount} from '../../components/Account/forms/AddAccount';
-// import {AddBannerInTheEnd} from '../components/Scenario/forms/AddBannerInTheEnd';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllAccountsResponse, IAccount} from '../../sharedTypes';
 import {Routes as ProjectRoutes} from '../../utils/constants';
@@ -13,13 +11,13 @@ import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './Accounts.module.css';
 
-export const Accounts = () => {
+export const List = () => {
     const [accounts, setAccounts] = useState<IAccount[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
-    const [insights, setInsights] = useState<unknown>({});
     const [filterValue, setFilterValue] = useState('');
+    const navigate = useNavigate();
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet<GetAllAccountsResponse>({
@@ -27,7 +25,6 @@ export const Accounts = () => {
             query: {},
             isProd,
         });
-
         setAccounts(json);
         add({
             name: Math.random() + '-split',
@@ -35,60 +32,42 @@ export const Accounts = () => {
         });
     }, [add, isProd]);
 
-    const handleGetInsights = async () => {
-        const totalReach: Record<string, number> = {};
-        const totalImpressions: Record<string, number> = {};
-
-        for (const account of accounts) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const data = await fetchGet<any>({
-                route: ProjectRoutes.getInsights,
-                query: {id: account.id},
-                isProd,
-            });
-
-            if (!data) {
-                continue;
-            }
-
-            for (const parameter of data) {
-                const {name, values} = parameter;
-                for (const val of values) {
-                    const {end_time: endTime, value} = val;
-                    if (name === 'impressions') {
-                        totalImpressions[endTime] = (totalImpressions[endTime] || 0) + value;
-                    }
-                    if (name === 'reach') {
-                        totalReach[endTime] = (totalImpressions[endTime] || 0) + value;
-                    }
-                }
-            }
-        }
-
-        // eslint-disable-next-line no-console
-        console.log({totalReach, totalImpressions});
-        setInsights({totalReach, totalImpressions});
-    };
+    useEffect(() => {
+        handleLoadClick();
+    }, [handleLoadClick]);
 
     const filteredAccounts = accounts.filter((account) => {
         if (!filterValue) return true;
         const lowercasedFilter = filterValue.toLowerCase();
-
-        // Filter by ID
         if (account.slug && account.slug.toLowerCase().includes(lowercasedFilter)) {
             return true;
         }
-
-        // Filter by available scenarios
         if (account.availableScenarios && Array.isArray(account.availableScenarios)) {
             return account.availableScenarios.some(
                 (scenario) =>
                     scenario?.slug && scenario.slug.toLowerCase().includes(lowercasedFilter),
             );
         }
-
         return false;
     });
+
+    const columns = [
+        {id: 'slug', name: 'Slug'},
+        {id: 'enabled', name: 'Enabled'},
+        {id: 'token', name: 'Token'},
+        {id: 'actions', name: 'Actions'},
+    ];
+
+    const data = filteredAccounts.map((account) => ({
+        ...account,
+        enabled: account.enabled ? 'Yes' : 'No',
+        token: account.token ? account.token.slice(0, 3) + '****' : '',
+        actions: (
+            <Button size="s" view="outlined" onClick={() => navigate(`${account.id}`)}>
+                Details
+            </Button>
+        ),
+    }));
 
     return (
         <div className={cn.container}>
@@ -96,19 +75,13 @@ export const Accounts = () => {
                 <h2>Accounts</h2>
                 <div className={cn.actions}>
                     <Button view="action" onClick={handleLoadClick}>
-                        Get Data
+                        Reload
                     </Button>
                     <Button view="outlined-action" onClick={() => setOpenModal(true)}>
-                        add
-                    </Button>
-                    <Button view="outlined-action" onClick={handleGetInsights}>
-                        get insights
+                        Add
                     </Button>
                 </div>
             </div>
-
-            <pre className={cn.insights}>{JSON.stringify(insights, null, 3)}</pre>
-
             <div className={cn.filter}>
                 <TextInput
                     placeholder="Filter by ID or scenario..."
@@ -117,25 +90,17 @@ export const Accounts = () => {
                     size="m"
                 />
             </div>
-
-            <div className={cn.accountsGrid}>
-                {filteredAccounts.map((account) => {
-                    return <Account key={account.id} {...account} />;
-                })}
-            </div>
-
+            <Table columns={columns} data={data} />
             <Modal contentClassName={cn.modal} open={openModal} onClose={() => setOpenModal(false)}>
                 <AddAccount
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onSubmit={async (values: any) => {
-                        // eslint-disable-next-line no-console
-                        console.log(values);
+                    onSubmit={async (values: IAccount) => {
                         await fetchPost({
                             route: ProjectRoutes.addAccount,
                             body: {...values},
                             isProd,
                         });
                         setOpenModal(false);
+                        handleLoadClick();
                     }}
                 />
             </Modal>

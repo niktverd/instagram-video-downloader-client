@@ -50,7 +50,8 @@ export const Account = (props: IAccount) => {
                     {token && <p className={cn.token}>Token: {token.slice(0, 3)}****</p>}
                     {userIdIG && <p className={cn.token}>IG User ID: {userIdIG}</p>}
                     <div className={cn.actions}>
-                        <Button view="outlined-action" onClick={() => setOpenModal(true)}>
+                        {/* <Button view="outlined-action" onClick={() => setOpenModal(true)}> */}
+                        <Button view="outlined-action" href={`/account/${id}/edit`}>
                             Edit
                         </Button>
                         <Button onClick={handleGetInsights}>get insights</Button>

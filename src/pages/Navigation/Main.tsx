@@ -3,7 +3,7 @@ import React, {JSX} from 'react';
 import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
 import {useAuth} from '../../contexts/AuthContext';
-import {Accounts} from '../Accounts';
+import {Root as AccountRoot} from '../Account';
 import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
@@ -11,8 +11,7 @@ import {InstagramCallback} from '../InstagramCallback';
 import {Policy} from '../Policy';
 import {PreparedVideos} from '../PreparedVideos';
 import {Scenarios} from '../Scenarios/Scenarios';
-import {SourceDetails} from '../SourceDetails';
-import {Sources} from '../Sources';
+import {Root as SourceRoot} from '../Source';
 import {Test} from '../Test';
 
 import cl from './Main.module.css';
@@ -58,14 +57,14 @@ export const mainMenuConfig: MainMenuConfigType[] = [
     },
     {
         text: 'Accounts',
-        to: '/accounts',
-        Component: Accounts,
+        to: '/account/*',
+        Component: AccountRoot,
         isProtected: true,
     },
     {
         text: 'Sources',
-        to: '/sources',
-        Component: Sources,
+        to: '/sources/*',
+        Component: SourceRoot,
         isProtected: true,
     },
     {
@@ -84,7 +83,10 @@ export const mainMenuConfig: MainMenuConfigType[] = [
 ];
 
 const ProtectedRoute = ({children, isProtected}) => {
-    const {userLoggedIn, currentUser} = useAuth();
+    const {userLoggedIn, currentUser, loading} = useAuth();
+    if (loading) {
+        return <div>Loading...</div>;
+    }
     if (isProtected) {
         return isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid}) ? (
             children
@@ -106,7 +108,7 @@ export const MainNavigation = () => {
                     if (isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid})) {
                         return (
                             <li key={`${text}-${to}`}>
-                                <Link to={to}>{text}</Link>
+                                <Link to={to.replace(/\*$/g, '')}>{text}</Link>
                             </li>
                         );
                     } else {
@@ -137,14 +139,6 @@ export const MainNavigationRoutes = () => {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/instagram-callback" element={<InstagramCallback />} />
             <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
-            <Route
-                path="/sources/:id"
-                element={
-                    <ProtectedRoute isProtected={true}>
-                        <SourceDetails />
-                    </ProtectedRoute>
-                }
-            />
             <Route path="*" element={<h2>Page Not Found</h2>} />
         </Routes>
     );
