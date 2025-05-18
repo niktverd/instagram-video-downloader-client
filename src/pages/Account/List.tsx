@@ -1,19 +1,17 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {Button, Modal, Table, TextInput, useToaster} from '@gravity-ui/uikit';
+import {Button, Table, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useNavigate} from 'react-router-dom';
 
-import {AddAccount} from '../../components/Account/forms/AddAccount';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllAccountsResponse, IAccount} from '../../sharedTypes';
 import {Routes as ProjectRoutes} from '../../utils/constants';
-import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
+import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from './Accounts.module.css';
 
 export const List = () => {
     const [accounts, setAccounts] = useState<IAccount[]>([]);
-    const [openModal, setOpenModal] = useState(false);
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
     const [filterValue, setFilterValue] = useState('');
@@ -77,7 +75,7 @@ export const List = () => {
                     <Button view="action" onClick={handleLoadClick}>
                         Reload
                     </Button>
-                    <Button view="outlined-action" onClick={() => setOpenModal(true)}>
+                    <Button view="outlined-action" href={'/account/new'}>
                         Add
                     </Button>
                 </div>
@@ -91,19 +89,6 @@ export const List = () => {
                 />
             </div>
             <Table columns={columns} data={data} />
-            <Modal contentClassName={cn.modal} open={openModal} onClose={() => setOpenModal(false)}>
-                <AddAccount
-                    onSubmit={async (values: IAccount) => {
-                        await fetchPost({
-                            route: ProjectRoutes.addAccount,
-                            body: {...values},
-                            isProd,
-                        });
-                        setOpenModal(false);
-                        handleLoadClick();
-                    }}
-                />
-            </Modal>
         </div>
     );
 };
