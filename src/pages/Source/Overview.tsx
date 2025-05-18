@@ -1,24 +1,16 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {ArrowLeft, ChevronDown, ChevronUp} from '@gravity-ui/icons';
-import {
-    Button,
-    Card,
-    Flex,
-    Icon,
-    Spin,
-    Tab,
-    TabList,
-    TabPanel,
-    TabProvider,
-    Text,
-} from '@gravity-ui/uikit';
+import {ArrowLeft, Code, Filmstrip, Magnifier, Person, Video} from '@gravity-ui/icons';
+import {Button, Icon, Spin, Tab, TabList, TabPanel, TabProvider, Text} from '@gravity-ui/uikit';
 import {useNavigate, useParams} from 'react-router-dom';
 
+import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetOneSourceResponse, ISource} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
+
+import cn from '../Account/Accounts.module.css';
 
 export const Overview = () => {
     const {id} = useParams<{id: string}>();
@@ -82,18 +74,11 @@ export const Overview = () => {
                 >
                     Back to Sources
                 </Button>
-                <Card>
-                    <Text variant="subheader-1">Error</Text>
-                    <Text>{error}</Text>
-                    <Button
-                        view="action"
-                        size="m"
-                        onClick={fetchSourceDetails}
-                        style={{marginTop: '16px'}}
-                    >
-                        Retry
-                    </Button>
-                </Card>
+                <CardTemplate
+                    title="Error"
+                    description={error}
+                    actions={[{text: 'Retry', onClick: fetchSourceDetails}]}
+                />
             </div>
         );
     }
@@ -109,10 +94,10 @@ export const Overview = () => {
                 >
                     Back to Sources
                 </Button>
-                <Card>
-                    <Text variant="subheader-1">Source not found</Text>
-                    <Text>The requested source could not be found.</Text>
-                </Card>
+                <CardTemplate
+                    title="Source not found"
+                    description="The requested source could not be found."
+                />
             </div>
         );
     }
@@ -131,117 +116,153 @@ export const Overview = () => {
           }))
         : [];
 
-    return (
-        <div style={{padding: '20px', maxWidth: '800px', margin: '0 auto'}}>
-            <Button
-                view="flat"
-                onClick={handleBack}
-                leftContent={<Icon data={ArrowLeft} />}
-                style={{marginBottom: '20px'}}
-            >
-                Back to Sources
-            </Button>
-            <Card className="source-details-card">
-                <Flex direction="column" gap={4} style={{padding: '20px'}}>
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text variant="header-1">{source.id}</Text>
-                    </Flex>
-                    <div style={{marginTop: '20px'}}>
-                        <Text variant="subheader-2">URL</Text>
-                        <Text
-                            as="a"
-                            href={source.firebaseUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+    // Card configs
+    const cardConfigs: CardConfig[] = [
+        {
+            title: 'Source Info',
+            description: 'General information about this source',
+            icon: <Icon data={Person} />,
+            colSpan: 1,
+            children: (
+                <div>
+                    <div>
+                        <b>ID:</b> {source.id}
+                    </div>
+                    <div style={{marginTop: 8}}>
+                        <b>URL:</b>{' '}
+                        <a href={source.firebaseUrl} target="_blank" rel="noopener noreferrer">
                             {source.firebaseUrl}
-                        </Text>
+                        </a>
                     </div>
-                    {source.firebaseUrl && (
-                        <div style={{marginTop: '20px'}}>
-                            <Text variant="subheader-2">Video Preview</Text>
-                            <video
-                                controls
-                                style={{
-                                    width: '100%',
-                                    maxHeight: '400px',
-                                    borderRadius: '8px',
-                                    marginTop: '8px',
-                                }}
-                                src={source.firebaseUrl}
-                            />
+                    {source.sender && (
+                        <div style={{marginTop: 8}}>
+                            <b>Sender ID:</b> {source.sender}
                         </div>
                     )}
-                    {source.sender && source.recipient && (
-                        <div style={{marginTop: '20px'}}>
-                            <Flex gap={4}>
-                                <div>
-                                    <Text variant="subheader-2">Sender ID</Text>
-                                    <Text>{source.sender}</Text>
-                                </div>
-                                <div>
-                                    <Text variant="subheader-2">Recipient ID</Text>
-                                    <Text>{source.recipient}</Text>
-                                </div>
-                                {source.duration !== undefined && (
-                                    <div>
-                                        <Text variant="subheader-2">Duration</Text>
-                                        <Text>{source.duration?.toFixed(2)}s</Text>
-                                    </div>
-                                )}
-                            </Flex>
+                    {source.recipient && (
+                        <div style={{marginTop: 8}}>
+                            <b>Recipient ID:</b> {source.recipient}
                         </div>
                     )}
-                    {source.sources && Object.keys(source.sources).length > 0 && (
-                        <div style={{marginTop: '20px'}}>
-                            <Text variant="subheader-2">Sources</Text>
-                            <TabProvider value={activeSourceTab} onUpdate={setActiveSourceTab}>
-                                <TabList>
-                                    {sourceTabs.map((item) => (
-                                        <Tab key={item.id} value={item.id}>
-                                            {item.title}
-                                        </Tab>
-                                    ))}
-                                </TabList>
-                                <div>
-                                    {sourceTabs.map((item) => (
-                                        <TabPanel key={item.id} value={item.id}>
-                                            {item.content}
-                                        </TabPanel>
-                                    ))}
-                                </div>
-                            </TabProvider>
+                    {source.duration !== undefined && (
+                        <div style={{marginTop: 8}}>
+                            <b>Duration:</b> {source.duration?.toFixed(2)}s
                         </div>
                     )}
-                    <div style={{marginTop: '20px'}}>
-                        <Button
-                            view="flat"
-                            onClick={toggleJsonExpanded}
-                            rightContent={<Icon data={jsonExpanded ? ChevronUp : ChevronDown} />}
-                            style={{width: '100%', justifyContent: 'space-between'}}
-                        >
-                            <Text variant="subheader-2">Full JSON Data</Text>
-                        </Button>
-                        {jsonExpanded && (
-                            <pre
-                                style={{
-                                    padding: '12px',
-                                    borderRadius: '4px',
-                                    overflowX: 'auto',
-                                    marginTop: '8px',
-                                }}
-                            >
-                                {JSON.stringify(source, null, 2)}
-                            </pre>
-                        )}
-                    </div>
-                    <Flex justifyContent="flex-end" style={{marginTop: '24px'}}>
-                        <Button view="action" size="m" onClick={fetchSourceDetails}>
-                            Refresh
-                        </Button>
-                    </Flex>
-                </Flex>
-            </Card>
+                </div>
+            ),
+        },
+        source.firebaseUrl
+            ? {
+                  title: 'Video Preview',
+                  description: 'Preview the video',
+                  icon: <Icon data={Video} />,
+                  colSpan: 1,
+                  children: (
+                      <video
+                          controls
+                          style={{
+                              width: '100%',
+                              maxHeight: '400px',
+                              borderRadius: '8px',
+                              marginTop: '8px',
+                          }}
+                          src={source.firebaseUrl}
+                      />
+                  ),
+              }
+            : null,
+        source.sources && Object.keys(source.sources).length > 0
+            ? {
+                  title: 'Sources',
+                  description: 'All available sources',
+                  icon: <Icon data={Filmstrip} />,
+                  colSpan: 1,
+                  children: (
+                      <TabProvider value={activeSourceTab} onUpdate={setActiveSourceTab}>
+                          <TabList>
+                              {sourceTabs.map((item) => (
+                                  <Tab key={item.id} value={item.id}>
+                                      {item.title}
+                                  </Tab>
+                              ))}
+                          </TabList>
+                          <div style={{overflowY: 'scroll', maxHeight: '400px'}}>
+                              {sourceTabs.map((item) => (
+                                  <TabPanel key={item.id} value={item.id}>
+                                      {item.content}
+                                  </TabPanel>
+                              ))}
+                          </div>
+                      </TabProvider>
+                  ),
+              }
+            : null,
+        {
+            title: 'Full JSON Data',
+            description: 'Show the entire source object as JSON',
+            icon: <Icon data={Code} />,
+            colSpan: 3,
+            actions: [
+                {
+                    text: jsonExpanded ? 'Hide JSON' : 'Show JSON',
+                    onClick: toggleJsonExpanded,
+                    view: 'outlined',
+                },
+            ],
+            children: jsonExpanded ? (
+                <pre
+                    style={{
+                        padding: '12px',
+                        borderRadius: '4px',
+                        overflowX: 'auto',
+                        marginTop: '8px',
+                        overflowY: 'scroll',
+                    }}
+                >
+                    {JSON.stringify(source, null, 2)}
+                </pre>
+            ) : null,
+        },
+        {
+            title: 'Actions',
+            description: 'Refresh the data',
+            icon: <Icon data={Magnifier} />,
+            colSpan: 1,
+            actions: [
+                {
+                    text: 'Refresh',
+                    onClick: fetchSourceDetails,
+                },
+            ],
+        },
+        {
+            title: 'Prepared Videos',
+            description: 'Click to view prepared videos with the source',
+            icon: <Icon data={Magnifier} />,
+            colSpan: 1,
+            actions: [
+                {
+                    text: 'Go to Prepared Videos',
+                    link: `/prepared-videos?sourceIds=${source.id}`,
+                },
+            ],
+        },
+    ].filter(Boolean) as CardConfig[];
+
+    return (
+        <div className={cn.container}>
+            <div className={cn.headerRow}>
+                <Button view="flat" onClick={handleBack} leftContent={<Icon data={ArrowLeft} />}>
+                    Back to Sources
+                </Button>
+                <Text variant="header-1">{source.id}</Text>
+            </div>
+            <div className={cn.cardsContainer}>
+                {cardConfigs.map((cfg, idx) => (
+                    <CardTemplate key={idx} {...cfg} />
+                ))}
+            </div>
         </div>
     );
 };

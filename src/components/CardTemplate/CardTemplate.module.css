@@ -1,5 +1,6 @@
 .card {
     padding: 16px;
+    overflow: auto;
 }
 
 .card--col1 {
