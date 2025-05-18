@@ -40,7 +40,7 @@ export const Overview = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await fetchGet<any>({
             route: ProjectRoutes.getInsights,
-            query: {id: account?.slug},
+            query: {id: account?.id},
             isProd,
         });
     };
