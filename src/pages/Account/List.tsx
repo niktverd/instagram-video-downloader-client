@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {Button, Table, TextInput, useToaster} from '@gravity-ui/uikit';
+import {Button, Table, TextInput, Tooltip, useToaster} from '@gravity-ui/uikit';
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
@@ -53,6 +53,7 @@ export const List = () => {
         {id: 'slug', name: 'Slug'},
         {id: 'enabled', name: 'Enabled'},
         {id: 'token', name: 'Token'},
+        {id: 'availableScenarios', name: 'Scenarios'},
         {id: 'actions', name: 'Actions'},
     ];
 
@@ -60,11 +61,14 @@ export const List = () => {
         ...account,
         enabled: account.enabled ? 'Yes' : 'No',
         token: account.token ? account.token.slice(0, 3) + '****' : '',
-        actions: (
-            <Button size="s" view="outlined" onClick={() => navigate(`${account.id}`)}>
-                Details
-            </Button>
+        availableScenarios: (
+            <Tooltip
+                content={account.availableScenarios.map((scenario) => scenario.slug).join(', ')}
+            >
+                <div style={{textAlign: 'center'}}>{account.availableScenarios.length}</div>
+            </Tooltip>
         ),
+        actions: null,
     }));
 
     return (
@@ -88,7 +92,7 @@ export const List = () => {
                     size="m"
                 />
             </div>
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} onRowClick={(row) => navigate(`${row.id}`)} />
         </div>
     );
 };

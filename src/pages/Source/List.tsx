@@ -11,7 +11,7 @@ import {
     withTableSelection,
     withTableSorting,
 } from '@gravity-ui/uikit';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllSourcesResponse, ISource} from '../../sharedTypes';
@@ -21,6 +21,7 @@ import {fetchGet} from '../../utils/fetchHelpers';
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
 
 export const List = () => {
+    const navigate = useNavigate();
     const [sources, setSources] = useState<ISource[]>([]);
     const [_loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -104,13 +105,7 @@ export const List = () => {
         {
             id: 'actions',
             name: 'Actions',
-            template: (item: ISource) => (
-                <Link to={`/sources/${item.id}`}>
-                    <Button view="normal" size="s">
-                        View Details
-                    </Button>
-                </Link>
-            ),
+            template: () => null,
         },
     ];
 
@@ -168,6 +163,9 @@ export const List = () => {
                 emptyMessage="No sources found"
                 onSelectionChange={() => {}}
                 selectedIds={[]}
+                onRowClick={(row) => {
+                    navigate(`/sources/${row.id}`);
+                }}
             />
 
             <div style={{marginTop: '20px', display: 'flex', justifyContent: 'center'}}>

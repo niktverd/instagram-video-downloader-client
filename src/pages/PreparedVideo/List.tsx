@@ -11,7 +11,7 @@ import {
     withTableSelection,
     withTableSorting,
 } from '@gravity-ui/uikit';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllPreparedVideosResponse, IPreparedVideo} from '../../sharedTypes/types/preparedVideo';
@@ -21,6 +21,7 @@ import {fetchGet} from '../../utils/fetchHelpers';
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
 
 const List: React.FC = () => {
+    const navigate = useNavigate();
     const [preparedVideos, setPreparedVideos] = useState<IPreparedVideo[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -92,13 +93,7 @@ const List: React.FC = () => {
         {
             id: 'actions',
             name: 'Actions',
-            template: (item: IPreparedVideo) => (
-                <Link to={`/prepared-video/${item.id}`}>
-                    <Button view="normal" size="s">
-                        View Details
-                    </Button>
-                </Link>
-            ),
+            template: () => null,
         },
     ];
 
@@ -154,6 +149,9 @@ const List: React.FC = () => {
                 emptyMessage="No prepared videos found"
                 onSelectionChange={() => {}}
                 selectedIds={[]}
+                onRowClick={(row) => {
+                    navigate(`/prepared-video/${row.id}`);
+                }}
             />
             <div style={{marginTop: 20, display: 'flex', justifyContent: 'center'}}>
                 <Pagination
