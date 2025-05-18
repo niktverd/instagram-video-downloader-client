@@ -1,13 +1,70 @@
-import React from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+
+import {useToaster} from '@gravity-ui/uikit';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
+import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
+import {Routes} from '../../utils/constants';
+import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
-interface FormProps {
-    initialValues?: IScenario;
-    onSubmit: (values: IScenario) => void;
-}
+export const Form: React.FC = () => {
+    const {id} = useParams<{id?: string}>();
+    const [initialValues, setInitialValues] = useState<IScenario | undefined>(undefined);
+    const [loading, setLoading] = useState(Boolean(id));
+    const [error, setError] = useState<string | null>(null);
+    const {add} = useToaster();
+    const {isProd} = useContext(AppEnvContext);
+    const navigate = useNavigate();
 
-export const Form: React.FC<FormProps> = ({initialValues, onSubmit}) => {
-    return <ScenarioRouter initialValues={initialValues} onSubmit={onSubmit} />;
+    useEffect(() => {
+        if (id) {
+            setLoading(true);
+            setError(null);
+            fetchGet({
+                route: Routes.getScenario,
+                query: {id},
+                isProd,
+            })
+                .then((json) => setInitialValues(json as IScenario))
+                .catch(() => setError('Failed to load scenario'))
+                .finally(() => setLoading(false));
+        }
+    }, [id, isProd]);
+
+    const handleSubmit = useCallback(
+        async (values: IScenario) => {
+            if (id) {
+                await fetchPatch({
+                    route: Routes.patchScenario,
+                    body: {...values, id},
+                    isProd,
+                });
+                add({
+                    name: Math.random() + '-update-scenario',
+                    title: 'Scenario updated successfully',
+                    theme: 'success',
+                });
+            } else {
+                await fetchPost({
+                    route: Routes.addScenario,
+                    body: {...values},
+                    isProd,
+                });
+                add({
+                    name: Math.random() + '-add-scenario',
+                    title: 'Scenario added successfully',
+                    theme: 'success',
+                });
+            }
+            navigate('/scenario');
+        },
+        [id, isProd, add, navigate],
+    );
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
+
+    return <ScenarioRouter initialValues={initialValues} onSubmit={handleSubmit} />;
 };

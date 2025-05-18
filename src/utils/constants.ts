@@ -15,6 +15,7 @@ export enum Routes {
     testGreenScreen = '/ui/test-green-screen',
     // scenarios
     getScenarios = '/ui/get-scenarios',
+    getScenario = '/ui/get-scenario-by-id',
     patchScenario = '/ui/patch-scenario',
     addScenario = '/ui/add-scenario',
     deleteScenario = '/ui/delete-scenario',

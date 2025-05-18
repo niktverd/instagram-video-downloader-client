@@ -17,7 +17,7 @@ export const CoverWithGreen = ({initialValues, onSubmit, setType}: any) => {
     const updateOnly = Boolean(initialValues);
     return (
         <div>
-            <h1>Cover</h1>
+            <h1>Cover with green</h1>
             <Formik
                 initialValues={
                     initialValues
