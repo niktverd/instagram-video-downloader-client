@@ -13,16 +13,16 @@ import {
 } from '@gravity-ui/uikit';
 import {Link} from 'react-router-dom';
 
-import {AppEnvContext} from '../contexts/AppEnv';
-import {GetAllPreparedVideosResponse, IPreparedVideo} from '../sharedTypes/types/preparedVideo';
-import {Routes} from '../utils/constants';
-import {fetchGet} from '../utils/fetchHelpers';
+import {AppEnvContext} from '../../contexts/AppEnv';
+import {GetAllPreparedVideosResponse, IPreparedVideo} from '../../sharedTypes/types/preparedVideo';
+import {Routes} from '../../utils/constants';
+import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
 
-export const PreparedVideos = () => {
+const List: React.FC = () => {
     const [preparedVideos, setPreparedVideos] = useState<IPreparedVideo[]>([]);
-    const [_loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -47,10 +47,10 @@ export const PreparedVideos = () => {
                 },
                 isProd,
             });
-
             setPreparedVideos(response.preparedVideos || []);
             setTotalItems(response.count || 0);
-        } catch (err) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
             setError(err.message || 'Failed to load prepared videos');
         } finally {
             setLoading(false);
@@ -61,27 +61,17 @@ export const PreparedVideos = () => {
         loadPreparedVideos();
     }, [loadPreparedVideos]);
 
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
-
+    const handlePageChange = (newPage: number) => setPage(newPage);
     const handlePageSizeChange = ([value]: string[]) => {
         setPageSize(Number(value));
         setPage(1);
     };
-
     const handleSortChange = (sort: {column: string; order: 'asc' | 'desc'}) => {
-        setSortOrder({
-            columnId: sort.column,
-            order: sort.order,
-        });
+        setSortOrder({columnId: sort.column, order: sort.order});
     };
 
     const columns: TableColumnConfig<TableDataItem>[] = [
-        {
-            id: 'id',
-            name: 'id',
-        },
+        {id: 'id', name: 'id'},
         {
             id: 'firebaseUrl',
             name: 'URL',
@@ -96,23 +86,14 @@ export const PreparedVideos = () => {
             name: 'Duration',
             template: (item: IPreparedVideo) => (item.duration ? `${item.duration}s` : '-'),
         },
-        {
-            id: 'scenarioId',
-            name: 'Scenario ID',
-        },
-        {
-            id: 'sourceId',
-            name: 'Source ID',
-        },
-        {
-            id: 'accountId',
-            name: 'Account ID',
-        },
+        {id: 'scenarioId', name: 'Scenario ID'},
+        {id: 'sourceId', name: 'Source ID'},
+        {id: 'accountId', name: 'Account ID'},
         {
             id: 'actions',
             name: 'Actions',
             template: (item: IPreparedVideo) => (
-                <Link to={`/prepared-videos/${item.id}`}>
+                <Link to={`/prepared-video/${item.id}`}>
                     <Button view="normal" size="s">
                         View Details
                     </Button>
@@ -122,22 +103,21 @@ export const PreparedVideos = () => {
     ];
 
     return (
-        <div style={{padding: '20px', maxWidth: '1200px', margin: '0 auto'}}>
+        <div style={{padding: 20, maxWidth: 1200, margin: '0 auto'}}>
             <div
                 style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '20px',
+                    marginBottom: 20,
                 }}
             >
                 <h2>Prepared Videos</h2>
-                <Button view="action" onClick={loadPreparedVideos}>
+                <Button view="action" onClick={loadPreparedVideos} loading={loading}>
                     Refresh
                 </Button>
             </div>
-
-            <div style={{marginBottom: '20px'}}>
+            <div style={{marginBottom: 20}}>
                 <Select
                     label="Page size:"
                     value={[pageSize.toString()]}
@@ -151,21 +131,19 @@ export const PreparedVideos = () => {
                     <Select.Option value="50">50</Select.Option>
                 </Select>
             </div>
-
             {error && (
                 <div
                     style={{
-                        padding: '12px',
+                        padding: 12,
                         background: '#ffebee',
                         color: '#c62828',
-                        borderRadius: '4px',
-                        marginBottom: '20px',
+                        borderRadius: 4,
+                        marginBottom: 20,
                     }}
                 >
                     {error}
                 </div>
             )}
-
             <EnhancedTable
                 data={preparedVideos}
                 columns={columns}
@@ -177,8 +155,7 @@ export const PreparedVideos = () => {
                 onSelectionChange={() => {}}
                 selectedIds={[]}
             />
-
-            <div style={{marginTop: '20px', display: 'flex', justifyContent: 'center'}}>
+            <div style={{marginTop: 20, display: 'flex', justifyContent: 'center'}}>
                 <Pagination
                     page={page}
                     pageSize={pageSize}
@@ -189,3 +166,5 @@ export const PreparedVideos = () => {
         </div>
     );
 };
+
+export default List;
