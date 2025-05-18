@@ -3,11 +3,13 @@ import {Method, Routes, defaultHeaders} from './constants';
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
 
-const objectToSearchParams = (obj: Record<string, string | number | boolean>): URLSearchParams => {
+const objectToSearchParams = (obj: Record<string, string | number | boolean | string[]>) => {
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(obj)) {
-        if (value) {
-            params.append(key, value.toString()); // Important: Convert values to strings
+        if (Array.isArray(value)) {
+            value.forEach((v) => params.append(key, v));
+        } else if (value !== undefined && value !== null && value !== '') {
+            params.append(key, value.toString());
         }
     }
     return params;
@@ -15,7 +17,7 @@ const objectToSearchParams = (obj: Record<string, string | number | boolean>): U
 
 const prepareFetchUrl = (
     route: Routes,
-    query: Record<string, string | number | boolean>,
+    query: Record<string, string | number | boolean | string[]>,
     isProd: boolean,
 ) => {
     if (!API_ENDPOINT_PROD) {
@@ -33,7 +35,7 @@ const prepareFetchUrl = (
 
 type FetchGet = {
     route: Routes;
-    query?: Record<string, string | number | boolean | null>;
+    query?: Record<string, string | number | boolean | string[] | null>;
     isProd: boolean;
 };
 
@@ -49,7 +51,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
 
 type FetchPost = {
     route: Routes;
-    query?: Record<string, string | number | boolean>;
+    query?: Record<string, string | number | boolean | string[]>;
     body?: unknown;
     isProd: boolean;
 };

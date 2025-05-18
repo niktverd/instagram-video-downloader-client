@@ -1,0 +1,15 @@
+.card {
+    padding: 16px;
+}
+
+.card--col1 {
+    grid-column: span 1;
+}
+
+.card--col2 {
+    grid-column: span 2;
+}
+
+.card--col3 {
+    grid-column: span 3;
+}

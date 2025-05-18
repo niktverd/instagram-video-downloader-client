@@ -1,5 +1,4 @@
 .container {
-    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 16px;
     background-color: #0001;
@@ -65,4 +64,94 @@
 
 .modal {
     padding: 20px;
+}
+
+.scenarioGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.scenarioCard {
+    cursor: pointer;
+    min-height: 120px;
+    transition: box-shadow 0.2s;
+    border: 2px solid #f70;
+    border-radius: 12px;
+    padding: 24px;
+    background: #fff;
+    color: #222;
+    box-shadow: 0 2px 8px #0001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.scenarioCardTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.scenarioCardDesc {
+    font-size: 14px;
+    color: #888;
+}
+
+.actionGrid {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.actionCard {
+    min-height: 80px;
+    border: 2px solid #f70;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    color: #222;
+    width: 220px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: rgb(0 0 0 / 0.1);
+    padding: 16px;
+}
+
+.accountInfoCard {
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0001;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+    .cardsContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .cardsContainer {
+        grid-template-columns: 1fr;
+    }
 }

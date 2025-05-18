@@ -11,7 +11,7 @@ import {
     withTableSelection,
     withTableSorting,
 } from '@gravity-ui/uikit';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllPreparedVideosResponse, IPreparedVideo} from '../../sharedTypes/types/preparedVideo';
@@ -22,6 +22,7 @@ const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table
 
 const List: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [preparedVideos, setPreparedVideos] = useState<IPreparedVideo[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -34,18 +35,34 @@ const List: React.FC = () => {
     });
     const {isProd} = useContext(AppEnvContext);
 
+    // Parse query params for filters
+    const searchParams = new URLSearchParams(location.search);
+    const accountIds = searchParams.getAll('accountIds');
+    const scenarioIds = searchParams.getAll('scenarioIds');
+    const sourceIds = searchParams.getAll('sourceIds');
+
     const loadPreparedVideos = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
+            const query: Record<string, string | number | boolean | string[]> = {
+                page,
+                limit: pageSize,
+                sortBy: sortOrder.columnId,
+                sortOrder: sortOrder.order,
+            };
+            if (accountIds.length) {
+                query.accountIds = accountIds;
+            }
+            if (scenarioIds.length) {
+                query.scenarioIds = scenarioIds;
+            }
+            if (sourceIds.length) {
+                query.sourceIds = sourceIds;
+            }
             const response = await fetchGet<GetAllPreparedVideosResponse>({
                 route: Routes.getAllPreparedVideos,
-                query: {
-                    page,
-                    limit: pageSize,
-                    sortBy: sortOrder.columnId,
-                    sortOrder: sortOrder.order,
-                },
+                query,
                 isProd,
             });
             setPreparedVideos(response.preparedVideos || []);
@@ -56,11 +73,21 @@ const List: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, pageSize, sortOrder, isProd]);
+    }, [
+        page,
+        pageSize,
+        sortOrder.columnId,
+        sortOrder.order,
+        accountIds,
+        scenarioIds,
+        sourceIds,
+        isProd,
+    ]);
 
     useEffect(() => {
         loadPreparedVideos();
-    }, [loadPreparedVideos]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handlePageChange = (newPage: number) => setPage(newPage);
     const handlePageSizeChange = ([value]: string[]) => {
@@ -137,6 +164,68 @@ const List: React.FC = () => {
                     }}
                 >
                     {error}
+                </div>
+            )}
+            {/* Active filters as buttons */}
+            {(accountIds.length || scenarioIds.length || sourceIds.length) && (
+                <div style={{marginBottom: 16, display: 'flex', gap: 8}}>
+                    {accountIds.map((id) => (
+                        <Button
+                            key={`accountIds-${id}`}
+                            size="s"
+                            view="outlined"
+                            onClick={() => {
+                                const newParams = new URLSearchParams(location.search);
+                                const all = newParams.getAll('accountIds').filter((v) => v !== id);
+                                newParams.delete('accountIds');
+                                all.forEach((v) => newParams.append('accountIds', v));
+                                navigate({
+                                    pathname: location.pathname,
+                                    search: newParams.toString(),
+                                });
+                            }}
+                        >
+                            accountId: {id} ✕
+                        </Button>
+                    ))}
+                    {scenarioIds.map((id) => (
+                        <Button
+                            key={`scenarioIds-${id}`}
+                            size="s"
+                            view="outlined"
+                            onClick={() => {
+                                const newParams = new URLSearchParams(location.search);
+                                const all = newParams.getAll('scenarioIds').filter((v) => v !== id);
+                                newParams.delete('scenarioIds');
+                                all.forEach((v) => newParams.append('scenarioIds', v));
+                                navigate({
+                                    pathname: location.pathname,
+                                    search: newParams.toString(),
+                                });
+                            }}
+                        >
+                            scenarioId: {id} ✕
+                        </Button>
+                    ))}
+                    {sourceIds.map((id) => (
+                        <Button
+                            key={`sourceIds-${id}`}
+                            size="s"
+                            view="outlined"
+                            onClick={() => {
+                                const newParams = new URLSearchParams(location.search);
+                                const all = newParams.getAll('sourceIds').filter((v) => v !== id);
+                                newParams.delete('sourceIds');
+                                all.forEach((v) => newParams.append('sourceIds', v));
+                                navigate({
+                                    pathname: location.pathname,
+                                    search: newParams.toString(),
+                                });
+                            }}
+                        >
+                            sourceId: {id} ✕
+                        </Button>
+                    ))}
                 </div>
             )}
             <EnhancedTable
