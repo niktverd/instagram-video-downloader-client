@@ -34,19 +34,6 @@ export const List: React.FC = () => {
         loadScenarios();
     }, [loadScenarios]);
 
-    const handleCreateVideo = useCallback(async () => {
-        const json = await fetchGet({
-            route: Routes.createVideoByScenario,
-            query: {},
-            isProd,
-        });
-        add({
-            name: Math.random() + '-create-video',
-            title: JSON.stringify(json),
-            theme: 'info',
-        });
-    }, [add, isProd]);
-
     const openDeleteDialog = (scenario: IScenario) => {
         setDeleteScenario(scenario);
         setDeleteInput('');
@@ -95,9 +82,6 @@ export const List: React.FC = () => {
                 <Button view="outlined-action" href="/scenario/add">
                     add
                 </Button>
-                <Button view="outlined-action" onClick={handleCreateVideo}>
-                    create video
-                </Button>
                 <TextInput
                     placeholder="Filter by name or type..."
                     value={filterText}
@@ -134,6 +118,9 @@ export const List: React.FC = () => {
                         ),
                     },
                 ]}
+                onRowClick={(row) => {
+                    navigate(`/scenario/${row.id}`);
+                }}
             />
             <Modal open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
                 <div style={{padding: 24, minWidth: 350}}>
