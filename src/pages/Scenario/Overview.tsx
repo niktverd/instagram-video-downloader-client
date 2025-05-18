@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {useToaster} from '@gravity-ui/uikit';
+import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
@@ -21,6 +21,10 @@ export const Overview: React.FC = () => {
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
     const navigate = useNavigate();
+
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [deleteSlug, setDeleteSlug] = useState('');
+    const [deleteError, setDeleteError] = useState('');
 
     const loadScenario = useCallback(async () => {
         setLoading(true);
@@ -57,6 +61,22 @@ export const Overview: React.FC = () => {
         });
         navigate('/scenario');
     }, [id, isProd, add, navigate]);
+
+    const handleOpenDeleteModal = useCallback(() => {
+        setDeleteModalOpen(true);
+        setDeleteSlug('');
+        setDeleteError('');
+    }, []);
+
+    const handleConfirmDelete = async () => {
+        if (deleteSlug !== scenario?.slug) {
+            setDeleteError('Slug does not match. Please enter the correct slug to confirm.');
+            return;
+        }
+        setDeleteError('');
+        setDeleteModalOpen(false);
+        await handleDelete();
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -101,7 +121,7 @@ export const Overview: React.FC = () => {
             actions: [
                 {
                     text: 'Delete',
-                    onClick: handleDelete,
+                    onClick: handleOpenDeleteModal,
                     view: 'outlined-danger' as const,
                 },
             ],
@@ -186,6 +206,43 @@ export const Overview: React.FC = () => {
                     <CardTemplate key={cfg.title} {...cfg} />
                 ))}
             </div>
+            <Modal
+                open={deleteModalOpen}
+                onClose={() => setDeleteModalOpen(false)}
+                contentClassName={cn.modal}
+                aria-labelledby="delete-scenario-title"
+            >
+                <div style={{maxWidth: 400, padding: 10}}>
+                    <h3 id="delete-scenario-title">Delete Scenario</h3>
+                    <p>
+                        To confirm deletion, enter the scenario slug:
+                        <span style={{fontWeight: 'bold', color: '#d71'}}> {scenario.slug}</span>
+                    </p>
+                    <TextInput
+                        value={deleteSlug}
+                        onChange={(e) => setDeleteSlug(e.target.value)}
+                        placeholder="Enter scenario slug to confirm"
+                        error={Boolean(deleteError)}
+                        style={{width: '100%', marginBottom: 12}}
+                        autoFocus
+                    />
+                    {deleteError && (
+                        <div style={{color: '#d71', marginBottom: 12}}>{deleteError}</div>
+                    )}
+                    <div style={{display: 'flex', justifyContent: 'flex-end', gap: 12}}>
+                        <Button view="flat" onClick={() => setDeleteModalOpen(false)}>
+                            Cancel
+                        </Button>
+                        <Button
+                            view="outlined-danger"
+                            onClick={handleConfirmDelete}
+                            disabled={deleteSlug !== scenario.slug}
+                        >
+                            Delete
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
