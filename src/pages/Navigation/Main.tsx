@@ -8,6 +8,7 @@ import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
+import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
 import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
 import {Root as ScenarioRoot} from '../Scenario';
@@ -71,6 +72,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Prepared Videos',
         to: '/prepared-videos/*',
         Component: PreparedVideoRoot,
+        isProtected: true,
+    },
+    {
+        text: 'Instagram Media Containers',
+        to: '/instagram-media-containers/*',
+        Component: InstagramMediaContainerRoot,
         isProtected: true,
     },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},

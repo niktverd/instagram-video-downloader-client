@@ -15,11 +15,26 @@ export declare const GetInstagramMediaContainerByIdParamsSchema: z.ZodObject<
     }
 >;
 export declare const GetAllInstagramMediaContainersParamsSchema: z.ZodObject<
-    {},
+    {
+        page: z.ZodOptional<z.ZodString>;
+        limit: z.ZodOptional<z.ZodString>;
+        sortBy: z.ZodOptional<z.ZodString>;
+        sortOrder: z.ZodOptional<z.ZodString>;
+    },
     'strict',
     z.ZodTypeAny,
-    {},
-    {}
+    {
+        page?: string;
+        limit?: string;
+        sortBy?: string;
+        sortOrder?: string;
+    },
+    {
+        page?: string;
+        limit?: string;
+        sortBy?: string;
+        sortOrder?: string;
+    }
 >;
 export declare const UpdateInstagramMediaContainerParamsSchema: any;
 export declare const DeleteInstagramMediaContainerParamsSchema: z.ZodObject<
@@ -46,14 +61,14 @@ export declare const GetLimitedInstagramMediaContainersParamsSchema: z.ZodObject
     z.ZodTypeAny,
     {
         random?: boolean;
-        accountId?: number;
         limit?: number;
+        accountId?: number;
         notPublished?: boolean;
     },
     {
         random?: boolean;
-        accountId?: number;
         limit?: number;
+        accountId?: number;
         notPublished?: boolean;
     }
 >;

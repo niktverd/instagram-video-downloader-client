@@ -20,20 +20,29 @@ export declare const GetAllPreparedVideosParamsSchema: z.ZodObject<
         limit: z.ZodOptional<z.ZodString>;
         sortBy: z.ZodOptional<z.ZodString>;
         sortOrder: z.ZodOptional<z.ZodString>;
+        scenarioIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
+        sourceIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
+        accountIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
     },
     'strict',
     z.ZodTypeAny,
     {
-        limit?: string;
         page?: string;
+        limit?: string;
         sortBy?: string;
         sortOrder?: string;
+        scenarioIds?: number[];
+        sourceIds?: number[];
+        accountIds?: number[];
     },
     {
-        limit?: string;
         page?: string;
+        limit?: string;
         sortBy?: string;
         sortOrder?: string;
+        scenarioIds?: number[];
+        sourceIds?: number[];
+        accountIds?: number[];
     }
 >;
 export declare const UpdatePreparedVideoParamsSchema: any;

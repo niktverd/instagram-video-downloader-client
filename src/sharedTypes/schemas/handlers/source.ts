@@ -11,14 +11,14 @@ export declare const GetAllSourcesParamsSchema: z.ZodObject<
     'strict',
     z.ZodTypeAny,
     {
-        limit?: string;
         page?: string;
+        limit?: string;
         sortBy?: string;
         sortOrder?: string;
     },
     {
-        limit?: string;
         page?: string;
+        limit?: string;
         sortBy?: string;
         sortOrder?: string;
     }

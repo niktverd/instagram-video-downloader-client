@@ -18,7 +18,10 @@ export type GetInstagramMediaContainerByIdResponse = IInstagramMediaContainer;
 export type GetAllInstagramMediaContainersParams = z.infer<
     typeof GetAllInstagramMediaContainersParamsSchema
 >;
-export type GetAllInstagramMediaContainersResponse = IInstagramMediaContainer[];
+export type GetAllInstagramMediaContainersResponse = {
+    mediaContainers: IInstagramMediaContainer[];
+    count: number;
+};
 export type UpdateInstagramMediaContainerParams = z.infer<
     typeof UpdateInstagramMediaContainerParamsSchema
 >;

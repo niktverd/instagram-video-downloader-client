@@ -54,4 +54,6 @@ export enum Routes {
 
     // prepared videos
     getAllPreparedVideos = '/ui/get-all-prepared-videos',
+    // instagram media containers
+    getAllInstagramMediaContainers = '/ui/get-all-instagram-media-containers',
 }
