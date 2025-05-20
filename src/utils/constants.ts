@@ -56,4 +56,7 @@ export enum Routes {
     getAllPreparedVideos = '/ui/get-all-prepared-videos',
     // instagram media containers
     getAllInstagramMediaContainers = '/ui/get-all-instagram-media-containers',
+
+    // manual message to run scenarios
+    scheduleSourceVideoCreation = '/pubsub/shedule-source-video-creation',
 }

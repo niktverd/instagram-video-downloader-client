@@ -1,14 +1,25 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import {ArrowLeft, Code, Filmstrip, Magnifier, Person, Video} from '@gravity-ui/icons';
-import {Button, Icon, Spin, Tab, TabList, TabPanel, TabProvider, Text} from '@gravity-ui/uikit';
+import {
+    Button,
+    Icon,
+    Select,
+    Spin,
+    Tab,
+    TabList,
+    TabPanel,
+    TabProvider,
+    Text,
+    useToaster,
+} from '@gravity-ui/uikit';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {GetOneSourceResponse, ISource} from '../../sharedTypes';
+import {GetOneSourceResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
-import {fetchGet} from '../../utils/fetchHelpers';
+import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from '../Account/Accounts.module.css';
 
@@ -21,6 +32,12 @@ export const Overview = () => {
     const {isProd} = useContext(AppEnvContext);
     const [activeSourceTab, setActiveSourceTab] = useState<string>('');
     const [jsonExpanded, setJsonExpanded] = useState(false);
+    const {add} = useToaster();
+    const [allAccounts, setAllAccounts] = useState<{id: number; slug: string}[]>([]);
+    const [allScenarios, setAllScenarios] = useState<{id: number; slug: string}[]>([]);
+    const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([]);
+    const [selectedScenarioIds, setSelectedScenarioIds] = useState<string[]>([]);
+    const [scheduling, setScheduling] = useState(false);
 
     const fetchSourceDetails = useCallback(async () => {
         if (!id) return;
@@ -47,12 +64,74 @@ export const Overview = () => {
         fetchSourceDetails();
     }, [fetchSourceDetails]);
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const accounts = await fetchGet({
+                    route: Routes.getAccounts,
+                    query: {},
+                    isProd,
+                });
+                setAllAccounts(
+                    ((accounts || []) as IAccount[]).map((a) => ({id: a.id, slug: a.slug})),
+                );
+            } catch {}
+            try {
+                const scenarios = await fetchGet({
+                    route: Routes.getScenarios,
+                    query: {},
+                    isProd,
+                });
+                setAllScenarios(
+                    ((scenarios || []) as IScenario[]).map((s) => ({id: s.id, slug: s.slug})),
+                );
+            } catch {}
+        })();
+    }, [isProd]);
+
     const handleBack = () => {
         navigate('/sources');
     };
 
     const toggleJsonExpanded = () => {
         setJsonExpanded(!jsonExpanded);
+    };
+
+    const handleSchedule = async () => {
+        if (!source?.id || !selectedAccountIds.length || !selectedScenarioIds.length) {
+            add({
+                name: 'schedule-missing',
+                title: 'Select at least one account and scenario',
+                theme: 'danger',
+            });
+            return;
+        }
+        setScheduling(true);
+        try {
+            const res = await fetchPost({
+                route: Routes.scheduleSourceVideoCreation,
+                body: {
+                    sourceId: source.id,
+                    accountIds: selectedAccountIds.map(Number),
+                    scenarioIds: selectedScenarioIds.map(Number),
+                },
+                isProd,
+            });
+            add({
+                name: 'schedule-success',
+                title: res?.message || 'Scheduled successfully',
+                theme: 'success',
+            });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+            add({
+                name: 'schedule-fail',
+                title: err?.message || 'Failed to schedule',
+                theme: 'danger',
+            });
+        } finally {
+            setScheduling(false);
+        }
     };
 
     if (loading) {
@@ -223,6 +302,57 @@ export const Overview = () => {
                     {JSON.stringify(source, null, 2)}
                 </pre>
             ) : null,
+        },
+        {
+            title: 'Schedule New Video Creation',
+            description: 'Select accounts and scenarios, then schedule video creation via pubsub',
+            icon: <Icon data={Magnifier} />,
+            colSpan: 1,
+            children: (
+                <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+                    <div>
+                        <b>Accounts:</b>
+                        <div style={{minWidth: 220, marginTop: 8}}>
+                            <Select
+                                multiple
+                                filterable
+                                placeholder="Select accounts"
+                                options={allAccounts.map((a) => ({
+                                    value: String(a.id),
+                                    content: a.slug,
+                                }))}
+                                value={selectedAccountIds}
+                                onUpdate={(vals) => setSelectedAccountIds(vals as string[])}
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <b>Scenarios:</b>
+                        <div style={{minWidth: 220, marginTop: 8}}>
+                            <Select
+                                multiple
+                                filterable
+                                placeholder="Select scenarios"
+                                options={allScenarios.map((s) => ({
+                                    value: String(s.id),
+                                    content: s.slug,
+                                }))}
+                                value={selectedScenarioIds}
+                                onUpdate={(vals) => setSelectedScenarioIds(vals as string[])}
+                            />
+                        </div>
+                    </div>
+                    <Button
+                        view="action"
+                        size="l"
+                        loading={scheduling}
+                        onClick={handleSchedule}
+                        disabled={scheduling}
+                    >
+                        Schedule
+                    </Button>
+                </div>
+            ),
         },
         {
             title: 'Actions',
