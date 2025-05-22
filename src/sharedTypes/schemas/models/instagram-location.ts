@@ -3,12 +3,12 @@ export declare const InstagramLocationSchema: z.ZodObject<
     {
         id: z.ZodOptional<z.ZodNumber>;
         externalId: z.ZodString;
-        externalIdSource: z.ZodOptional<z.ZodString>;
-        name: z.ZodOptional<z.ZodString>;
-        address: z.ZodOptional<z.ZodString>;
-        lat: z.ZodOptional<z.ZodNumber>;
-        lng: z.ZodOptional<z.ZodNumber>;
-        group: z.ZodOptional<z.ZodString>;
+        externalIdSource: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        name: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        address: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+        lat: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+        lng: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
+        group: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     },
     'strict',
     z.ZodTypeAny,
