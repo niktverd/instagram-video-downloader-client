@@ -6,7 +6,8 @@ import {
     Display,
     Filmstrip,
     Globe,
-    PencilToSquare,
+    MapPin,
+    Pin,
 } from '@gravity-ui/icons';
 import {useParams} from 'react-router-dom';
 
@@ -49,7 +50,15 @@ export const Overview = () => {
     if (loading) return <div>Loading...</div>;
     if (!account) return <div>Not found</div>;
 
-    const {token, id: accId, availableScenarios, slug, token: instagramToken, userIdIG} = account;
+    const {
+        token,
+        id: accId,
+        availableScenarios = [],
+        instagramLocations = [],
+        slug,
+        token: instagramToken,
+        userIdIG,
+    } = account;
 
     // Config for account info card
     const accountInfoConfig: CardConfig[] = [
@@ -70,7 +79,7 @@ export const Overview = () => {
         {
             title: 'Edit',
             description: 'Edit this account',
-            icon: <PencilToSquare />, // Use Plus as a placeholder
+            icon: <MapPin />,
             colSpan: 1,
             actions: [
                 {
@@ -82,7 +91,7 @@ export const Overview = () => {
         {
             title: 'Get Insights',
             description: 'Fetch account insights',
-            icon: <ChartAreaStackedNormalized />, // Use Magnifier as a placeholder
+            icon: <ChartAreaStackedNormalized />,
             actions: [
                 {
                     text: 'Get Insights',
@@ -96,10 +105,22 @@ export const Overview = () => {
             description:
                 'Below are the scenarios connected to this account. You can see the details of each scenario by clicking on the scenario name.',
             icon: <Filmstrip />,
-            actions: availableScenarios.map((scenario: IScenario) => ({
-                text: `See: ${scenario.slug}`,
-                link: `/scenario/${scenario.id}`,
-            })),
+            actions:
+                availableScenarios?.map((scenario: IScenario) => ({
+                    text: `See: ${scenario.slug}`,
+                    link: `/scenario/${scenario.id}`,
+                })) || [],
+            colSpan: 1,
+        },
+        {
+            title: 'Instagram Locations',
+            description: 'Locations linked to this account',
+            icon: <Pin />,
+            actions:
+                instagramLocations?.map((location) => ({
+                    text: `${location.name || location.externalId || location.id}`,
+                    link: `/instagram-location/${location.id}`,
+                })) || [],
             colSpan: 1,
         },
         {

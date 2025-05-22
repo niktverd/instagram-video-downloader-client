@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 
+import {omit} from 'lodash';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {AddAccount} from '../../components/Account/forms/AddAccount';
@@ -38,17 +39,18 @@ export const Form = ({mode}: FormProps) => {
         <AddAccount
             initialValues={mode === 'edit' ? initialValues : undefined}
             onSubmit={async (values: IAccount) => {
+                const omittedValues = omit(values, ['createdAt', 'updatedAt']);
                 if (mode === 'edit' && id) {
                     await fetchPatch({
                         route: ProjectRoutes.patchAccount,
-                        body: {...values, id},
+                        body: {...omittedValues, id},
                         isProd,
                     });
                     navigate(`../${id}`);
                 } else {
                     await fetchPost({
                         route: ProjectRoutes.addAccount,
-                        body: {...values},
+                        body: {...omittedValues},
                         isProd,
                     });
                     navigate('..');

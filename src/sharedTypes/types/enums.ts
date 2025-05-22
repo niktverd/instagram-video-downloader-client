@@ -7,3 +7,7 @@ export enum ScenarioType {
     ScenarioShortifyUnique = 'ScenarioShortifyUnique',
     ScenarioCoverWithGreenUnique = 'ScenarioCoverWithGreenUnique',
 }
+export enum InstagramLocationSource {
+    Scenario = 'scenario',
+    Account = 'account',
+}

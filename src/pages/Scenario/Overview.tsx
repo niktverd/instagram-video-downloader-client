@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
+import {Pin} from '@gravity-ui/icons';
 import {Button, Modal, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useNavigate, useParams} from 'react-router-dom';
 
@@ -88,7 +89,7 @@ export const Overview: React.FC = () => {
         return <div>Not found</div>;
     }
 
-    const {slug} = scenario;
+    const {slug, instagramLocations = []} = scenario;
 
     const config: CardConfig[] = [
         {
@@ -124,6 +125,17 @@ export const Overview: React.FC = () => {
                     link: `/prepared-videos?scenarioIds=${id}`,
                 },
             ],
+        },
+        {
+            title: 'Instagram Locations',
+            description: 'Locations linked to this scenario',
+            icon: <Pin />,
+            actions:
+                instagramLocations?.map((location) => ({
+                    text: `${location.name || location.externalId || location.id}`,
+                    link: `/instagram-location/${location.id}`,
+                })) || [],
+            colSpan: 1 as const,
         },
         {
             title: 'Delete',

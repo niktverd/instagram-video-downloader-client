@@ -4,8 +4,7 @@ import {Plus} from '@gravity-ui/icons';
 import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {FieldArray, Form, Formik} from 'formik';
 
-import {ScenarioCoverWithGreenUnique} from '../../../sharedTypes';
-import {ScenarioType} from '../../../sharedTypes/types/enums';
+import {InstagramLocationSource, ScenarioType} from '../../../sharedTypes/types/enums';
 import {CustomField} from '../../CustomField/CustomField';
 
 import {ScenarioFormCommon} from './ScenarioFormCommon';
@@ -22,30 +21,33 @@ export const CoverWithGreen = ({initialValues, onSubmit, setType}: any) => {
                 initialValues={
                     initialValues
                         ? initialValues
-                        : ({
+                        : {
                               slug: '',
                               type: ScenarioType.ScenarioCoverWithGreenUnique,
                               texts: TEXT_CATEGORIES_DEFAUTL_VALUES,
                               enabled: true,
                               onlyOnce: false,
+                              instagramLocations: [],
+                              instagramLocationSource: InstagramLocationSource.Scenario,
                               options: {
                                   greenVideoUrls: [],
                                   whereToPutGreen: 'start',
                                   loopGreen: 'once',
                               },
-                          } as ScenarioCoverWithGreenUnique)
+                          }
                 }
                 onSubmit={(values) => {
                     // same shape as initial values
                     onSubmit?.(values);
                 }}
             >
-                {({values}) => (
+                {({values, setFieldValue}) => (
                     <Form>
                         <ScenarioFormCommon
                             values={values}
                             updateOnly={updateOnly}
                             setType={setType}
+                            setFieldValue={setFieldValue}
                         />
                         <CustomField
                             name="options.whereToPutGreen"

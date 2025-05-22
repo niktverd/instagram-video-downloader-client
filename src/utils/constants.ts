@@ -57,6 +57,13 @@ export enum Routes {
     // instagram media containers
     getAllInstagramMediaContainers = '/ui/get-all-instagram-media-containers',
 
+    // instagram locations
+    getAllInstagramLocations = '/ui/get-all-instagram-locations',
+    getInstagramLocationById = '/ui/get-instagram-location-by-id',
+    createInstagramLocation = '/ui/create-instagram-location',
+    updateInstagramLocation = '/ui/update-instagram-location',
+    deleteInstagramLocation = '/ui/delete-instagram-location',
+
     // manual message to run scenarios
     scheduleSourceVideoCreation = '/pubsub/shedule-source-video-creation',
 }

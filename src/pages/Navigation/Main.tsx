@@ -8,6 +8,7 @@ import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
+import {Root as InstagramLocationRoot} from '../InstagramLocation';
 import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
 import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
@@ -78,6 +79,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Instagram Media Containers',
         to: '/instagram-media-containers/*',
         Component: InstagramMediaContainerRoot,
+        isProtected: true,
+    },
+    {
+        text: 'Instagram Locations',
+        to: '/instagram-locations/*',
+        Component: InstagramLocationRoot,
         isProtected: true,
     },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
 
-import {ScenarioType} from '../../types/enums';
+import {InstagramLocationSource, ScenarioType} from '../../types/enums';
 export declare const ScenarioSchema: z.ZodObject<
     {
         id: z.ZodNumber;
@@ -12,6 +12,48 @@ export declare const ScenarioSchema: z.ZodObject<
         copiedFrom: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
         options: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
         texts: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
+        instagramLocationSource: z.ZodOptional<
+            z.ZodDefault<z.ZodNativeEnum<typeof InstagramLocationSource>>
+        >;
+        instagramLocations: z.ZodOptional<
+            z.ZodArray<
+                z.ZodObject<
+                    {
+                        id: z.ZodOptional<z.ZodNumber>;
+                        externalId: z.ZodString;
+                        externalIdSource: z.ZodOptional<z.ZodString>;
+                        name: z.ZodOptional<z.ZodString>;
+                        address: z.ZodOptional<z.ZodString>;
+                        lat: z.ZodOptional<z.ZodNumber>;
+                        lng: z.ZodOptional<z.ZodNumber>;
+                        group: z.ZodOptional<z.ZodString>;
+                    },
+                    'strict',
+                    z.ZodTypeAny,
+                    {
+                        id?: number;
+                        externalId?: string;
+                        externalIdSource?: string;
+                        name?: string;
+                        address?: string;
+                        lat?: number;
+                        lng?: number;
+                        group?: string;
+                    },
+                    {
+                        id?: number;
+                        externalId?: string;
+                        externalIdSource?: string;
+                        name?: string;
+                        address?: string;
+                        lat?: number;
+                        lng?: number;
+                        group?: string;
+                    }
+                >,
+                'many'
+            >
+        >;
     },
     'strict',
     z.ZodTypeAny,
@@ -24,6 +66,17 @@ export declare const ScenarioSchema: z.ZodObject<
         options?: Record<string, any>;
         type?: ScenarioType;
         copiedFrom?: number;
+        instagramLocationSource?: InstagramLocationSource;
+        instagramLocations?: {
+            id?: number;
+            externalId?: string;
+            externalIdSource?: string;
+            name?: string;
+            address?: string;
+            lat?: number;
+            lng?: number;
+            group?: string;
+        }[];
     },
     {
         id?: number;
@@ -34,5 +87,16 @@ export declare const ScenarioSchema: z.ZodObject<
         options?: Record<string, any>;
         type?: ScenarioType;
         copiedFrom?: number;
+        instagramLocationSource?: InstagramLocationSource;
+        instagramLocations?: {
+            id?: number;
+            externalId?: string;
+            externalIdSource?: string;
+            name?: string;
+            address?: string;
+            lat?: number;
+            lng?: number;
+            group?: string;
+        }[];
     }
 >;

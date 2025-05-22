@@ -23,6 +23,7 @@ export declare const InstagramMediaContainerSchema: z.ZodObject<
     {
         id?: number;
         accountId?: number;
+        isBlocked?: boolean;
         preparedVideoId?: number;
         lastCheckedIGStatus?: string;
         isPublished?: boolean;
@@ -34,12 +35,12 @@ export declare const InstagramMediaContainerSchema: z.ZodObject<
         audioName?: string;
         location?: any;
         hashtags?: string[];
-        isBlocked?: boolean;
         blockedReason?: string;
     },
     {
         id?: number;
         accountId?: number;
+        isBlocked?: boolean;
         preparedVideoId?: number;
         lastCheckedIGStatus?: string;
         isPublished?: boolean;
@@ -51,7 +52,6 @@ export declare const InstagramMediaContainerSchema: z.ZodObject<
         audioName?: string;
         location?: any;
         hashtags?: string[];
-        isBlocked?: boolean;
         blockedReason?: string;
     }
 >;

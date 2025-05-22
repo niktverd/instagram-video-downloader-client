@@ -4,7 +4,7 @@ import {Plus} from '@gravity-ui/icons';
 import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {FieldArray, Form, Formik} from 'formik';
 
-import {ScenarioType} from '../../../sharedTypes/types/enums';
+import {InstagramLocationSource, ScenarioType} from '../../../sharedTypes/types/enums';
 import {CustomField} from '../../CustomField/CustomField';
 
 import {ScenarioFormCommon} from './ScenarioFormCommon';
@@ -27,6 +27,8 @@ export const AddBannerInTheEnd = ({initialValues, onSubmit, setType}: any) => {
                               texts: TEXT_CATEGORIES_DEFAUTL_VALUES,
                               enabled: true,
                               onlyOnce: false,
+                              instagramLocations: [],
+                              instagramLocationSource: InstagramLocationSource.Scenario,
                               options: {
                                   extraBannerUrl: '',
                                   extraBannerUrls: [],
@@ -38,12 +40,13 @@ export const AddBannerInTheEnd = ({initialValues, onSubmit, setType}: any) => {
                     onSubmit?.(values);
                 }}
             >
-                {({values}) => (
+                {({values, setFieldValue}) => (
                     <Form>
                         <ScenarioFormCommon
                             values={values}
                             updateOnly={updateOnly}
                             setType={setType}
+                            setFieldValue={setFieldValue}
                         />
                         <CustomField
                             type="text"

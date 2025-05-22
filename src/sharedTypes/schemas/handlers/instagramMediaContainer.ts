@@ -56,6 +56,7 @@ export declare const GetLimitedInstagramMediaContainersParamsSchema: z.ZodObject
         limit: z.ZodOptional<z.ZodNumber>;
         notPublished: z.ZodOptional<z.ZodBoolean>;
         random: z.ZodOptional<z.ZodBoolean>;
+        isBlocked: z.ZodOptional<z.ZodBoolean>;
     },
     'strict',
     z.ZodTypeAny,
@@ -64,11 +65,13 @@ export declare const GetLimitedInstagramMediaContainersParamsSchema: z.ZodObject
         limit?: number;
         accountId?: number;
         notPublished?: boolean;
+        isBlocked?: boolean;
     },
     {
         random?: boolean;
         limit?: number;
         accountId?: number;
         notPublished?: boolean;
+        isBlocked?: boolean;
     }
 >;
