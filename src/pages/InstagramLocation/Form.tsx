@@ -198,7 +198,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                     theme: 'success',
                 });
 
-                navigate('/instagram-location');
+                navigate('/instagram-locations');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 add({
@@ -213,7 +213,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
     };
 
     const handleBack = () => {
-        navigate('/instagram-location');
+        navigate('/instagram-locations');
     };
 
     return (

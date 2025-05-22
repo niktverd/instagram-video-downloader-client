@@ -133,7 +133,7 @@ export const Overview: React.FC = () => {
             actions:
                 instagramLocations?.map((location) => ({
                     text: `${location.name || location.externalId || location.id}`,
-                    link: `/instagram-location/${location.id}`,
+                    link: `/instagram-locations/${location.id}`,
                 })) || [],
             colSpan: 1 as const,
         },
