@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import {ArrowLeft} from '@gravity-ui/icons';
-import {Button, Icon, TextArea, TextInput, useToaster} from '@gravity-ui/uikit';
+import {Button, Icon, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useNavigate, useParams} from 'react-router-dom';
 
+import BulkForm from '../../components/InstagramLocation/BulkForm';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IInstagramLocation} from '../../sharedTypes/types/instagramLocation';
 import {Routes} from '../../utils/constants';
@@ -42,8 +44,6 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
     const [formMode, setFormMode] = useState<'single' | 'bulk'>('single');
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState<LocationFormData>(DEFAULT_LOCATION);
-    const [bulkData, setBulkData] = useState<string>('');
-    const [bulkError, setBulkError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState(false);
 
     const loadLocation = useCallback(async () => {
@@ -68,7 +68,6 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                     group: response.group || '',
                 });
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             add({
                 name: 'load-error',
@@ -104,125 +103,64 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
         return true;
     };
 
-    const parseBulkData = (): LocationFormData[] | null => {
-        setBulkError(null);
-        try {
-            const parsed = JSON.parse(bulkData);
-
-            if (!Array.isArray(parsed)) {
-                setBulkError('Input must be a JSON array');
-                return null;
-            }
-
-            for (const item of parsed) {
-                if (!item.externalId) {
-                    setBulkError('Each location must have an externalId');
-                    return null;
-                }
-            }
-
-            return parsed;
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e);
-            setBulkError('Invalid JSON format');
-            return null;
-        }
-    };
-
     const handleSubmit = async () => {
         if (submitting) return;
+        if (!validateSingleForm()) return;
 
-        if (formMode === 'single') {
-            if (!validateSingleForm()) return;
+        setSubmitting(true);
+        try {
+            if (mode === 'edit' && id) {
+                // Clean data before sending
+                const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
-            setSubmitting(true);
-            try {
-                if (mode === 'edit' && id) {
-                    // Clean data before sending
-                    const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
-
-                    await fetchPatch({
-                        route: Routes.updateInstagramLocation,
-                        body: {
-                            id: Number(id),
-                            ...cleanedData,
-                        },
-                        isProd,
-                    });
-
-                    add({
-                        name: 'update-success',
-                        title: 'Location updated successfully',
-                        theme: 'success',
-                    });
-                } else {
-                    // Clean data before sending
-                    const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
-
-                    await fetchPost({
-                        route: Routes.createInstagramLocation,
-                        body: cleanedData,
-                        isProd,
-                    });
-
-                    add({
-                        name: 'create-success',
-                        title: 'Location created successfully',
-                        theme: 'success',
-                    });
-                }
-
-                navigate('/instagram-locations');
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (err: any) {
-                add({
-                    name: 'submit-error',
-                    title: err.message || 'Failed to save location',
-                    theme: 'danger',
+                await fetchPatch({
+                    route: Routes.updateInstagramLocation,
+                    body: {
+                        id: Number(id),
+                        ...cleanedData,
+                    },
+                    isProd,
                 });
-            } finally {
-                setSubmitting(false);
-            }
-        } else {
-            // Bulk mode
-            const locations = parseBulkData();
-            if (!locations) return;
-
-            setSubmitting(true);
-            try {
-                for (const location of locations) {
-                    // Clean each location before sending
-                    const cleanedLocation = deepOmit(location, ['createdAt', 'updatedAt']);
-
-                    await fetchPost({
-                        route: Routes.createInstagramLocation,
-                        body: cleanedLocation,
-                        isProd,
-                    });
-                }
 
                 add({
-                    name: 'bulk-success',
-                    title: `${locations.length} locations imported successfully`,
+                    name: 'update-success',
+                    title: 'Location updated successfully',
                     theme: 'success',
                 });
+            } else {
+                // Clean data before sending
+                const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
-                navigate('/instagram-locations');
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (err: any) {
-                add({
-                    name: 'bulk-error',
-                    title: err.message || 'Failed to import locations',
-                    theme: 'danger',
+                await fetchPost({
+                    route: Routes.createInstagramLocation,
+                    body: cleanedData,
+                    isProd,
                 });
-            } finally {
-                setSubmitting(false);
+
+                add({
+                    name: 'create-success',
+                    title: 'Location created successfully',
+                    theme: 'success',
+                });
             }
+
+            navigate('/instagram-locations');
+        } catch (err: any) {
+            add({
+                name: 'submit-error',
+                title: err.message || 'Failed to save location',
+                theme: 'danger',
+            });
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleBack = () => {
+        navigate('/instagram-locations');
+    };
+
+    const handleBulkSuccess = () => {
         navigate('/instagram-locations');
     };
 
@@ -351,58 +289,22 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                             disabled={loading}
                         />
                     </div>
-                </div>
-            ) : (
-                <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-                    <div>
-                        <label style={{display: 'block', marginBottom: 8, fontWeight: 500}}>
-                            Bulk Import JSON (Array of locations)
-                        </label>
-                        <TextArea
-                            value={bulkData}
-                            onUpdate={setBulkData}
-                            placeholder={`[
-  {
-    "externalId": "123456789",
-    "externalIdSource": "instagram",
-    "name": "Example Location",
-    "address": "123 Main St",
-    "lat": 40.7128,
-    "lng": -74.0060,
-    "group": "NYC"
-  },
-  {
-    "externalId": "987654321",
-    "externalIdSource": "instagram",
-    "name": "Another Location",
-    "address": "456 Broadway",
-    "lat": 40.7580,
-    "lng": -73.9855,
-    "group": "NYC"
-  }
-]`}
+
+                    <div style={{marginTop: 24}}>
+                        <Button
+                            view="action"
                             size="l"
-                            rows={15}
-                            disabled={loading}
-                        />
-                        {bulkError && (
-                            <div style={{color: '#c62828', marginTop: 8}}>{bulkError}</div>
-                        )}
+                            onClick={handleSubmit}
+                            loading={submitting}
+                            disabled={loading || submitting}
+                        >
+                            {mode === 'edit' ? 'Update' : 'Create'}
+                        </Button>
                     </div>
                 </div>
+            ) : (
+                <BulkForm isProd={isProd} onSuccess={handleBulkSuccess} />
             )}
-
-            <div style={{marginTop: 24}}>
-                <Button
-                    view="action"
-                    size="l"
-                    onClick={handleSubmit}
-                    loading={submitting}
-                    disabled={loading || submitting}
-                >
-                    {mode === 'edit' ? 'Update' : 'Create'}
-                </Button>
-            </div>
         </div>
     );
 };
