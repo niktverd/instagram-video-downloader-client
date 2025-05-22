@@ -14,6 +14,7 @@ import {
 } from '../../../sharedTypes';
 import {Routes} from '../../../utils/constants';
 import {fetchGet} from '../../../utils/fetchHelpers';
+import {deepOmit} from '../../../utils/helpers/objectHelpers';
 import {CustomField} from '../../CustomField/CustomField';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,7 +72,9 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
     // Transform form data before submitting
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmit = (values: any) => {
-        onSubmit?.(values);
+        // Remove createdAt and updatedAt fields from all objects recursively
+        const cleanedValues = deepOmit(values, ['createdAt', 'updatedAt']);
+        onSubmit?.(cleanedValues);
     };
 
     return (

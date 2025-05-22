@@ -8,6 +8,7 @@ import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
+import {deepOmit} from '../../utils/helpers/objectHelpers';
 
 export const Form: React.FC = () => {
     const {id} = useParams<{id?: string}>();
@@ -35,10 +36,13 @@ export const Form: React.FC = () => {
 
     const handleSubmit = useCallback(
         async (values: IScenario) => {
+            // Remove createdAt and updatedAt fields from all nested objects
+            const cleanedValues = deepOmit(values, ['createdAt', 'updatedAt']);
+
             if (id) {
                 await fetchPatch({
                     route: Routes.patchScenario,
-                    body: {...values, id},
+                    body: {...cleanedValues, id},
                     isProd,
                 });
                 add({
@@ -49,7 +53,7 @@ export const Form: React.FC = () => {
             } else {
                 await fetchPost({
                     route: Routes.addScenario,
-                    body: {...values},
+                    body: {...cleanedValues},
                     isProd,
                 });
                 add({

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 
-import {omit} from 'lodash';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {AddAccount} from '../../components/Account/forms/AddAccount';
@@ -8,6 +7,7 @@ import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount} from '../../sharedTypes';
 import {Routes as ProjectRoutes} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
+import {deepOmit} from '../../utils/helpers/objectHelpers';
 
 interface FormProps {
     mode: 'create' | 'edit';
@@ -39,18 +39,20 @@ export const Form = ({mode}: FormProps) => {
         <AddAccount
             initialValues={mode === 'edit' ? initialValues : undefined}
             onSubmit={async (values: IAccount) => {
-                const omittedValues = omit(values, ['createdAt', 'updatedAt']);
+                // Recursively remove createdAt and updatedAt fields at all levels
+                const cleanedValues = deepOmit(values, ['createdAt', 'updatedAt']);
+
                 if (mode === 'edit' && id) {
                     await fetchPatch({
                         route: ProjectRoutes.patchAccount,
-                        body: {...omittedValues, id},
+                        body: {...cleanedValues, id},
                         isProd,
                     });
                     navigate(`../${id}`);
                 } else {
                     await fetchPost({
                         route: ProjectRoutes.addAccount,
-                        body: {...omittedValues},
+                        body: {...cleanedValues},
                         isProd,
                     });
                     navigate('..');

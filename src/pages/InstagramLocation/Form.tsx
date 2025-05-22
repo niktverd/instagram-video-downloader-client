@@ -8,6 +8,7 @@ import {AppEnvContext} from '../../contexts/AppEnv';
 import {IInstagramLocation} from '../../sharedTypes/types/instagramLocation';
 import {Routes} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
+import {deepOmit} from '../../utils/helpers/objectHelpers';
 
 interface FormProps {
     mode?: 'create' | 'edit';
@@ -138,11 +139,14 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
             setSubmitting(true);
             try {
                 if (mode === 'edit' && id) {
+                    // Clean data before sending
+                    const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
+
                     await fetchPatch({
                         route: Routes.updateInstagramLocation,
                         body: {
                             id: Number(id),
-                            ...formData,
+                            ...cleanedData,
                         },
                         isProd,
                     });
@@ -153,9 +157,12 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                         theme: 'success',
                     });
                 } else {
+                    // Clean data before sending
+                    const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
+
                     await fetchPost({
                         route: Routes.createInstagramLocation,
-                        body: formData,
+                        body: cleanedData,
                         isProd,
                     });
 
@@ -185,9 +192,12 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
             setSubmitting(true);
             try {
                 for (const location of locations) {
+                    // Clean each location before sending
+                    const cleanedLocation = deepOmit(location, ['createdAt', 'updatedAt']);
+
                     await fetchPost({
                         route: Routes.createInstagramLocation,
-                        body: location,
+                        body: cleanedLocation,
                         isProd,
                     });
                 }
