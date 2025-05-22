@@ -2,11 +2,13 @@ import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import {
     Button,
+    Checkbox,
     Pagination,
     Select,
     Table,
     TableColumnConfig,
     TableDataItem,
+    useToaster,
     withTableActions,
     withTableSelection,
     withTableSorting,
@@ -14,9 +16,9 @@ import {
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {GetAllSourcesResponse, ISource} from '../../sharedTypes';
+import {GetAllSourcesResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
 import {Routes} from '../../utils/constants';
-import {fetchGet} from '../../utils/fetchHelpers';
+import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
 
@@ -32,20 +34,40 @@ export const List = () => {
         columnId: 'updatedAt',
         order: 'desc' as 'asc' | 'desc',
     });
+    const [notInPreparedVideos, setNotInPreparedVideos] = useState(false);
+    const [selectedSourceIds, setSelectedSourceIds] = useState<string[]>([]);
+    const [allAccounts, setAllAccounts] = useState<{id: number; slug: string}[]>([]);
+    const [allScenarios, setAllScenarios] = useState<{id: number; slug: string}[]>([]);
+    const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([]);
+    const [selectedScenarioIds, setSelectedScenarioIds] = useState<string[]>([]);
+    const [scheduling, setScheduling] = useState(false);
     const {isProd} = useContext(AppEnvContext);
+    const {add} = useToaster();
 
     const loadSources = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
+            const query: {
+                page: number;
+                limit: number;
+                sortBy: string;
+                sortOrder: string;
+                notInThePreparedVideos?: boolean;
+            } = {
+                page,
+                limit: pageSize,
+                sortBy: sortOrder.columnId,
+                sortOrder: sortOrder.order,
+            };
+
+            if (notInPreparedVideos) {
+                query.notInThePreparedVideos = true;
+            }
+
             const response = await fetchGet<GetAllSourcesResponse>({
                 route: Routes.getAllSources,
-                query: {
-                    page,
-                    limit: pageSize,
-                    sortBy: sortOrder.columnId,
-                    sortOrder: sortOrder.order,
-                },
+                query,
                 isProd,
             });
 
@@ -56,11 +78,36 @@ export const List = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, pageSize, sortOrder, isProd]);
+    }, [page, pageSize, sortOrder, notInPreparedVideos, isProd]);
 
     useEffect(() => {
         loadSources();
     }, [loadSources]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const accounts = await fetchGet<IAccount[]>({
+                    route: Routes.getAccounts,
+                    query: {onlyEnabled: true},
+                    isProd,
+                });
+                setAllAccounts(
+                    ((accounts || []) as IAccount[]).map((a) => ({id: a.id, slug: a.slug})),
+                );
+            } catch {}
+            try {
+                const scenarios = await fetchGet({
+                    route: Routes.getScenarios,
+                    query: {},
+                    isProd,
+                });
+                setAllScenarios(
+                    ((scenarios || []) as IScenario[]).map((s) => ({id: s.id, slug: s.slug})),
+                );
+            } catch {}
+        })();
+    }, [isProd]);
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
@@ -76,6 +123,50 @@ export const List = () => {
             columnId: sort.column,
             order: sort.order,
         });
+    };
+
+    const handleScheduleBulk = async () => {
+        if (
+            !selectedSourceIds.length ||
+            !selectedAccountIds.length ||
+            !selectedScenarioIds.length
+        ) {
+            add({
+                name: 'schedule-missing',
+                title: 'Select at least one source, account, and scenario',
+                theme: 'danger',
+            });
+            return;
+        }
+        setScheduling(true);
+        try {
+            await fetchPost({
+                route: Routes.scheduleSourceVideoCreation,
+                body: {
+                    sourceIds: selectedSourceIds.map(Number),
+                    accountIds: selectedAccountIds.map(Number),
+                    scenarioIds: selectedScenarioIds.map(Number),
+                },
+                isProd,
+            });
+            add({
+                name: 'schedule-success',
+                title: 'Bulk scheduling completed successfully',
+                theme: 'success',
+            });
+            setSelectedSourceIds([]);
+            setSelectedAccountIds([]);
+            setSelectedScenarioIds([]);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+            add({
+                name: 'schedule-fail',
+                title: err?.message || 'Failed to schedule',
+                theme: 'danger',
+            });
+        } finally {
+            setScheduling(false);
+        }
     };
 
     const columns: TableColumnConfig<TableDataItem>[] = [
@@ -126,18 +217,26 @@ export const List = () => {
             </div>
 
             <div style={{marginBottom: '20px'}}>
-                <Select
-                    label="Page size:"
-                    value={[pageSize.toString()]}
-                    onUpdate={handlePageSizeChange}
-                    filterable={false}
-                >
-                    <Select.Option value="1">1</Select.Option>
-                    <Select.Option value="5">5</Select.Option>
-                    <Select.Option value="10">10</Select.Option>
-                    <Select.Option value="25">25</Select.Option>
-                    <Select.Option value="50">50</Select.Option>
-                </Select>
+                <div style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
+                    <Select
+                        label="Page size:"
+                        value={[pageSize.toString()]}
+                        onUpdate={handlePageSizeChange}
+                        filterable={false}
+                    >
+                        <Select.Option value="1">1</Select.Option>
+                        <Select.Option value="5">5</Select.Option>
+                        <Select.Option value="10">10</Select.Option>
+                        <Select.Option value="25">25</Select.Option>
+                        <Select.Option value="50">50</Select.Option>
+                    </Select>
+
+                    <Checkbox
+                        checked={notInPreparedVideos}
+                        onUpdate={setNotInPreparedVideos}
+                        content="Not in prepared videos"
+                    />
+                </div>
             </div>
 
             {error && (
@@ -154,6 +253,81 @@ export const List = () => {
                 </div>
             )}
 
+            {selectedSourceIds.length > 0 && (
+                <div
+                    style={{
+                        marginTop: '20px',
+                        padding: '20px',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                    }}
+                >
+                    <h3 style={{marginTop: 0, marginBottom: '16px'}}>
+                        Bulk Schedule Video Creation ({selectedSourceIds.length} sources selected)
+                    </h3>
+                    <div
+                        style={{display: 'flex', gap: '20px', alignItems: 'end', flexWrap: 'wrap'}}
+                    >
+                        <div style={{minWidth: '220px'}}>
+                            <label
+                                style={{display: 'block', marginBottom: '8px', fontWeight: 'bold'}}
+                            >
+                                Accounts:
+                            </label>
+                            <Select
+                                multiple
+                                filterable
+                                placeholder="Select accounts"
+                                options={allAccounts.map((a) => ({
+                                    value: String(a.id),
+                                    content: a.slug,
+                                }))}
+                                value={selectedAccountIds}
+                                onUpdate={(vals) => setSelectedAccountIds(vals as string[])}
+                            />
+                        </div>
+                        <div style={{minWidth: '220px'}}>
+                            <label
+                                style={{display: 'block', marginBottom: '8px', fontWeight: 'bold'}}
+                            >
+                                Scenarios:
+                            </label>
+                            <Select
+                                multiple
+                                filterable
+                                placeholder="Select scenarios"
+                                options={allScenarios.map((s) => ({
+                                    value: String(s.id),
+                                    content: s.slug,
+                                }))}
+                                value={selectedScenarioIds}
+                                onUpdate={(vals) => setSelectedScenarioIds(vals as string[])}
+                            />
+                        </div>
+                        <Button
+                            view="action"
+                            size="l"
+                            loading={scheduling}
+                            onClick={handleScheduleBulk}
+                            disabled={
+                                scheduling ||
+                                !selectedAccountIds.length ||
+                                !selectedScenarioIds.length
+                            }
+                        >
+                            Schedule All
+                        </Button>
+                        <Button
+                            view="outlined"
+                            onClick={() => setSelectedSourceIds([])}
+                            disabled={scheduling}
+                        >
+                            Clear Selection
+                        </Button>
+                    </div>
+                </div>
+            )}
+
             <EnhancedTable
                 data={sources}
                 columns={columns}
@@ -161,8 +335,8 @@ export const List = () => {
                 sortState={[{column: sortOrder.columnId, order: sortOrder.order}]}
                 onSortStateChange={(sort) => handleSortChange(sort[0])}
                 emptyMessage="No sources found"
-                onSelectionChange={() => {}}
-                selectedIds={[]}
+                onSelectionChange={(ids) => setSelectedSourceIds(ids)}
+                selectedIds={selectedSourceIds}
                 onRowClick={(row) => {
                     navigate(`/sources/${row.id}`);
                 }}

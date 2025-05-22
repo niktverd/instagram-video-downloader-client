@@ -111,7 +111,7 @@ export const Overview = () => {
             const res = await fetchPost({
                 route: Routes.scheduleSourceVideoCreation,
                 body: {
-                    sourceId: source.id,
+                    sourceIds: [source.id],
                     accountIds: selectedAccountIds.map(Number),
                     scenarioIds: selectedScenarioIds.map(Number),
                 },
