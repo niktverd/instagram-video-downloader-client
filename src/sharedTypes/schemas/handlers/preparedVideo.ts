@@ -1,104 +1,52 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const CreatePreparedVideoParamsSchema: any;
-export declare const GetPreparedVideoByIdParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
-export declare const GetAllPreparedVideosParamsSchema: z.ZodObject<
-    {
-        page: z.ZodOptional<z.ZodString>;
-        limit: z.ZodOptional<z.ZodString>;
-        sortBy: z.ZodOptional<z.ZodString>;
-        sortOrder: z.ZodOptional<z.ZodString>;
-        scenarioIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
-        sourceIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
-        accountIds: z.ZodType<number[], z.ZodTypeDef, number[]>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-        scenarioIds?: number[];
-        sourceIds?: number[];
-        accountIds?: number[];
-    },
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-        scenarioIds?: number[];
-        sourceIds?: number[];
-        accountIds?: number[];
-    }
->;
-export declare const UpdatePreparedVideoParamsSchema: any;
-export declare const DeletePreparedVideoParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
-export declare const GetOnePreparedVideoParamsSchema: z.ZodObject<
-    {
-        hasFirebaseUrl: z.ZodOptional<z.ZodBoolean>;
-        firebaseUrl: z.ZodOptional<z.ZodString>;
-        duration: z.ZodOptional<z.ZodNumber>;
-        scenarioId: z.ZodOptional<z.ZodNumber>;
-        sourceId: z.ZodOptional<z.ZodNumber>;
-        accountId: z.ZodOptional<z.ZodNumber>;
-        random: z.ZodOptional<z.ZodBoolean>;
-        notInInstagramMediaContainers: z.ZodOptional<z.ZodBoolean>;
-        fetchGraphAccount: z.ZodOptional<z.ZodBoolean>;
-        fetchGraphScenario: z.ZodOptional<z.ZodBoolean>;
-        fetchGraphSource: z.ZodOptional<z.ZodBoolean>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        random?: boolean;
-        accountId?: number;
-        hasFirebaseUrl?: boolean;
-        firebaseUrl?: string;
-        duration?: number;
-        scenarioId?: number;
-        sourceId?: number;
-        notInInstagramMediaContainers?: boolean;
-        fetchGraphAccount?: boolean;
-        fetchGraphScenario?: boolean;
-        fetchGraphSource?: boolean;
-    },
-    {
-        random?: boolean;
-        accountId?: number;
-        hasFirebaseUrl?: boolean;
-        firebaseUrl?: string;
-        duration?: number;
-        scenarioId?: number;
-        sourceId?: number;
-        notInInstagramMediaContainers?: boolean;
-        fetchGraphAccount?: boolean;
-        fetchGraphScenario?: boolean;
-        fetchGraphSource?: boolean;
-    }
->;
+
+import {PreparedVideoSchema} from './../models';
+import {zodOptionalNumberArray} from './utils';
+
+export const CreatePreparedVideoParamsSchema = PreparedVideoSchema.omit({id: true});
+
+export const GetPreparedVideoByIdParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();
+
+export const GetAllPreparedVideosParamsSchema = z
+    .object({
+        page: z.string().optional(),
+        limit: z.string().optional(),
+        sortBy: z.string().optional(),
+        sortOrder: z.string().optional(),
+        scenarioIds: zodOptionalNumberArray(),
+        sourceIds: zodOptionalNumberArray(),
+        accountIds: zodOptionalNumberArray(),
+    })
+    .strict();
+
+export const UpdatePreparedVideoParamsSchema = CreatePreparedVideoParamsSchema.partial()
+    .extend({
+        id: z.number(),
+    })
+    .strict();
+
+export const DeletePreparedVideoParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();
+
+export const GetOnePreparedVideoParamsSchema = z
+    .object({
+        hasFirebaseUrl: z.boolean().optional(),
+        firebaseUrl: z.string().optional(),
+        duration: z.number().optional(),
+        scenarioId: z.number().optional(),
+        sourceId: z.number().optional(),
+        accountId: z.number().optional(),
+        random: z.boolean().optional(),
+        notInInstagramMediaContainers: z.boolean().optional(),
+        fetchGraphAccount: z.boolean().optional(),
+        fetchGraphScenario: z.boolean().optional(),
+        fetchGraphSource: z.boolean().optional(),
+    })
+    .strict();

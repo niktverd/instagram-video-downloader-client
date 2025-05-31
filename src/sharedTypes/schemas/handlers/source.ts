@@ -1,71 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const CreateSourceParamsSchema: any;
-export declare const GetAllSourcesParamsSchema: z.ZodObject<
-    {
-        page: z.ZodOptional<z.ZodString>;
-        limit: z.ZodOptional<z.ZodString>;
-        sortBy: z.ZodOptional<z.ZodString>;
-        sortOrder: z.ZodOptional<z.ZodString>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-    },
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-    }
->;
-export declare const GetOneSourceParamsSchema: z.ZodObject<
-    {
-        id: z.ZodOptional<z.ZodNumber>;
-        random: z.ZodOptional<z.ZodBoolean>;
-        emptyFirebaseUrl: z.ZodOptional<z.ZodBoolean>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-        random?: boolean;
-        emptyFirebaseUrl?: boolean;
-    },
-    {
-        id?: number;
-        random?: boolean;
-        emptyFirebaseUrl?: boolean;
-    }
->;
-export declare const UpdateSourceParamsSchema: any;
-export declare const DeleteSourceParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
-export declare const GetSourceByIdParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
+
+import {SourceSchema} from './../models';
+import {zodOptionalBoolean} from './utils';
+
+export const CreateSourceParamsSchema = SourceSchema.omit({id: true});
+
+export const GetAllSourcesParamsSchema = z
+    .object({
+        page: z.string().optional(),
+        limit: z.string().optional(),
+        sortBy: z.string().optional(),
+        sortOrder: z.string().optional(),
+        notInThePreparedVideos: zodOptionalBoolean(),
+    })
+    .strict();
+
+export const GetOneSourceParamsSchema = z
+    .object({
+        id: z.number().optional(),
+        random: z.boolean().optional(),
+        emptyFirebaseUrl: z.boolean().optional(),
+    })
+    .strict();
+
+export const UpdateSourceParamsSchema = SourceSchema.partial()
+    .extend({
+        id: z.number(),
+    })
+    .strict();
+
+export const DeleteSourceParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();
+
+export const GetSourceByIdParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();

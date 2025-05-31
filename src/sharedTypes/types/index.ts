@@ -6,23 +6,29 @@ export type SourceInstagramReel = {
     title: string;
     originalHashtags: string[];
 };
+
 export type SourceYoutubeShort = {
     url: string;
 };
+
 export type Sources = {
     instagramReel?: SourceInstagramReel;
     youtubeShort?: SourceYoutubeShort;
 };
+
 type PublishedCommon = {
     published: boolean;
 };
+
 type ReportInstagramReel = PublishedCommon & {
     mediaContainerId?: string;
     status: 'empty' | 'uploaded' | 'finished' | 'published';
 };
+
 type ReportYoutubeShort = PublishedCommon & {
     videoId?: string;
 };
+
 export type MediaPostModel = {
     id: string;
     createdAt: any;
@@ -34,6 +40,7 @@ export type MediaPostModel = {
     attempt: number;
     randomIndex: number;
 };
+
 export type MediaPostModelOld = {
     id: string;
     account: string;
@@ -45,6 +52,7 @@ export type MediaPostModelOld = {
     type: string;
     url: string;
 };
+
 export type SourceV3 = {
     id: string;
     createdAt: any;
@@ -60,6 +68,7 @@ export type SourceV3 = {
     sender?: string;
     recipient?: string;
 };
+
 export type PreparedVideoV3 = {
     id: string;
     firebaseUrl: string;
@@ -72,6 +81,7 @@ export type PreparedVideoV3 = {
     accountsHasBeenUsed: string[];
     parameters?: unknown;
 };
+
 export type AccountV3 = {
     id: number;
     token: string;
@@ -79,6 +89,7 @@ export type AccountV3 = {
     availableScenarios: string[];
     accountBackgrounMusic?: string;
 };
+
 export type AccountMediaContainerV3 = {
     id: string;
     mediaContainerId: string;
@@ -86,6 +97,7 @@ export type AccountMediaContainerV3 = {
     status: 'created' | 'published';
     preparedVideoId: string;
 };
+
 export * from './account';
 export * from './scenario';
 export * from './instagramMediaContainer';

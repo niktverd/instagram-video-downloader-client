@@ -131,7 +131,7 @@ const List: React.FC = () => {
                 onSelectionChange={() => {}}
                 selectedIds={[]}
                 onRowClick={(row) => {
-                    navigate(`/instagram-media-container/${row.id}`);
+                    navigate(`/instagram-media-containers/${row.id}`);
                 }}
             />
             <div style={{marginTop: 20, display: 'flex', justifyContent: 'center'}}>

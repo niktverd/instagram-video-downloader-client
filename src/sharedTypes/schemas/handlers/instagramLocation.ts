@@ -1,52 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const CreateInstagramLocationParamsSchema: any;
-export declare const GetInstagramLocationByIdParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
-export declare const GetAllInstagramLocationsParamsSchema: z.ZodObject<
-    {
-        page: z.ZodOptional<z.ZodString>;
-        limit: z.ZodOptional<z.ZodString>;
-        sortBy: z.ZodOptional<z.ZodString>;
-        sortOrder: z.ZodOptional<z.ZodString>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-    },
-    {
-        page?: string;
-        limit?: string;
-        sortBy?: string;
-        sortOrder?: string;
-    }
->;
-export declare const UpdateInstagramLocationParamsSchema: any;
-export declare const DeleteInstagramLocationParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
+
+import {InstagramLocationSchema} from './../models';
+
+export const CreateInstagramLocationParamsSchema = InstagramLocationSchema.omit({
+    id: true,
+});
+
+export const GetInstagramLocationByIdParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();
+
+export const GetAllInstagramLocationsParamsSchema = z
+    .object({
+        page: z.string().optional(),
+        limit: z.string().optional(),
+        sortBy: z.string().optional(),
+        sortOrder: z.string().optional(),
+        groupTextFilter: z.string().optional(),
+        commonTextFilter: z.string().optional(),
+    })
+    .strict();
+
+export const UpdateInstagramLocationParamsSchema = CreateInstagramLocationParamsSchema.partial()
+    .extend({
+        id: z.number(),
+    })
+    .strict();
+
+export const DeleteInstagramLocationParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();

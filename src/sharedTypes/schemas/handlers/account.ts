@@ -1,44 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const CreateAccountParamsSchema: any;
-export declare const GetAccountByIdParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
-export declare const GetAccountBySlugParamsSchema: z.ZodObject<
-    {
-        slug: z.ZodString;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        slug?: string;
-    },
-    {
-        slug?: string;
-    }
->;
-export declare const GetAllAccountsParamsSchema: z.ZodObject<{}, 'strict', z.ZodTypeAny, {}, {}>;
-export declare const UpdateAccountParamsSchema: any;
-export declare const DeleteAccountParamsSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-    },
-    {
-        id?: number;
-    }
->;
+
+import {AccountSchema} from './../models';
+import {zodOptionalBoolean} from './utils';
+
+export const CreateAccountParamsSchema = AccountSchema.omit({id: true});
+export const GetAccountByIdParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();
+
+export const GetAccountBySlugParamsSchema = z
+    .object({
+        slug: z.string(),
+    })
+    .strict();
+
+export const GetAllAccountsParamsSchema = z
+    .object({
+        onlyEnabled: zodOptionalBoolean(),
+    })
+    .strict();
+
+export const UpdateAccountParamsSchema = CreateAccountParamsSchema.partial()
+    .extend({
+        id: z.number(),
+    })
+    .strict();
+
+export const DeleteAccountParamsSchema = z
+    .object({
+        id: z.number(),
+    })
+    .strict();

@@ -1,44 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const CreateUserParamsSchema: any;
-export declare const GetUserByIdParamsSchema: z.ZodObject<
-    {
-        id: z.ZodString;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: string;
-    },
-    {
-        id?: string;
-    }
->;
-export declare const GetUserByEmailParamsSchema: z.ZodObject<
-    {
-        email: z.ZodString;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        email?: string;
-    },
-    {
-        email?: string;
-    }
->;
-export declare const GetAllUsersParamsSchema: z.ZodObject<{}, 'strict', z.ZodTypeAny, {}, {}>;
-export declare const UpdateUserParamsSchema: any;
-export declare const DeleteUserParamsSchema: z.ZodObject<
-    {
-        id: z.ZodString;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: string;
-    },
-    {
-        id?: string;
-    }
->;
+
+import {UserSchema} from './../models';
+
+export const CreateUserParamsSchema = UserSchema.omit({id: true});
+
+export const GetUserByIdParamsSchema = z
+    .object({
+        id: z.string(),
+    })
+    .strict();
+
+export const GetUserByEmailParamsSchema = z
+    .object({
+        email: z.string(),
+    })
+    .strict();
+
+export const GetAllUsersParamsSchema = z.object({}).strict();
+
+export const UpdateUserParamsSchema = CreateUserParamsSchema.partial()
+    .extend({
+        id: z.number(),
+    })
+    .strict();
+
+export const DeleteUserParamsSchema = z
+    .object({
+        id: z.string(),
+    })
+    .strict();

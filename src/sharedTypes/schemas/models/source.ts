@@ -1,39 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
-export declare const SourceSchema: z.ZodObject<
-    {
-        id: z.ZodNumber;
-        firebaseUrl: z.ZodOptional<z.ZodString>;
-        sources: z.ZodRecord<z.ZodString, z.ZodAny>;
-        bodyJSONString: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
-        duration: z.ZodOptional<z.ZodNumber>;
-        attempt: z.ZodOptional<z.ZodNumber>;
-        lastUsed: z.ZodOptional<z.ZodString>;
-        sender: z.ZodOptional<z.ZodString>;
-        recipient: z.ZodOptional<z.ZodString>;
-    },
-    'strict',
-    z.ZodTypeAny,
-    {
-        id?: number;
-        firebaseUrl?: string;
-        duration?: number;
-        sources?: Record<string, any>;
-        bodyJSONString?: Record<string, any>;
-        attempt?: number;
-        lastUsed?: string;
-        sender?: string;
-        recipient?: string;
-    },
-    {
-        id?: number;
-        firebaseUrl?: string;
-        duration?: number;
-        sources?: Record<string, any>;
-        bodyJSONString?: Record<string, any>;
-        attempt?: number;
-        lastUsed?: string;
-        sender?: string;
-        recipient?: string;
-    }
->;
+
+import {createEntitySchema} from './base';
+
+export const SourceSchema = createEntitySchema({
+    firebaseUrl: z.string().optional(),
+    sources: z.record(z.any()),
+    bodyJSONString: z.record(z.any()).optional(),
+    duration: z.number().optional(),
+    attempt: z.number().optional(),
+    lastUsed: z.string().optional(),
+    sender: z.string().optional(),
+    recipient: z.string().optional(),
+}).strict();
