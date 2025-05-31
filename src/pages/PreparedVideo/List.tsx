@@ -34,12 +34,14 @@ const List: React.FC = () => {
         order: 'desc' as 'asc' | 'desc',
     });
     const {isProd} = useContext(AppEnvContext);
+    const [findDuplicates, setFindDuplicates] = useState(false);
 
     // Parse query params for filters
     const searchParams = new URLSearchParams(location.search);
     const accountIds = searchParams.getAll('accountIds');
     const scenarioIds = searchParams.getAll('scenarioIds');
     const sourceIds = searchParams.getAll('sourceIds');
+    const findDuplicatesParam = searchParams.get('findDuplicates');
 
     const loadPreparedVideos = useCallback(async () => {
         setLoading(true);
@@ -59,6 +61,9 @@ const List: React.FC = () => {
             }
             if (sourceIds.length) {
                 query.sourceIds = sourceIds;
+            }
+            if (findDuplicates) {
+                query.findDuplicates = true;
             }
             const response = await fetchGet<GetAllPreparedVideosResponse>({
                 route: Routes.getAllPreparedVideos,
@@ -82,12 +87,18 @@ const List: React.FC = () => {
         scenarioIds,
         sourceIds,
         isProd,
+        findDuplicates,
     ]);
 
     useEffect(() => {
         loadPreparedVideos();
+        if (findDuplicatesParam === 'true') {
+            setFindDuplicates(true);
+        } else {
+            setFindDuplicates(false);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, pageSize]);
+    }, [page, pageSize, findDuplicates]);
 
     const handlePageChange = (newPage: number) => setPage(newPage);
     const handlePageSizeChange = ([value]: string[]) => {
@@ -139,7 +150,7 @@ const List: React.FC = () => {
                     Refresh
                 </Button>
             </div>
-            <div style={{marginBottom: 20}}>
+            <div style={{marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16}}>
                 <Select
                     label="Page size:"
                     value={[pageSize.toString()]}
@@ -152,6 +163,27 @@ const List: React.FC = () => {
                     <Select.Option value="25">25</Select.Option>
                     <Select.Option value="50">50</Select.Option>
                 </Select>
+                <label style={{display: 'flex', alignItems: 'center', gap: 4}}>
+                    <input
+                        type="checkbox"
+                        checked={findDuplicates}
+                        onChange={(e) => {
+                            const checked = e.target.checked;
+                            setFindDuplicates(checked);
+                            const newParams = new URLSearchParams(location.search);
+                            if (checked) {
+                                newParams.set('findDuplicates', 'true');
+                            } else {
+                                newParams.delete('findDuplicates');
+                            }
+                            navigate({
+                                pathname: location.pathname,
+                                search: newParams.toString(),
+                            });
+                        }}
+                    />
+                    <span>Show only duplicates</span>
+                </label>
             </div>
             {error && (
                 <div
@@ -239,7 +271,7 @@ const List: React.FC = () => {
                 onSelectionChange={() => {}}
                 selectedIds={[]}
                 onRowClick={(row) => {
-                    navigate(`/prepared-video/${row.id}`);
+                    navigate(`/prepared-videos/${row.id}`);
                 }}
             />
             <h3>Total Items: {totalItems}</h3>
