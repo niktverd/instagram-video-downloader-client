@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
 import {PreparedVideoSchema} from './../models';
-import {zodOptionalNumberArray} from './utils';
+import {zodOptionalBoolean, zodOptionalNumberArray} from './utils';
 
 export const CreatePreparedVideoParamsSchema = PreparedVideoSchema.omit({id: true});
 
@@ -20,6 +20,7 @@ export const GetAllPreparedVideosParamsSchema = z
         scenarioIds: zodOptionalNumberArray(),
         sourceIds: zodOptionalNumberArray(),
         accountIds: zodOptionalNumberArray(),
+        findDuplicates: zodOptionalBoolean(),
     })
     .strict();
 
@@ -48,5 +49,13 @@ export const GetOnePreparedVideoParamsSchema = z
         fetchGraphAccount: z.boolean().optional(),
         fetchGraphScenario: z.boolean().optional(),
         fetchGraphSource: z.boolean().optional(),
+    })
+    .strict();
+
+export const FindPreparedVideoDuplicatesParamsSchema = z
+    .object({
+        accountId: z.number(),
+        sourceId: z.number(),
+        scenarioId: z.number(),
     })
     .strict();

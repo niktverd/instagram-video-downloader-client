@@ -1,20 +1,87 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {memo, useCallback, useContext, useEffect, useState} from 'react';
 
 import {useParams} from 'react-router-dom';
 
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {GetPreparedVideoByIdResponse, IPreparedVideo} from '../../sharedTypes/types/preparedVideo';
+import {
+    FindPreparedVideoDuplicatesParams,
+    FindPreparedVideoDuplicatesResponse,
+    GetPreparedVideoByIdResponse,
+    IPreparedVideo,
+} from '../../sharedTypes/types/preparedVideo';
 import {Routes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../Scenario/Scenarios.module.css';
+
+const DuplicatesTable: React.FC<{
+    duplicates: IPreparedVideo[] | null;
+    loading: boolean;
+    error: string | null;
+    currentId: number | string;
+}> = memo(({duplicates, loading, error, currentId}) => {
+    if (loading) {
+        return <div>Загрузка дубликатов...</div>;
+    }
+    if (error) {
+        return <div style={{color: 'red'}}>{error}</div>;
+    }
+    if (duplicates && duplicates.length > 0) {
+        return (
+            <div style={{overflowX: 'auto'}}>
+                <table style={{width: '100%', borderCollapse: 'collapse'}}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Duration</th>
+                            <th>Scenario ID</th>
+                            <th>Source ID</th>
+                            <th>Account ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {duplicates.map((dup) => (
+                            <tr
+                                key={dup.id}
+                                style={{
+                                    background: dup.id === currentId ? '#12121272' : undefined,
+                                }}
+                            >
+                                <td>{dup.id}</td>
+                                <td>{dup.duration ?? '-'}</td>
+                                <td>{dup.scenarioId}</td>
+                                <td>{dup.sourceId}</td>
+                                <td>{dup.accountId}</td>
+                                <td>
+                                    <a
+                                        href={`/prepared-videos/${dup.id}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {dup.id}
+                                    </a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+    return <div>Дубликаты не найдены</div>;
+});
+DuplicatesTable.displayName = 'DuplicatesTable';
 
 const Overview: React.FC = () => {
     const {id} = useParams<{id: string}>();
     const [video, setVideo] = useState<IPreparedVideo | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [duplicates, setDuplicates] = useState<IPreparedVideo[] | null>(null);
+    const [duplicatesLoading, setDuplicatesLoading] = useState(false);
+    const [duplicatesError, setDuplicatesError] = useState<string | null>(null);
     const {isProd} = useContext(AppEnvContext);
 
     const loadVideo = useCallback(async () => {
@@ -35,9 +102,41 @@ const Overview: React.FC = () => {
         }
     }, [id, isProd]);
 
+    // Загрузка дубликатов
+    const loadDuplicates = useCallback(
+        async (videoLocal: IPreparedVideo) => {
+            setDuplicatesLoading(true);
+            setDuplicatesError(null);
+            try {
+                const params: FindPreparedVideoDuplicatesParams = {
+                    accountId: videoLocal.accountId,
+                    sourceId: videoLocal.sourceId,
+                    scenarioId: videoLocal.scenarioId,
+                };
+                const data = await fetchGet<FindPreparedVideoDuplicatesResponse>({
+                    route: Routes.getPreparedVideoDuplicates,
+                    query: params,
+                    isProd,
+                });
+                setDuplicates((data ?? []) as FindPreparedVideoDuplicatesResponse);
+            } catch {
+                setDuplicatesError('Failed to load duplicates');
+            } finally {
+                setDuplicatesLoading(false);
+            }
+        },
+        [isProd],
+    );
+
     useEffect(() => {
         if (id) loadVideo();
     }, [id, loadVideo]);
+
+    useEffect(() => {
+        if (video) {
+            loadDuplicates(video);
+        }
+    }, [video, loadDuplicates]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
@@ -124,6 +223,19 @@ const Overview: React.FC = () => {
                 </video>
             ) : (
                 <div>No video available</div>
+            ),
+        },
+        {
+            title: 'Дубликаты',
+            description: 'Все найденные дубликаты по accountId, sourceId, scenarioId',
+            colSpan: 3 as const,
+            children: (
+                <DuplicatesTable
+                    duplicates={duplicates}
+                    loading={duplicatesLoading}
+                    error={duplicatesError}
+                    currentId={video.id}
+                />
             ),
         },
     ];
