@@ -40,3 +40,9 @@ export const GetSourceByIdParamsSchema = z
         id: z.number(),
     })
     .strict();
+
+export const SourceStatisticsParamsSchema = z
+    .object({
+        days: z.array(z.string()),
+    })
+    .strict();

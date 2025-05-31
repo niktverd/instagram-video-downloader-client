@@ -5,8 +5,8 @@ import {
     GetAllSourcesParamsSchema,
     GetOneSourceParamsSchema,
     GetSourceByIdParamsSchema,
+    SourceStatisticsParamsSchema,
     UpdateSourceParamsSchema,
-    // CreateSourceParamsSchema as _CreateSourceParamsSchema,
 } from './../schemas/handlers/source';
 import {SourceSchema} from './../schemas/models/source';
 
@@ -29,3 +29,6 @@ export type DeleteSourceResponse = number;
 
 export type GetSourceByIdParams = z.infer<typeof GetSourceByIdParamsSchema>;
 export type GetSourceByIdResponse = ISource | undefined;
+
+export type SourceStatisticsParams = z.infer<typeof SourceStatisticsParamsSchema>;
+export type SourceStatisticsResponse = Record<string, number>;

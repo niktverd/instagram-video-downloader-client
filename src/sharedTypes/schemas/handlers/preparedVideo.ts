@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
 import {PreparedVideoSchema} from './../models';
-import {zodOptionalBoolean, zodOptionalNumberArray} from './utils';
+import {zodOptionalBoolean, zodOptionalNumber, zodOptionalNumberArray} from './utils';
 
 export const CreatePreparedVideoParamsSchema = PreparedVideoSchema.omit({id: true});
 
@@ -54,8 +54,8 @@ export const GetOnePreparedVideoParamsSchema = z
 
 export const FindPreparedVideoDuplicatesParamsSchema = z
     .object({
-        accountId: z.number(),
-        sourceId: z.number(),
-        scenarioId: z.number(),
+        accountId: zodOptionalNumber(),
+        sourceId: zodOptionalNumber(),
+        scenarioId: zodOptionalNumber(),
     })
     .strict();

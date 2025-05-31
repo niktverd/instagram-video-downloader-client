@@ -29,6 +29,7 @@ export enum Routes {
     // sources
     getAllSources = '/ui/get-all-sources',
     getOneSource = '/ui/get-one-source',
+    getSourcesStatisticsByDays = '/ui/get-sources-statistics-by-days',
 
     getInsights = '/ui/get-insights',
     getMedia = '/ui/get-media',

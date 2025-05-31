@@ -214,6 +214,9 @@ export const List = () => {
                 <Button view="action" onClick={loadSources}>
                     Refresh
                 </Button>
+                <Button view="action" href={`/sources/statistics`}>
+                    Statistics
+                </Button>
             </div>
 
             <div style={{marginBottom: '20px'}}>

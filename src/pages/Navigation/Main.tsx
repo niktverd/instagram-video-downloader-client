@@ -14,6 +14,7 @@ import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
 import {Root as ScenarioRoot} from '../Scenario';
 import {Root as SourceRoot} from '../Source';
+// import {Statistics} from '../Source/Statistics';
 import {Test} from '../Test';
 
 import cl from './Main.module.css';
@@ -87,6 +88,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         Component: InstagramLocationRoot,
         isProtected: true,
     },
+    // {
+    //     text: 'Statistics',
+    //     to: '/statistics',
+    //     Component: Statistics,
+    //     isProtected: true,
+    // },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},
     {
         text: 'Analize User Content',
