@@ -55,13 +55,7 @@ const DuplicatesTable: React.FC<{
                                 <td>{dup.sourceId}</td>
                                 <td>{dup.accountId}</td>
                                 <td>
-                                    <a
-                                        href={`/prepared-videos/${dup.id}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {dup.id}
-                                    </a>
+                                    <a href={`/prepared-videos/${dup.id}`}>{dup.id}</a>
                                 </td>
                             </tr>
                         ))}
