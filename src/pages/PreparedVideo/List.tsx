@@ -146,9 +146,14 @@ const List: React.FC = () => {
                 }}
             >
                 <h2>Prepared Videos</h2>
-                <Button view="action" onClick={loadPreparedVideos} loading={loading}>
-                    Refresh
-                </Button>
+                <div style={{display: 'flex', gap: 8}}>
+                    <Button view="action" onClick={loadPreparedVideos} loading={loading}>
+                        Refresh
+                    </Button>
+                    <Button view="action" href="/prepared-videos/statistics">
+                        Statistics
+                    </Button>
+                </div>
             </div>
             <div style={{marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16}}>
                 <Select
