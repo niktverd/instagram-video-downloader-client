@@ -5,7 +5,7 @@ import {Button, useToaster} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {MediaPostModel} from '../../types';
-import {Routes as ProjectRoutes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './MediaPostCard.module.css';
@@ -20,7 +20,7 @@ export const MediaPostCard = (props: MediaPostModel) => {
     const handleSplit = useCallback(async () => {
         try {
             const json = await fetchPost({
-                route: ProjectRoutes.splitVideoInTheMiddle,
+                route: FetchRoutes.splitVideoInTheMiddle,
                 // query: {limit, lastDocumnetId, orderByField, orderDirection},
                 body: {id},
                 isProd,
@@ -47,7 +47,7 @@ export const MediaPostCard = (props: MediaPostModel) => {
     const handleTestGreen = useCallback(async () => {
         try {
             const json = await fetchPost({
-                route: ProjectRoutes.testGreenScreen,
+                route: FetchRoutes.testGreenScreen,
                 // query: {limit, lastDocumnetId, orderByField, orderDirection},
                 body: {id},
                 isProd,

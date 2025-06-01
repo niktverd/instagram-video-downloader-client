@@ -5,7 +5,7 @@ import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAx
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {SourceStatisticsResponse} from '../../sharedTypes';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 function getLastNDays(n: number) {
@@ -32,7 +32,7 @@ export const Statistics = () => {
         setError(null);
         try {
             const response = await fetchGet<SourceStatisticsResponse>({
-                route: Routes.getSourcesStatisticsByDays,
+                route: FetchRoutes.getSourcesStatisticsByDays,
                 query: {days},
                 isProd,
             });

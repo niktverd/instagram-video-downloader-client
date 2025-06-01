@@ -3,7 +3,7 @@ import React, {useContext, useState} from 'react';
 import {Button, TextInput} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 export const PushToPubSub: React.FC = () => {
@@ -23,7 +23,7 @@ export const PushToPubSub: React.FC = () => {
 
         try {
             const response = await fetchGet({
-                route: Routes.pubsubPushTest,
+                route: FetchRoutes.pubsubPushTest,
                 query: {
                     accountId,
                     scenarioId,

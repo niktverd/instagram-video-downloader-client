@@ -7,7 +7,7 @@ import {Form, Formik} from 'formik';
 
 import {AppEnvContext} from '../../../contexts/AppEnv';
 import {GetAllScenariosResponse, IInstagramLocation, IScenario} from '../../../sharedTypes';
-import {Routes} from '../../../utils/constants';
+import {FetchRoutes} from '../../../utils/constants';
 import {fetchGet} from '../../../utils/fetchHelpers';
 import {deepOmit} from '../../../utils/helpers/objectHelpers';
 import {CustomField} from '../../CustomField/CustomField';
@@ -22,7 +22,7 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
         const fetchData = async () => {
             // Get scenarios
             const scenariosData = await fetchGet<GetAllScenariosResponse>({
-                route: Routes.getScenarios,
+                route: FetchRoutes.getScenarios,
                 query: {},
                 isProd,
             });

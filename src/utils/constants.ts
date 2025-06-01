@@ -9,7 +9,7 @@ export const defaultHeaders = {
     'Content-Type': 'application/json',
 };
 
-export enum Routes {
+export enum FetchRoutes {
     getMediaPosts = '/ui/get-media-posts',
     splitVideoInTheMiddle = '/ui/split-video-in-the-middle',
     testGreenScreen = '/ui/test-green-screen',
@@ -54,10 +54,12 @@ export enum Routes {
     deleteUser = '/ui/delete-user',
 
     // prepared videos
+    createPreparedVideo = '/ui/add-prepared-video',
     getAllPreparedVideos = '/ui/get-all-prepared-videos',
     getPreparedVideoById = '/ui/get-prepared-video-by-id',
     getPreparedVideoDuplicates = '/ui/get-prepared-video-duplicates',
     getPreparedVideosStatisticsByDays = '/ui/get-prepared-videos-statistics-by-days',
+    hasPreparedVideoBeenCreated = '/ui/has-prepared-video-been-created',
     // instagram media containers
     getAllInstagramMediaContainers = '/ui/get-all-instagram-media-containers',
     getInstagramMediaContainerById = '/ui/get-instagram-media-container-by-id',
@@ -72,4 +74,8 @@ export enum Routes {
 
     // manual message to run scenarios
     scheduleSourceVideoCreation = '/pubsub/shedule-source-video-creation',
+    // cloud run scenario execution
+    createCloudRunScenarioExecution = '/ui/create-cloud-run-scenario-execution',
+    getAllCloudRunScenarioExecution = '/ui/get-cloud-run-scenario-execution',
+    updateCloudRunScenarioExecutionStatus = '/ui/update-cloud-run-scenario-execution',
 }

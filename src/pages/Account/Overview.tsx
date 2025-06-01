@@ -15,7 +15,7 @@ import {InstagramConnect} from '../../components/Account/InstagramConnect';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount, IScenario} from '../../sharedTypes';
-import {Routes as ProjectRoutes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../../components/Account/Account.module.css';
@@ -30,7 +30,7 @@ export const Overview = () => {
         if (!id) return;
         setLoading(true);
         fetchGet<IAccount>({
-            route: ProjectRoutes.getAccountById,
+            route: FetchRoutes.getAccountById,
             query: {id},
             isProd,
         })
@@ -41,7 +41,7 @@ export const Overview = () => {
     const handleGetInsights = async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await fetchGet<any>({
-            route: ProjectRoutes.getInsights,
+            route: FetchRoutes.getInsights,
             query: {id: account?.id},
             isProd,
         });

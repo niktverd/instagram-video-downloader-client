@@ -7,7 +7,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchDelete, fetchGet} from '../../utils/fetchHelpers';
 
 import cn from './Scenarios.module.css';
@@ -32,7 +32,7 @@ export const Overview: React.FC = () => {
         setError(null);
         try {
             const json = await fetchGet({
-                route: Routes.getScenario,
+                route: FetchRoutes.getScenario,
                 query: {id},
                 isProd,
             });
@@ -51,7 +51,7 @@ export const Overview: React.FC = () => {
     const handleDelete = useCallback(async () => {
         if (!id) return;
         await fetchDelete({
-            route: Routes.deleteScenario,
+            route: FetchRoutes.deleteScenario,
             query: {id},
             isProd,
         });

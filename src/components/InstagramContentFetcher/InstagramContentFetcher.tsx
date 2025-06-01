@@ -30,7 +30,7 @@ import {
 } from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 import styles from './InstagramContentFetcher.module.css';
@@ -188,7 +188,7 @@ function InstagramContentFetcher() {
 
         try {
             const data = (await fetchGet({
-                route: Routes.getUserContent,
+                route: FetchRoutes.getUserContent,
                 query: {accountName: username.replace('@', '')},
                 isProd,
             })) as ApiResponse;
@@ -359,7 +359,7 @@ function InstagramContentFetcher() {
                 handler: async () => {
                     try {
                         const response = await fetchPost({
-                            route: Routes.savePostForAnalysis,
+                            route: FetchRoutes.savePostForAnalysis,
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             body: {post} as any,
                             isProd,

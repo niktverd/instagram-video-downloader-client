@@ -4,7 +4,7 @@ import React, {useContext} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchDelete} from '../../utils/fetchHelpers';
 
 export const DeletePreprodData = () => {
@@ -12,7 +12,7 @@ export const DeletePreprodData = () => {
 
     const handleClearClick = async () => {
         await fetchDelete({
-            route: Routes.clearPreprodDatabase,
+            route: FetchRoutes.clearPreprodDatabase,
             query: {},
             isProd,
         });

@@ -4,7 +4,7 @@ import React, {Fragment, useContext} from 'react';
 import {Button, useToaster} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes as ProjectRoutes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from './Cron.module.css';
@@ -15,7 +15,7 @@ export const CronTest = () => {
 
     const handleDownloadVideoClick = async () => {
         const json = await fetchGet({
-            route: ProjectRoutes.downloadVideoFromSourceV3,
+            route: FetchRoutes.downloadVideoFromSourceV3,
             query: {},
             isProd,
         });
@@ -29,7 +29,7 @@ export const CronTest = () => {
 
     const handleCreateVideoByScenarioClick = async () => {
         const json = await fetchGet({
-            route: ProjectRoutes.createVideoByScenario,
+            route: FetchRoutes.createVideoByScenario,
             query: {},
             isProd,
         });
@@ -43,7 +43,7 @@ export const CronTest = () => {
 
     const handleCreateVideoByInjectScenarioClick = async () => {
         const json = await fetchGet({
-            route: ProjectRoutes.createInjectVideoByScenario,
+            route: FetchRoutes.createInjectVideoByScenario,
             query: {},
             isProd,
         });

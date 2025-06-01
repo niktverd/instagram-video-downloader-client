@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom';
 
 import {AppEnvContext} from '../contexts/AppEnv';
 import {GetAllSourcesResponse, ISource} from '../sharedTypes';
-import {Routes} from '../utils/constants';
+import {FetchRoutes} from '../utils/constants';
 import {fetchGet} from '../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -38,7 +38,7 @@ export const Sources = () => {
         setError(null);
         try {
             const response = await fetchGet<GetAllSourcesResponse>({
-                route: Routes.getAllSources,
+                route: FetchRoutes.getAllSources,
                 query: {
                     page,
                     limit: pageSize,

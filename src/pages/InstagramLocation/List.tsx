@@ -17,7 +17,7 @@ import {
     GetAllInstagramLocationsResponse,
     IInstagramLocation,
 } from '../../sharedTypes/types/instagramLocation';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -44,7 +44,7 @@ const List: React.FC = () => {
                           limit: pageSize,
                       };
             const response = await fetchGet<GetAllInstagramLocationsResponse>({
-                route: Routes.getAllInstagramLocations,
+                route: FetchRoutes.getAllInstagramLocations,
                 query,
                 isProd,
             });

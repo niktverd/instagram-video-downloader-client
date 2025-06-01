@@ -1,0 +1,22 @@
+.root {
+    padding: 24px;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.button {
+    margin-right: 8px;
+}

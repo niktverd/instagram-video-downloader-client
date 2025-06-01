@@ -6,6 +6,7 @@ import {useAuth} from '../../contexts/AuthContext';
 import {Root as AccountRoot} from '../Account';
 import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
+import {Root as CloudRunScenarioExecutionRoot} from '../CloudRunScenarioExecution';
 import {Home} from '../Home';
 import {InstagramCallback} from '../InstagramCallback';
 import {Root as InstagramLocationRoot} from '../InstagramLocation';
@@ -86,6 +87,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Instagram Locations',
         to: '/instagram-locations/*',
         Component: InstagramLocationRoot,
+        isProtected: true,
+    },
+    {
+        text: 'Cloud Run Scenario Execution',
+        to: '/cloud-run-scenario-execution/*',
+        Component: CloudRunScenarioExecutionRoot,
         isProtected: true,
     },
     // {

@@ -18,7 +18,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetOneSourceResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from '../Account/Accounts.module.css';
@@ -45,7 +45,7 @@ export const Overview = () => {
         setError(null);
         try {
             const response = await fetchGet<GetOneSourceResponse>({
-                route: Routes.getOneSource,
+                route: FetchRoutes.getOneSource,
                 query: {id},
                 isProd,
             });
@@ -68,7 +68,7 @@ export const Overview = () => {
         (async () => {
             try {
                 const accounts = await fetchGet({
-                    route: Routes.getAccounts,
+                    route: FetchRoutes.getAccounts,
                     query: {},
                     isProd,
                 });
@@ -78,7 +78,7 @@ export const Overview = () => {
             } catch {}
             try {
                 const scenarios = await fetchGet({
-                    route: Routes.getScenarios,
+                    route: FetchRoutes.getScenarios,
                     query: {},
                     isProd,
                 });
@@ -109,7 +109,7 @@ export const Overview = () => {
         setScheduling(true);
         try {
             const res = await fetchPost({
-                route: Routes.scheduleSourceVideoCreation,
+                route: FetchRoutes.scheduleSourceVideoCreation,
                 body: {
                     sourceIds: [source.id],
                     accountIds: selectedAccountIds.map(Number),

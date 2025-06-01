@@ -9,7 +9,7 @@ import {
     GetInstagramMediaContainerByIdResponse,
     IInstagramMediaContainer,
 } from '../../sharedTypes/types/instagramMediaContainer';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../Scenario/Scenarios.module.css';
@@ -27,7 +27,7 @@ const Overview: React.FC = () => {
         setError(null);
         try {
             const data = await fetchGet<GetInstagramMediaContainerByIdResponse>({
-                route: Routes.getInstagramMediaContainerById,
+                route: FetchRoutes.getInstagramMediaContainerById,
                 query: {id: Number(id)},
                 isProd,
             });

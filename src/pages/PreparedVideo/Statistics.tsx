@@ -4,7 +4,7 @@ import {Button, Spin, useToaster} from '@gravity-ui/uikit';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {Routes} from '../../utils/constants';
+import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 // Тип ответа для prepared videos статистики
@@ -34,7 +34,7 @@ export const Statistics = () => {
         setError(null);
         try {
             const response = await fetchGet<Record<string, number>>({
-                route: Routes.getPreparedVideosStatisticsByDays,
+                route: FetchRoutes.getPreparedVideosStatisticsByDays,
                 query: {days},
                 isProd,
             });

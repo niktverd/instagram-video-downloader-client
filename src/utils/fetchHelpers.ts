@@ -1,4 +1,4 @@
-import {Method, Routes, defaultHeaders} from './constants';
+import {FetchRoutes, Method, defaultHeaders} from './constants';
 
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
@@ -16,7 +16,7 @@ const objectToSearchParams = (obj: Record<string, string | number | boolean | st
 };
 
 const prepareFetchUrl = (
-    route: Routes,
+    route: FetchRoutes,
     query: Record<string, string | number | boolean | string[]>,
     isProd: boolean,
 ) => {
@@ -34,7 +34,7 @@ const prepareFetchUrl = (
 };
 
 type FetchGet = {
-    route: Routes;
+    route: FetchRoutes;
     query?: Record<string, string | number | boolean | string[] | null>;
     isProd: boolean;
 };
@@ -50,7 +50,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
 };
 
 type FetchPost = {
-    route: Routes;
+    route: FetchRoutes;
     query?: Record<string, string | number | boolean | string[]>;
     body?: unknown;
     isProd: boolean;
@@ -79,7 +79,7 @@ export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPo
 };
 
 type FetchDelete = {
-    route: Routes;
+    route: FetchRoutes;
     query?: Record<string, string | number | boolean | null>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: Record<string, any>;
