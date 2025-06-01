@@ -106,9 +106,14 @@ const List: React.FC = () => {
                 }}
             >
                 <h2>Instagram Media Containers</h2>
-                <Button view="action" onClick={loadMediaContainers} loading={loading}>
-                    Refresh
-                </Button>
+                <div style={{display: 'flex', gap: 8}}>
+                    <Button view="action" onClick={loadMediaContainers} loading={loading}>
+                        Refresh
+                    </Button>
+                    <Button view="action" href="/instagram-media-containers/statistics">
+                        Statistics
+                    </Button>
+                </div>
             </div>
             {error && (
                 <div

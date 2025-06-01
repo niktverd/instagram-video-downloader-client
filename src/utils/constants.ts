@@ -61,6 +61,7 @@ export enum Routes {
     // instagram media containers
     getAllInstagramMediaContainers = '/ui/get-all-instagram-media-containers',
     getInstagramMediaContainerById = '/ui/get-instagram-media-container-by-id',
+    getInstagramMediaContainersStatisticsByDays = '/ui/get-instagram-media-containers-statistics-by-days',
 
     // instagram locations
     getAllInstagramLocations = '/ui/get-all-instagram-locations',

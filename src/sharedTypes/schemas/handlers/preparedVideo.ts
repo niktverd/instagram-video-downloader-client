@@ -59,3 +59,9 @@ export const FindPreparedVideoDuplicatesParamsSchema = z
         scenarioId: zodOptionalNumber(),
     })
     .strict();
+
+export const PreparedVideosStatisticsParamsSchema = z
+    .object({
+        days: z.array(z.string()),
+    })
+    .strict();
