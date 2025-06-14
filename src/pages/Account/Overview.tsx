@@ -10,15 +10,20 @@ import {
     Pin,
 } from '@gravity-ui/icons';
 import {useParams} from 'react-router-dom';
+import {z} from 'zod';
 
+import {InsightsChart} from '../../components/Account/InsightsChart';
 import {InstagramConnect} from '../../components/Account/InstagramConnect';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount, IScenario} from '../../sharedTypes';
+import {UiGetInsightsResponseSchema} from '../../sharedTypes/schemas/handlers/instagramAPI';
 import {FetchRoutes} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../../components/Account/Account.module.css';
+
+type UiGetInsightsResponse = z.infer<typeof UiGetInsightsResponseSchema>;
 
 export const Overview = () => {
     const {id} = useParams();
@@ -26,6 +31,8 @@ export const Overview = () => {
     const [account, setAccount] = useState<IAccount | null>(null);
     const [loading, setLoading] = useState(true);
     const [showJson, setShowJson] = useState(false);
+    const [insights, setInsights] = useState<UiGetInsightsResponse>(null);
+
     useEffect(() => {
         if (!id) return;
         setLoading(true);
@@ -39,12 +46,13 @@ export const Overview = () => {
     }, [id, isProd]);
 
     const handleGetInsights = async () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await fetchGet<any>({
+        const insightsLocal = await fetchGet<UiGetInsightsResponse>({
             route: FetchRoutes.getInsights,
             query: {id: account?.id},
             isProd,
         });
+
+        setInsights(insightsLocal);
     };
 
     if (loading) return <div>Loading...</div>;
@@ -98,6 +106,24 @@ export const Overview = () => {
                     onClick: handleGetInsights,
                 },
             ],
+            children:
+                insights && insights.data && Array.isArray(insights.data)
+                    ? insights.data.map((item, idx) => (
+                          <InsightsChart
+                              key={item.name + idx}
+                              title={item.name}
+                              data={
+                                  Array.isArray(item.values)
+                                      ? item.values.map((v) => ({
+                                            value: typeof v.value === 'number' ? v.value : 0,
+                                            end_time:
+                                                typeof v.end_time === 'string' ? v.end_time : '',
+                                        }))
+                                      : []
+                              }
+                          />
+                      ))
+                    : null,
             colSpan: 1,
         },
         {
