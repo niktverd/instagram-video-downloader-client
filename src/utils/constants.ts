@@ -32,6 +32,7 @@ export enum FetchRoutes {
     getSourcesStatisticsByDays = '/ui/get-sources-statistics-by-days',
 
     getInsights = '/ui/get-insights',
+    getInsightsReport = '/ui/get-insights-report',
     getMedia = '/ui/get-media',
     // getUserById = '/ui/get-user-by-id',
     getOwnerByMediaId = '/ui/get-owner-by--media-id',
