@@ -8,6 +8,7 @@ import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Root as CloudRunScenarioExecutionRoot} from '../CloudRunScenarioExecution';
 import {Home} from '../Home';
+import {Root as InsightsRoot} from '../Insights';
 import {InstagramCallback} from '../InstagramCallback';
 import {Root as InstagramLocationRoot} from '../InstagramLocation';
 import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
@@ -53,6 +54,12 @@ type MainMenuConfigType = {
 export const mainMenuConfig: MainMenuConfigType[] = [
     {text: 'Home', to: '/', Component: Home},
     {text: 'Policy', to: '/policy', Component: Policy},
+    {
+        text: 'Insights',
+        to: '/insights/*',
+        Component: InsightsRoot,
+        isProtected: true,
+    },
     {
         text: 'Scenarios',
         to: '/scenario/*',
