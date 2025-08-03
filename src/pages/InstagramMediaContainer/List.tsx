@@ -13,11 +13,8 @@ import {
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {
-    GetAllInstagramMediaContainersResponse,
-    IInstagramMediaContainer,
-} from '../../sharedTypes/types/instagramMediaContainer';
-import {FetchRoutes} from '../../utils/constants';
+import {GetAllInstagramMediaContainersResponse, IInstagramMediaContainer} from '../../sharedTypes';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -44,7 +41,7 @@ const List: React.FC = () => {
                           limit: pageSize,
                       };
             const response = await fetchGet<GetAllInstagramMediaContainersResponse>({
-                route: FetchRoutes.getAllInstagramMediaContainers,
+                route: FetchRoutes2.getAllInstagramMediaContainers,
                 query,
                 isProd,
             });

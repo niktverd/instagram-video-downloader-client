@@ -5,7 +5,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {useAuth} from '../../contexts/AuthContext';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchPatch} from '../../utils/fetchHelpers';
 
 export const InstagramCallback = () => {
@@ -55,7 +55,7 @@ export const InstagramCallback = () => {
             // If accountId exists, update the account with Instagram token
             if (accountId) {
                 await fetchPatch({
-                    route: FetchRoutes.patchAccount,
+                    route: FetchRoutes2.patchAccount,
                     body: {
                         id: accountId,
                         token,

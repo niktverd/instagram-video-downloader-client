@@ -7,8 +7,8 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import BulkForm from '../../components/InstagramLocation/BulkForm';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {IInstagramLocation} from '../../sharedTypes/types/instagramLocation';
-import {FetchRoutes} from '../../utils/constants';
+import {IInstagramLocation} from '../../sharedTypes';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 import {deepOmit} from '../../utils/helpers/objectHelpers';
 
@@ -52,7 +52,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
         setLoading(true);
         try {
             const response = await fetchGet<IInstagramLocation>({
-                route: FetchRoutes.getInstagramLocationById,
+                route: FetchRoutes2.getInstagramLocationById,
                 query: {id: Number(id)},
                 isProd,
             });
@@ -114,7 +114,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                 const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
                 await fetchPatch({
-                    route: FetchRoutes.updateInstagramLocation,
+                    route: FetchRoutes2.updateInstagramLocation,
                     body: {
                         id: Number(id),
                         ...cleanedData,
@@ -132,7 +132,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                 const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
                 await fetchPost({
-                    route: FetchRoutes.createInstagramLocation,
+                    route: FetchRoutes2.createInstagramLocation,
                     body: cleanedData,
                     isProd,
                 });

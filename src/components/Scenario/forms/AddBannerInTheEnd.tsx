@@ -4,7 +4,7 @@ import {Plus} from '@gravity-ui/icons';
 import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {FieldArray, Form, Formik} from 'formik';
 
-import {InstagramLocationSource, ScenarioType} from '../../../sharedTypes/types/enums';
+import {InstagramLocationSource, ScenarioType} from '../../../sharedTypes';
 import {CustomField} from '../../CustomField/CustomField';
 
 import {ScenarioFormCommon} from './ScenarioFormCommon';

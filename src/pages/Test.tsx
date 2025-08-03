@@ -9,6 +9,7 @@ import {CronTest} from '../components/tabs/Cron';
 import {DeletePreprodData} from '../components/tabs/DeletePreprodData';
 import {GetUserById} from '../components/tabs/GetUserById';
 import {PushToPubSub} from '../components/tabs/PushToPubSub';
+import {Temporal} from '../components/tabs/Temporal';
 import {UniDecode} from '../components/tabs/Unidecode';
 import {Users} from '../components/tabs/Users';
 
@@ -22,6 +23,7 @@ enum TabEnum {
     PerformanceMonitorTab = 'performanceMonitor',
     PubSubTab = 'pubsub',
     UsersTab = 'users',
+    TemporalTab = 'temporal',
 }
 
 export const Test = () => {
@@ -67,6 +69,11 @@ export const Test = () => {
             id: TabEnum.UsersTab,
             title: 'Users',
             content: <Users />,
+        },
+        {
+            id: TabEnum.TemporalTab,
+            title: 'Temporal',
+            content: <Temporal />,
         },
     ];
     return (

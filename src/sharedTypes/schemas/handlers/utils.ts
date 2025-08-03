@@ -5,7 +5,7 @@ import {
     queryToNumber,
     queryToNumberArray,
     queryToNumberStrict,
-} from './../../schemas/helpers';
+} from './../../types/schemas/helpers';
 
 export const zodOptionalNumber = () =>
     z

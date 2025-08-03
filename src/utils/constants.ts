@@ -7,9 +7,10 @@ export enum Method {
 
 export const defaultHeaders = {
     'Content-Type': 'application/json',
+    'x-admin-secret': '123',
 };
 
-export enum FetchRoutes {
+export enum FetchRoutes2 {
     getMediaPosts = '/ui/get-media-posts',
     splitVideoInTheMiddle = '/ui/split-video-in-the-middle',
     testGreenScreen = '/ui/test-green-screen',
@@ -79,4 +80,8 @@ export enum FetchRoutes {
     createCloudRunScenarioExecution = '/ui/create-cloud-run-scenario-execution',
     getAllCloudRunScenarioExecution = '/ui/get-cloud-run-scenario-execution',
     updateCloudRunScenarioExecutionStatus = '/ui/update-cloud-run-scenario-execution',
+
+    runVideoProcessing = '/temporal/start-video-workflow',
+    // start-video-downloading-workflow
+    startVideoDownloadingWorkflow = '/temporal/start-video-downloading-workflow',
 }

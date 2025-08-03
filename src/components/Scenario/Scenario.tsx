@@ -8,7 +8,7 @@ import {omit} from 'lodash';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import {ScenarioRouter} from './forms/ScenarioRouter';
@@ -43,7 +43,7 @@ export const Scenario = (props: ScenarioProps) => {
                     {/* <Button
                         onClick={async () => {
                             await fetchPost({
-                                route: FetchRoutes.addScenario,
+                                route: FetchRoutes2.addScenario,
                                 body: {
                                     values: {
                                         ...omit(props, 'id', 'onDelete', 'onUpdate'),
@@ -59,7 +59,7 @@ export const Scenario = (props: ScenarioProps) => {
                     <Button
                         onClick={async () => {
                             await fetchPost({
-                                route: FetchRoutes.addScenario,
+                                route: FetchRoutes2.addScenario,
                                 body: {
                                     ...omit(
                                         props,
@@ -106,7 +106,7 @@ export const Scenario = (props: ScenarioProps) => {
                             onUpdate({...values, id});
                         } else {
                             await fetchPatch({
-                                route: FetchRoutes.patchScenario,
+                                route: FetchRoutes2.patchScenario,
                                 body: {id, slug, ...values},
                                 isProd,
                             });

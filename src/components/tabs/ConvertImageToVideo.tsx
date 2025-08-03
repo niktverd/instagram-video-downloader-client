@@ -4,7 +4,7 @@ import React, {useContext, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchPost} from '../../utils/fetchHelpers';
 
 export const ConvertImageToVideo = () => {
@@ -24,7 +24,7 @@ export const ConvertImageToVideo = () => {
                 : `${pathToSave}/`
             : '';
         const json = await fetchPost({
-            route: FetchRoutes.convertImageToVideo,
+            route: FetchRoutes2.convertImageToVideo,
             body: {imageUrl, duration, pathToSave: localPathToSave},
             isProd,
         });

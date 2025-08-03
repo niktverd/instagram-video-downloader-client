@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
 import {CloudRunScenarioExecutionStatusEnum} from './../../types/enums';
-import {zodNumber, zodOptionalNumber} from './../handlers/utils';
+import {zodNumber, zodOptionalNumber} from './../../types/schemas/handlers/utils';
 import {createEntitySchema} from './base';
 
 export const CloudRunScenarioExecutionSchema = createEntitySchema({
@@ -23,3 +23,5 @@ export const CloudRunScenarioExecutionSchema = createEntitySchema({
     cancelled: z.boolean().optional(),
     userId: z.string().optional(),
 }).strict();
+
+export type ICloudRunScenarioExecution = z.infer<typeof CloudRunScenarioExecutionSchema>;

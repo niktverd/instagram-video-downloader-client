@@ -5,7 +5,7 @@ import {
     UiGetInsightsInstagramReportParams,
     UiGetInsightsInstagramReportResponse,
 } from '../../../sharedTypes/types/instagramApi';
-import {FetchRoutes} from '../../../utils/constants';
+import {FetchRoutes2} from '../../../utils/constants';
 import {fetchGet} from '../../../utils/fetchHelpers';
 import {UseInsightsDataReturn} from '../types';
 
@@ -40,7 +40,7 @@ export const useInsightsData = (year?: number, month?: number): UseInsightsDataR
             };
 
             const response = await fetchGet<UiGetInsightsInstagramReportResponse>({
-                route: FetchRoutes.getInsightsReport,
+                route: FetchRoutes2.getInsightsReport,
                 query,
                 isProd,
             });

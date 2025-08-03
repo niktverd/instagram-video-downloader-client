@@ -20,3 +20,5 @@ export const ScenarioSchema = createEntitySchema({
     // added on request
     instagramLocations: z.array(InstagramLocationSchema).optional(),
 }).strict();
+
+export type IScenario = z.infer<typeof ScenarioSchema>;

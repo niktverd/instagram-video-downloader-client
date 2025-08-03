@@ -4,8 +4,8 @@ import {Button, Spin, useToaster} from '@gravity-ui/uikit';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {InstagramMediaContainersStatisticsResponse} from '../../sharedTypes/types/instagramMediaContainer';
-import {FetchRoutes} from '../../utils/constants';
+import {InstagramMediaContainersStatisticsResponse} from '../../sharedTypes';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 function getLastNDays(n: number) {
@@ -32,7 +32,7 @@ export const Statistics = () => {
         setError(null);
         try {
             const response = await fetchGet<InstagramMediaContainersStatisticsResponse>({
-                route: FetchRoutes.getInstagramMediaContainersStatisticsByDays,
+                route: FetchRoutes2.getInstagramMediaContainersStatisticsByDays,
                 query: {days},
                 isProd,
             });

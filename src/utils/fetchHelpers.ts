@@ -1,7 +1,29 @@
-import {FetchRoutes, Method, defaultHeaders} from './constants';
+import {firebaseAuth} from '../configs/firebase';
+import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
+
+import {FetchRoutes2, Method, defaultHeaders} from './constants';
 
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
+
+const getHeaders = async () => {
+    const user = firebaseAuth.currentUser;
+
+    let idToken: string | null = null;
+    if (user && typeof user.getIdToken === 'function') {
+        try {
+            idToken = await user.getIdToken(true); // true forces refresh
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error getting ID token:', error);
+        }
+    }
+
+    return {
+        ...defaultHeaders,
+        Authorization: `Bearer ${idToken}`,
+    };
+};
 
 const objectToSearchParams = (obj: Record<string, string | number | boolean | string[]>) => {
     const params = new URLSearchParams();
@@ -16,7 +38,7 @@ const objectToSearchParams = (obj: Record<string, string | number | boolean | st
 };
 
 const prepareFetchUrl = (
-    route: FetchRoutes,
+    route: FetchRoutesType | FetchRoutes2,
     query: Record<string, string | number | boolean | string[]>,
     isProd: boolean,
 ) => {
@@ -34,14 +56,14 @@ const prepareFetchUrl = (
 };
 
 type FetchGet = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | string[] | null>;
     isProd: boolean;
 };
 
 export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Get,
     });
     const json = await response.json();
@@ -50,7 +72,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
 };
 
 type FetchPost = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | string[]>;
     body?: unknown;
     isProd: boolean;
@@ -58,7 +80,7 @@ type FetchPost = {
 
 export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: FetchPost) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Post,
         body: JSON.stringify(body),
     });
@@ -69,7 +91,7 @@ export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: 
 
 export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPost) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Patch,
         body: JSON.stringify(body),
     });
@@ -79,7 +101,7 @@ export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPo
 };
 
 type FetchDelete = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | null>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: Record<string, any>;
@@ -88,7 +110,7 @@ type FetchDelete = {
 
 export const fetchDelete = async ({route, query = {}, body = {}, isProd = false}: FetchDelete) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Delete,
         body: JSON.stringify(body),
     });

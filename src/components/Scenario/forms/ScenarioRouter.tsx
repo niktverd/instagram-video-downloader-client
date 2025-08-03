@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 // import {LongScenarioWithInjections} from './LongScenarioWithInjections';
 // import {Shortify} from './Shortify';
 
-import {ScenarioType} from '../../../sharedTypes/types/enums';
+import {ScenarioType} from '../../../sharedTypes';
 
 import {AddBannerInTheEnd} from './AddBannerInTheEnd';
 import {CoverWithGreen} from './CoverWithGreen';

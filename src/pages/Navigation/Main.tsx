@@ -6,12 +6,12 @@ import {useAuth} from '../../contexts/AuthContext';
 import {Root as AccountRoot} from '../Account';
 import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
-import {Root as CloudRunScenarioExecutionRoot} from '../CloudRunScenarioExecution';
 import {Home} from '../Home';
 import {Root as InsightsRoot} from '../Insights';
 import {InstagramCallback} from '../InstagramCallback';
 import {Root as InstagramLocationRoot} from '../InstagramLocation';
 import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
+import {Root as OrganizationsRoot} from '../Organization';
 import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
 import {Root as ScenarioRoot} from '../Scenario';
@@ -61,6 +61,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         isProtected: true,
     },
     {
+        text: 'Organizations',
+        to: '/organizations/*',
+        Component: OrganizationsRoot,
+        isProtected: true,
+    },
+    {
         text: 'Scenarios',
         to: '/scenario/*',
         Component: ScenarioRoot,
@@ -96,12 +102,6 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         Component: InstagramLocationRoot,
         isProtected: true,
     },
-    {
-        text: 'Cloud Run Scenario Execution',
-        to: '/cloud-run-scenario-execution/*',
-        Component: CloudRunScenarioExecutionRoot,
-        isProtected: true,
-    },
     // {
     //     text: 'Statistics',
     //     to: '/statistics',
@@ -122,6 +122,7 @@ const ProtectedRoute = ({children, isProtected}) => {
     if (loading) {
         return <div>Loading...</div>;
     }
+
     if (isProtected) {
         return isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid}) ? (
             children

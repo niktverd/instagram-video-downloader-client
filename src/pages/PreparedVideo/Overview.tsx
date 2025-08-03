@@ -9,8 +9,8 @@ import {
     FindPreparedVideoDuplicatesResponse,
     GetPreparedVideoByIdResponse,
     IPreparedVideo,
-} from '../../sharedTypes/types/preparedVideo';
-import {FetchRoutes} from '../../utils/constants';
+} from '../../sharedTypes/schemas';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../Scenario/Scenarios.module.css';
@@ -84,7 +84,7 @@ const Overview: React.FC = () => {
         setError(null);
         try {
             const data = await fetchGet<GetPreparedVideoByIdResponse>({
-                route: FetchRoutes.getPreparedVideoById,
+                route: FetchRoutes2.getPreparedVideoById,
                 query: {id: Number(id)},
                 isProd,
             });
@@ -108,7 +108,7 @@ const Overview: React.FC = () => {
                     scenarioId: videoLocal.scenarioId,
                 };
                 const data = await fetchGet<FindPreparedVideoDuplicatesResponse>({
-                    route: FetchRoutes.getPreparedVideoDuplicates,
+                    route: FetchRoutes2.getPreparedVideoDuplicates,
                     query: params,
                     isProd,
                 });
