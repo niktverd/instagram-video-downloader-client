@@ -20,7 +20,7 @@ interface OrganizationFormData {
     roleIds: number[];
 }
 
-const DEFAULT_LOCATION: OrganizationFormData = {
+const DEFAULT_ORGANIZATION: OrganizationFormData = {
     name: '',
     roleIds: [],
 };
@@ -31,7 +31,7 @@ export const Form: React.FC<FormProps> = ({mode = 'create'}) => {
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState<OrganizationFormData>(DEFAULT_LOCATION);
+    const [formData, setFormData] = useState<OrganizationFormData>(DEFAULT_ORGANIZATION);
     const [submitting, setSubmitting] = useState(false);
 
     const loadOrganization = useCallback(async () => {
@@ -54,7 +54,7 @@ export const Form: React.FC<FormProps> = ({mode = 'create'}) => {
         } catch (err: any) {
             add({
                 name: 'load-error',
-                title: err.message || 'Failed to load location',
+                title: err.message || 'Failed to load organization',
                 theme: 'danger',
             });
         } finally {
@@ -131,7 +131,7 @@ export const Form: React.FC<FormProps> = ({mode = 'create'}) => {
         } catch (err: any) {
             add({
                 name: 'submit-error',
-                title: err.message || 'Failed to save location',
+                title: err.message || 'Failed to save organization',
                 theme: 'danger',
             });
         } finally {

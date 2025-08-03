@@ -4,26 +4,26 @@ import {Button, Table, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {GetAllOrganizationsResponse, IOrganization} from '../../sharedTypes';
+import {GetAllRolesResponse, IRole} from '../../sharedTypes';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
-import cn from './Organization.module.css';
+import cn from './Role.module.css';
 
 export const List = () => {
-    const [organizations, setOrganizations] = useState<IOrganization[]>([]);
+    const [roles, setRoles] = useState<IRole[]>([]);
     const {add} = useToaster();
     const {isProd} = useContext(AppEnvContext);
     const [filterValue, setFilterValue] = useState('');
     const navigate = useNavigate();
 
     const handleLoadClick = useCallback(async () => {
-        const json = await fetchGet<GetAllOrganizationsResponse>({
-            route: fetchRoutes.organizations.list,
+        const json = await fetchGet<GetAllRolesResponse>({
+            route: fetchRoutes.roles.list,
             query: {},
             isProd,
         });
-        setOrganizations(json);
+        setRoles(json);
         add({
             name: Math.random() + '-split',
             title: 'data loaded',
@@ -34,29 +34,29 @@ export const List = () => {
         handleLoadClick();
     }, [handleLoadClick]);
 
-    const filteredOrganizations = organizations;
+    const filteredRoles = roles;
 
     const columns = [
         {id: 'name', name: 'Slug'},
-        // {id: 'organization', name: 'Enabled'},
+        // {id: 'role', name: 'Enabled'},
         // {id: 'token', name: 'Token'},
         // {id: 'availableScenarios', name: 'Scenarios'},
         // {id: 'actions', name: 'Actions'},
     ];
 
-    const data = filteredOrganizations.map((organization) => ({
-        ...organization,
+    const data = filteredRoles.map((role) => ({
+        ...role,
     }));
 
     return (
         <div className={cn.container}>
             <div className={cn.header}>
-                <h2>Organizations</h2>
+                <h2>Roles</h2>
                 <div className={cn.actions}>
                     <Button view="action" onClick={handleLoadClick}>
                         Reload
                     </Button>
-                    <Button view="outlined-action" href={'/organizations/new'}>
+                    <Button view="outlined-action" href={'/roles/new'}>
                         Add
                     </Button>
                 </div>

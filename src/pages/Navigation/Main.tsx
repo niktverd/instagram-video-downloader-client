@@ -14,6 +14,7 @@ import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
 import {Root as OrganizationsRoot} from '../Organization';
 import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
+import {Root as RolesRoot} from '../Role';
 import {Root as ScenarioRoot} from '../Scenario';
 import {Root as SourceRoot} from '../Source';
 // import {Statistics} from '../Source/Statistics';
@@ -64,6 +65,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Organizations',
         to: '/organizations/*',
         Component: OrganizationsRoot,
+        isProtected: true,
+    },
+    {
+        text: 'Roles',
+        to: '/roles/*',
+        Component: RolesRoot,
         isProtected: true,
     },
     {
