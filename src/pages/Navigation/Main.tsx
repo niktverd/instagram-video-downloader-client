@@ -82,6 +82,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
     },
     {
+        text: 'Roles',
+        to: '/roles/*',
+        Component: RolesRoot,
+        isProtected: true,
+    },
+    {
         text: 'Scenarios',
         to: '/scenario/*',
         Component: ScenarioRoot,
