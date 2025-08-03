@@ -88,6 +88,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         isProtected: true,
     },
     {
+        text: 'User',
+        to: '/users/*',
+        Component: UserRoot,
+        isProtected: true,
+    },
+    {
         text: 'Scenarios',
         to: '/scenario/*',
         Component: ScenarioRoot,
