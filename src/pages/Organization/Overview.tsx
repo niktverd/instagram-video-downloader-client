@@ -62,6 +62,18 @@ export const Overview = () => {
             ],
         },
         {
+            title: 'Users',
+            description: 'Edit users',
+            icon: <MapPin />,
+            colSpan: 1,
+            actions: [
+                {
+                    text: 'Edit',
+                    link: `/organizations/${orgId}/users`,
+                },
+            ],
+        },
+        {
             title: 'JSON',
             description: 'Show entire organization data in JSON format',
             icon: <Display />,

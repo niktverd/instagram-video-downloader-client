@@ -5,6 +5,7 @@ import {Route, Routes} from 'react-router-dom';
 import {Form} from './Form';
 import {List} from './List';
 import {Overview} from './Overview';
+import {UsersForm} from './UsersForm';
 
 export const Root = () => (
     <Routes>
@@ -12,5 +13,6 @@ export const Root = () => (
         <Route path="new" element={<Form mode="create" />} />
         <Route path=":id" element={<Overview />} />
         <Route path=":id/edit" element={<Form mode="edit" />} />
+        <Route path=":id/users" element={<UsersForm />} />
     </Routes>
 );

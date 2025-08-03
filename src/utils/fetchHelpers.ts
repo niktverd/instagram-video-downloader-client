@@ -108,7 +108,12 @@ type FetchDelete = {
     isProd: boolean;
 };
 
-export const fetchDelete = async ({route, query = {}, body = {}, isProd = false}: FetchDelete) => {
+export const fetchDelete = async <T = {error: string}>({
+    route,
+    query = {},
+    body = {},
+    isProd = false,
+}: FetchDelete) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
         headers: await getHeaders(),
         method: Method.Delete,
@@ -116,5 +121,5 @@ export const fetchDelete = async ({route, query = {}, body = {}, isProd = false}
     });
     const json = await response.json();
 
-    return json;
+    return json as T;
 };
