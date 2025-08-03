@@ -68,7 +68,7 @@ export const Overview = () => {
             colSpan: 1,
             actions: [],
             children: (
-                <div>
+                <div className={cn.permissions}>
                     {role.permissions.map((permission) => (
                         <span className={cn.permission} key={permission}>
                             {permission}
