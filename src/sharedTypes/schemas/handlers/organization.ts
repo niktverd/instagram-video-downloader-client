@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-import {IOrganization, OrganizationSchema} from './../models';
+import {IOrganization, OrganizationSchema, UserSchema} from './../models';
 
 export const CreateOrganizationParamsSchema = OrganizationSchema.omit({id: true});
 
@@ -34,12 +34,17 @@ export const DeleteUserFromOrganizationParamsSchema = z
     })
     .strict();
 
+export const OrganizationRelationSchema = z.object({
+    users: z.array(UserSchema),
+});
+
 // types
 export type CreateOrganizationParams = z.infer<typeof CreateOrganizationParamsSchema>;
 export type CreateOrganizationResponse = IOrganization;
 
 export type GetOrganizationByIdParams = z.infer<typeof GetOrganizationByIdParamsSchema>;
-export type GetOrganizationByIdResponse = IOrganization;
+export type GetOrganizationByIdResponse = IOrganization &
+    z.infer<typeof OrganizationRelationSchema>;
 
 export type GetAllOrganizationsParams = z.infer<typeof GetAllOrganizationsParamsSchema>;
 export type GetAllOrganizationsResponse = IOrganization[];
