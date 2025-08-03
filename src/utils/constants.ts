@@ -8,6 +8,7 @@ export enum Method {
 export const defaultHeaders = {
     'Content-Type': 'application/json',
     'x-admin-secret': '123',
+    'x-organization-id': '1',
 };
 
 export enum FetchRoutes2 {
