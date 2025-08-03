@@ -6,8 +6,8 @@ import {RoleSchema} from './role';
 
 export const UserSchema = createEntitySchema({
     email: z.string().email(),
-    name: z.string().optional(),
-    uid: z.string().optional(),
+    name: z.string(),
+    uid: z.string(),
 
     roles: z.array(RoleSchema),
     organizations: z.array(OrganizationSchema),

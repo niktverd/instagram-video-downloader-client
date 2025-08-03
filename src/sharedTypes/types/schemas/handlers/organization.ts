@@ -11,9 +11,6 @@ export const GetOrganizationByIdParamsSchema = z.object({
 export const UpdateOrganizationParamsSchema = z.object({
     id: z.coerce.number().int().positive(),
     name: z.string().min(1, 'Organization name is required'),
-
-    userId: z.number(),
-    roleIds: z.array(z.number()),
 });
 
 export const DeleteOrganizationParamsSchema = z.object({

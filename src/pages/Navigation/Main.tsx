@@ -17,8 +17,9 @@ import {Root as PreparedVideoRoot} from '../PreparedVideo';
 import {Root as RolesRoot} from '../Role';
 import {Root as ScenarioRoot} from '../Scenario';
 import {Root as SourceRoot} from '../Source';
-// import {Statistics} from '../Source/Statistics';
 import {Test} from '../Test';
+import {Root as UserRoot} from '../User';
+// import {Statistics} from '../Source/Statistics';
 
 import cl from './Main.module.css';
 
@@ -71,6 +72,12 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Roles',
         to: '/roles/*',
         Component: RolesRoot,
+        isProtected: true,
+    },
+    {
+        text: 'User',
+        to: '/users/*',
+        Component: UserRoot,
         isProtected: true,
     },
     {

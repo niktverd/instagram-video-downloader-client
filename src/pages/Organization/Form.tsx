@@ -17,12 +17,10 @@ interface FormProps {
 
 interface OrganizationFormData {
     name: string;
-    roleIds: number[];
 }
 
 const DEFAULT_ORGANIZATION: OrganizationFormData = {
     name: '',
-    roleIds: [],
 };
 
 export const Form: React.FC<FormProps> = ({mode = 'create'}) => {
@@ -48,7 +46,6 @@ export const Form: React.FC<FormProps> = ({mode = 'create'}) => {
             if (response) {
                 setFormData({
                     name: response.name || '',
-                    roleIds: response.roles?.map(({id: localId}) => localId),
                 });
             }
         } catch (err: any) {
