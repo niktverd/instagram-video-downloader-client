@@ -1,13 +1,14 @@
 import {firebaseAuth} from '../configs/firebase';
 import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
 
-import {FetchRoutes2, Method, defaultHeaders} from './constants';
+import {AppHeaders, FetchRoutes2, Method, defaultHeaders} from './constants';
 
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
 
-const getHeaders = async () => {
+const getHeaders = async (): Promise<AppHeaders> => {
     const user = firebaseAuth.currentUser;
+    const uid = user?.uid ?? '';
 
     let idToken: string | null = null;
     if (user && typeof user.getIdToken === 'function') {
@@ -21,8 +22,9 @@ const getHeaders = async () => {
 
     return {
         ...defaultHeaders,
+        'x-admin-secret': uid,
         Authorization: `Bearer ${idToken}`,
-    };
+    } as AppHeaders;
 };
 
 const objectToSearchParams = (obj: Record<string, string | number | boolean | string[]>) => {

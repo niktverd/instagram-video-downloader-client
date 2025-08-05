@@ -5,10 +5,16 @@ export enum Method {
     Delete = 'DELETE',
 }
 
-export const defaultHeaders = {
+export const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-    'x-admin-secret': '123',
     'x-organization-id': '1',
+};
+
+export type AppHeaders = {
+    'Content-Type': string;
+    'x-organization-id': string;
+    'x-admin-secret': string;
+    Authorization: string;
 };
 
 export enum FetchRoutes2 {
