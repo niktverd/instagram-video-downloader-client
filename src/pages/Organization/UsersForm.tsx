@@ -110,8 +110,9 @@ export const UsersForm: React.FC<FormProps> = () => {
         try {
             // Clean data before sending
             const transformedData: RoleFormData = {
-                ...formData,
                 roleIds: formData.roleIds.map((roleId) => Number(roleId)),
+                organizationId: Number(id),
+                userId: Number(formData.userId),
             };
             const cleanedData = deepOmit(transformedData, ['createdAt', 'updatedAt']);
 

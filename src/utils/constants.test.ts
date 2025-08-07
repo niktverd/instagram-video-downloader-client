@@ -8,7 +8,10 @@ describe('constants', () => {
 
         it('should contain required headers', () => {
             expect(defaultHeaders).toHaveProperty('Content-Type', 'application/json');
-            expect(defaultHeaders).toHaveProperty('x-organization-id', '1');
+        });
+
+        it('should not contain hard-coded organization id', () => {
+            expect(defaultHeaders).not.toHaveProperty('x-organization-id');
         });
     });
 });

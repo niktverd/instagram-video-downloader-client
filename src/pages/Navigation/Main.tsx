@@ -3,15 +3,16 @@ import React, {JSX} from 'react';
 import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
 import {useAuth} from '../../contexts/AuthContext';
+import {useOrganization} from '../../contexts/OrganizationContext';
 import {Root as AccountRoot} from '../Account';
-import {AnalizeUserContent} from '../AnalizeUserContent';
+// import {AnalizeUserContent} from '../AnalizeUserContent';
 import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {Root as InsightsRoot} from '../Insights';
 import {InstagramCallback} from '../InstagramCallback';
 import {Root as InstagramLocationRoot} from '../InstagramLocation';
 import {Root as InstagramMediaContainerRoot} from '../InstagramMediaContainer';
-import {Root as OrganizationsRoot} from '../Organization';
+import {Select as OrganizationSelect, Root as OrganizationsRoot} from '../Organization';
 import {Policy} from '../Policy';
 import {Root as PreparedVideoRoot} from '../PreparedVideo';
 import {Root as RolesRoot} from '../Role';
@@ -66,19 +67,19 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Organizations',
         to: '/organizations/*',
         Component: OrganizationsRoot,
-        isProtected: true,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
     },
     {
         text: 'Roles',
         to: '/roles/*',
         Component: RolesRoot,
-        isProtected: true,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
     },
     {
         text: 'User',
         to: '/users/*',
         Component: UserRoot,
-        isProtected: true,
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
     },
     {
         text: 'Scenarios',
@@ -123,26 +124,35 @@ export const mainMenuConfig: MainMenuConfigType[] = [
     //     isProtected: true,
     // },
     {text: 'Test', to: '/tests', Component: Test, isProtected: true},
-    {
-        text: 'Analize User Content',
-        to: '/analize-user-content',
-        Component: AnalizeUserContent,
-        isProtected: true,
-    },
+    // {
+    //     text: 'Analize User Content',
+    //     to: '/analize-user-content',
+    //     Component: AnalizeUserContent,
+    //     isProtected: true,
+    // },
 ];
 
 const ProtectedRoute = ({children, isProtected}) => {
     const {userLoggedIn, currentUser, loading} = useAuth();
+    const {organizationId} = useOrganization();
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
     if (isProtected) {
-        return isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid}) ? (
-            children
-        ) : (
-            <Navigate to="/" />
-        );
+        const isAuthAllowed = isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid});
+
+        if (!isAuthAllowed) {
+            return <Navigate to="/" />;
+        }
+
+        // Check if organization is selected for protected routes
+        if (!organizationId) {
+            return <Navigate to="/select-organization" />;
+        }
+
+        return children;
     } else {
         return children;
     }
@@ -150,6 +160,7 @@ const ProtectedRoute = ({children, isProtected}) => {
 
 export const MainNavigation = () => {
     const {userLoggedIn, currentUser} = useAuth();
+    const {organizationId, organizationName} = useOrganization();
 
     return (
         <nav>
@@ -165,6 +176,13 @@ export const MainNavigation = () => {
                         return null;
                     }
                 })}
+                {userLoggedIn && organizationId && (
+                    <li>
+                        <Link to="/select-organization">
+                            Change Organization ({organizationName})
+                        </Link>
+                    </li>
+                )}
             </ul>
         </nav>
     );
@@ -189,6 +207,7 @@ export const MainNavigationRoutes = () => {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/instagram-callback" element={<InstagramCallback />} />
             <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
+            <Route path="/select-organization" element={<OrganizationSelect />} />
             <Route path="*" element={<h2>Page Not Found</h2>} />
         </Routes>
     );

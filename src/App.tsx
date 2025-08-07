@@ -6,6 +6,7 @@ import {Switch} from '@gravity-ui/uikit';
 import {AuthButton} from './components/auth/AuthButton';
 import {AppEnvContext} from './contexts/AppEnv';
 import {AuthProfider} from './contexts/AuthContext';
+import {OrganizationProvider} from './contexts/OrganizationContext';
 import {MainNavigation, MainNavigationRoutes} from './pages/Navigation/Main';
 
 import './App.css';
@@ -19,25 +20,27 @@ function App() {
     return (
         <div className={`App g-root`}>
             <AuthProfider>
-                <h1>Instagram Schedule And Analytics</h1>
-                {process.env.REACT_APP_APP_ENV === 'dev' ? (
-                    <div>
-                        <span>Preprod</span>
-                        <Switch checked={isProd} onUpdate={(cheched) => setIsProd(cheched)}>
-                            Prod
-                        </Switch>
+                <OrganizationProvider>
+                    <h1>Instagram Schedule And Analytics</h1>
+                    {process.env.REACT_APP_APP_ENV === 'dev' ? (
+                        <div>
+                            <span>Preprod</span>
+                            <Switch checked={isProd} onUpdate={(cheched) => setIsProd(cheched)}>
+                                Prod
+                            </Switch>
+                        </div>
+                    ) : null}
+                    <div className="navigation">
+                        <MainNavigation />
+                        <AuthButton />
                     </div>
-                ) : null}
-                <div className="navigation">
-                    <MainNavigation />
-                    <AuthButton />
-                </div>
-                <div>
-                    <AppEnvContext.Provider value={{isProd}}>
-                        <MainNavigationRoutes />
-                        {/* If you want a default/fallback route when no other route matches */}
-                    </AppEnvContext.Provider>
-                </div>
+                    <div>
+                        <AppEnvContext.Provider value={{isProd}}>
+                            <MainNavigationRoutes />
+                            {/* If you want a default/fallback route when no other route matches */}
+                        </AppEnvContext.Provider>
+                    </div>
+                </OrganizationProvider>
             </AuthProfider>
         </div>
     );

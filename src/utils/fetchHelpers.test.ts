@@ -1,7 +1,6 @@
 import {firebaseAuth} from '../configs/firebase';
 
-import {FetchRoutes2, defaultHeaders} from './constants';
-import {fetchGet, fetchPost} from './fetchHelpers';
+import {getHeaders} from './fetchHelpers';
 
 // Mock firebase auth
 jest.mock('../configs/firebase', () => ({
@@ -10,132 +9,131 @@ jest.mock('../configs/firebase', () => ({
     },
 }));
 
-// Mock fetch
-global.fetch = jest.fn();
+// Mock localStorage
+const localStorageMock = (() => {
+    let store: Record<string, string> = {};
+
+    return {
+        getItem: jest.fn((key: string) => store[key] || null),
+        setItem: jest.fn((key: string, value: string) => {
+            store[key] = value;
+        }),
+        removeItem: jest.fn((key: string) => {
+            delete store[key];
+        }),
+        clear: jest.fn(() => {
+            store = {};
+        }),
+    };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+});
 
 describe('fetchHelpers', () => {
     beforeEach(() => {
+        localStorageMock.clear();
         jest.clearAllMocks();
-        (fetch as jest.Mock).mockResolvedValue({
-            json: jest.fn().mockResolvedValue({}),
-        });
+        // Reset firebase auth mock
+        (firebaseAuth as any).currentUser = null;
     });
 
-    describe('getHeaders behavior through fetchGet', () => {
-        it('should include x-admin-secret with user uid when user is authenticated', async () => {
-            // Mock authenticated user
+    describe('getHeaders', () => {
+        it('should return basic headers without organization when no organization is set', async () => {
+            const headers = await getHeaders();
+
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': '',
+                Authorization: 'Bearer null',
+            });
+            expect(localStorageMock.getItem).toHaveBeenCalledWith('organizationId');
+        });
+
+        it('should include organization header when organization is set in localStorage', async () => {
+            localStorageMock.getItem.mockImplementation((key: string) => {
+                if (key === 'organizationId') return '123';
+                return null;
+            });
+
+            const headers = await getHeaders();
+
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': '',
+                'x-organization-id': '123',
+                Authorization: 'Bearer null',
+            });
+        });
+
+        it('should not include organization header when organizationId is empty string', async () => {
+            localStorageMock.getItem.mockImplementation((key: string) => {
+                if (key === 'organizationId') return '';
+                return null;
+            });
+
+            const headers = await getHeaders();
+
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': '',
+                Authorization: 'Bearer null',
+            });
+            expect(headers['x-organization-id']).toBeUndefined();
+        });
+
+        it('should handle user authentication when user is logged in', async () => {
             const mockUser = {
-                uid: 'testUid123',
-                getIdToken: jest.fn().mockResolvedValue('mockIdToken'),
+                uid: 'test-user-id',
+                getIdToken: jest.fn().mockResolvedValue('test-token'),
             };
-            (firebaseAuth.currentUser as any) = mockUser;
+            (firebaseAuth as any).currentUser = mockUser;
 
-            await fetchGet({
-                route: FetchRoutes2.getAllUsers,
-                query: {},
-                isProd: false,
+            const headers = await getHeaders();
+
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': 'dGVzdC11c2VyLWlk', // base64 encoded 'test-user-id'
+                Authorization: 'Bearer test-token',
             });
-
-            // Check that fetch was called with correct headers
-            expect(fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: expect.objectContaining({
-                        'Content-Type': 'application/json',
-                        'x-organization-id': '1',
-                        'x-admin-secret': 'testUid123',
-                        Authorization: 'Bearer mockIdToken',
-                    }),
-                }),
-            );
         });
 
-        it('should include empty x-admin-secret when user is not authenticated', async () => {
-            // Mock unauthenticated user
-            (firebaseAuth.currentUser as any) = null;
-
-            await fetchGet({
-                route: FetchRoutes2.getAllUsers,
-                query: {},
-                isProd: false,
-            });
-
-            // Check that fetch was called with correct headers
-            expect(fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: expect.objectContaining({
-                        'Content-Type': 'application/json',
-                        'x-organization-id': '1',
-                        'x-admin-secret': '',
-                        Authorization: 'Bearer null',
-                    }),
-                }),
-            );
-        });
-
-        it('should include empty x-admin-secret when user exists but has no uid', async () => {
-            // Mock user without uid
+        it('should handle user authentication with organization', async () => {
             const mockUser = {
-                getIdToken: jest.fn().mockResolvedValue('mockIdToken'),
+                uid: 'test-user-id',
+                getIdToken: jest.fn().mockResolvedValue('test-token'),
             };
-            (firebaseAuth.currentUser as any) = mockUser;
-
-            await fetchPost({
-                route: FetchRoutes2.createUser,
-                body: {},
-                isProd: false,
+            (firebaseAuth as any).currentUser = mockUser;
+            localStorageMock.getItem.mockImplementation((key: string) => {
+                if (key === 'organizationId') return '456';
+                return null;
             });
 
-            // Check that fetch was called with correct headers
-            expect(fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: expect.objectContaining({
-                        'x-admin-secret': '',
-                    }),
-                }),
-            );
+            const headers = await getHeaders();
+
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': 'dGVzdC11c2VyLWlk',
+                'x-organization-id': '456',
+                Authorization: 'Bearer test-token',
+            });
         });
 
-        it('should handle getIdToken errors gracefully', async () => {
-            // Mock user with failing getIdToken
+        it('should handle token refresh errors gracefully', async () => {
             const mockUser = {
-                uid: 'testUid123',
-                getIdToken: jest.fn().mockRejectedValue(new Error('Token error')),
+                uid: 'test-user-id',
+                getIdToken: jest.fn().mockRejectedValue(new Error('Token refresh failed')),
             };
-            (firebaseAuth.currentUser as any) = mockUser;
+            (firebaseAuth as any).currentUser = mockUser;
 
-            // Mock console.error to avoid test output noise
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+            const headers = await getHeaders();
 
-            await fetchGet({
-                route: FetchRoutes2.getAllUsers,
-                query: {},
-                isProd: false,
+            expect(headers).toEqual({
+                'Content-Type': 'application/json',
+                'x-user-token': 'dGVzdC11c2VyLWlk',
+                Authorization: 'Bearer null',
             });
-
-            // Check that error was logged
-            expect(consoleSpy).toHaveBeenCalledWith('Error getting ID token:', expect.any(Error));
-
-            // Check that fetch was still called with uid but null token
-            expect(fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: expect.objectContaining({
-                        'x-admin-secret': 'testUid123',
-                        Authorization: 'Bearer null',
-                    }),
-                }),
-            );
-
-            consoleSpy.mockRestore();
-        });
-    });
-
-    describe('defaultHeaders validation', () => {
-        it('should not contain x-admin-secret in defaultHeaders', () => {
-            expect(defaultHeaders).not.toHaveProperty('x-admin-secret');
         });
     });
 });

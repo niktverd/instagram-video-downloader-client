@@ -1,12 +1,12 @@
 import {firebaseAuth} from '../configs/firebase';
 import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
 
-import {AppHeaders, FetchRoutes2, Method, defaultHeaders} from './constants';
+import {AppHeaders, FetchRoutes2, Method} from './constants';
 
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
 
-const getHeaders = async (): Promise<AppHeaders> => {
+export const getHeaders = async (): Promise<AppHeaders> => {
     const user = firebaseAuth.currentUser;
     const uid = user?.uid ?? '';
 
@@ -20,11 +20,21 @@ const getHeaders = async (): Promise<AppHeaders> => {
         }
     }
 
-    return {
-        ...defaultHeaders,
-        'x-admin-secret': uid,
+    const encodedUid = btoa(uid);
+
+    const headers: AppHeaders = {
+        'Content-Type': 'application/json',
+        'x-user-token': encodedUid,
         Authorization: `Bearer ${idToken}`,
-    } as AppHeaders;
+    };
+
+    // Read organizationId from localStorage
+    const organizationId = localStorage.getItem('organizationId');
+    if (organizationId) {
+        headers['x-organization-id'] = organizationId;
+    }
+
+    return headers;
 };
 
 const objectToSearchParams = (obj: Record<string, string | number | boolean | string[]>) => {

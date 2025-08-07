@@ -19,6 +19,10 @@ export const DeleteOrganizationParamsSchema = z.object({
 
 export const GetAllOrganizationsParamsSchema = z.object({});
 
+export const GetOrganizationsByUserUidParamsSchema = z.object({
+    uid: z.string(),
+});
+
 export const AddUserWithRoleToOrganizationParamsSchema = z
     .object({
         organizationId: z.number(),
@@ -48,6 +52,9 @@ export type GetOrganizationByIdResponse = IOrganization &
 
 export type GetAllOrganizationsParams = z.infer<typeof GetAllOrganizationsParamsSchema>;
 export type GetAllOrganizationsResponse = IOrganization[];
+
+export type GetOrganizationsByUserUidParams = z.infer<typeof GetOrganizationsByUserUidParamsSchema>;
+export type GetOrganizationsByUserUidResponse = IOrganization[];
 
 export type UpdateOrganizationParams = z.infer<typeof UpdateOrganizationParamsSchema>;
 export type UpdateOrganizationResponse = IOrganization;
