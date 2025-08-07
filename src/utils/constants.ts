@@ -7,7 +7,6 @@ export enum Method {
 
 export const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-    'x-organization-id': '1',
 };
 
 export type AppHeaders = {
