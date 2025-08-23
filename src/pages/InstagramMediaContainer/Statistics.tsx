@@ -5,7 +5,7 @@ import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAx
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {InstagramMediaContainersStatisticsResponse} from '../../sharedTypes';
-import {FetchRoutes2} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 function getLastNDays(n: number) {
@@ -32,7 +32,7 @@ export const Statistics = () => {
         setError(null);
         try {
             const response = await fetchGet<InstagramMediaContainersStatisticsResponse>({
-                route: FetchRoutes2.getInstagramMediaContainersStatisticsByDays,
+                route: fetchRoutes.instagramMediaContainers.statistics,
                 query: {days},
                 isProd,
             });

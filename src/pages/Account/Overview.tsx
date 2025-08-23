@@ -17,6 +17,7 @@ import {InstagramConnect} from '../../components/Account/InstagramConnect';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount, IScenario} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {UiGetInsightsResponseSchema} from '../../sharedTypes/schemas/handlers/instagramAPI';
 import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
@@ -37,7 +38,7 @@ export const Overview = () => {
         if (!id) return;
         setLoading(true);
         fetchGet<IAccount>({
-            route: FetchRoutes2.getAccountById,
+            route: fetchRoutes.accounts.get,
             query: {id},
             isProd,
         })

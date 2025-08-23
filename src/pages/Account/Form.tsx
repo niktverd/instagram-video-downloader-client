@@ -5,7 +5,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {AddAccount} from '../../components/Account/forms/AddAccount';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount} from '../../sharedTypes';
-import {FetchRoutes2} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 import {deepOmit} from '../../utils/helpers/objectHelpers';
 
@@ -24,7 +24,7 @@ export const Form = ({mode}: FormProps) => {
         if (mode === 'edit' && id) {
             setLoading(true);
             fetchGet<IAccount>({
-                route: FetchRoutes2.getAccountById,
+                route: fetchRoutes.accounts.get,
                 query: {id},
                 isProd,
             })
@@ -44,14 +44,14 @@ export const Form = ({mode}: FormProps) => {
 
                 if (mode === 'edit' && id) {
                     await fetchPatch({
-                        route: FetchRoutes2.patchAccount,
+                        route: fetchRoutes.accounts.update,
                         body: {...cleanedValues, id},
                         isProd,
                     });
                     navigate(`../${id}`);
                 } else {
                     await fetchPost({
-                        route: FetchRoutes2.addAccount,
+                        route: fetchRoutes.accounts.create,
                         body: {...cleanedValues},
                         isProd,
                     });

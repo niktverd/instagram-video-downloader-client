@@ -14,7 +14,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllInstagramMediaContainersResponse, IInstagramMediaContainer} from '../../sharedTypes';
-import {FetchRoutes2} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -41,7 +41,7 @@ const List: React.FC = () => {
                           limit: pageSize,
                       };
             const response = await fetchGet<GetAllInstagramMediaContainersResponse>({
-                route: FetchRoutes2.getAllInstagramMediaContainers,
+                route: fetchRoutes.instagramMediaContainers.list,
                 query,
                 isProd,
             });

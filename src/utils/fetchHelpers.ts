@@ -60,7 +60,7 @@ const prepareFetchUrl = (
 
     const searchParams = objectToSearchParams(query);
 
-    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
+    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}${route}?${searchParams} `;
     // eslint-disable-next-line no-console
     console.log(url);
 

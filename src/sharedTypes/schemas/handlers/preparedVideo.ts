@@ -2,7 +2,12 @@ import {z} from 'zod';
 
 import {PreparedVideoSchema} from './../../types/schemas/models';
 import {IPreparedVideo} from './../models/preparedVideo';
-import {zodOptionalBoolean, zodOptionalNumber, zodOptionalNumberArray} from './utils';
+import {
+    zodOptionalBoolean,
+    zodOptionalNumber,
+    zodOptionalNumberArray,
+    zodStringArray,
+} from './utils';
 
 export const CreatePreparedVideoParamsSchema = PreparedVideoSchema.omit({id: true});
 
@@ -63,7 +68,7 @@ export const FindPreparedVideoDuplicatesParamsSchema = z
 
 export const PreparedVideosStatisticsParamsSchema = z
     .object({
-        days: z.array(z.string()),
+        days: zodStringArray(),
     })
     .strict();
 

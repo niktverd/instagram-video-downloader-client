@@ -18,6 +18,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetOneSourceResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
@@ -45,7 +46,7 @@ export const Overview = () => {
         setError(null);
         try {
             const response = await fetchGet<GetOneSourceResponse>({
-                route: FetchRoutes2.getOneSource,
+                route: fetchRoutes.sources.get,
                 query: {id},
                 isProd,
             });
@@ -68,7 +69,7 @@ export const Overview = () => {
         (async () => {
             try {
                 const accounts = await fetchGet({
-                    route: FetchRoutes2.getAccounts,
+                    route: fetchRoutes.accounts.list,
                     query: {},
                     isProd,
                 });
@@ -78,7 +79,7 @@ export const Overview = () => {
             } catch {}
             try {
                 const scenarios = await fetchGet({
-                    route: FetchRoutes2.getScenarios,
+                    route: fetchRoutes.scenarios.list,
                     query: {},
                     isProd,
                 });

@@ -22,6 +22,7 @@ export const CloudRunScenarioExecutionSchema = createEntitySchema({
     duration: z.number().optional(),
     cancelled: z.boolean().optional(),
     userId: z.string().optional(),
+    organizationId: zodOptionalNumber(),
 }).strict();
 
 export type ICloudRunScenarioExecution = z.infer<typeof CloudRunScenarioExecutionSchema>;

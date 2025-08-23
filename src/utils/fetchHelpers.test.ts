@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {firebaseAuth} from '../configs/firebase';
 
 import {getHeaders} from './fetchHelpers';

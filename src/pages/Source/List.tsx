@@ -17,6 +17,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllSourcesResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
@@ -66,7 +67,7 @@ export const List = () => {
             }
 
             const response = await fetchGet<GetAllSourcesResponse>({
-                route: FetchRoutes2.getAllSources,
+                route: fetchRoutes.sources.list,
                 query,
                 isProd,
             });
@@ -88,7 +89,7 @@ export const List = () => {
         (async () => {
             try {
                 const accounts = await fetchGet<IAccount[]>({
-                    route: FetchRoutes2.getAccounts,
+                    route: fetchRoutes.accounts.list,
                     query: {onlyEnabled: true},
                     isProd,
                 });
@@ -98,7 +99,7 @@ export const List = () => {
             } catch {}
             try {
                 const scenarios = await fetchGet({
-                    route: FetchRoutes2.getScenarios,
+                    route: fetchRoutes.scenarios.list,
                     query: {},
                     isProd,
                 });

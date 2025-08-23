@@ -253,7 +253,7 @@ export const UsersForm: React.FC<FormProps> = () => {
                                 {({remove, push}) => (
                                     <div>
                                         {values.roleIds.length > 0 &&
-                                            values.roleIds.map((roleId, index) => (
+                                            values.roleIds.map((_roleId, index) => (
                                                 <div style={{display: 'flex'}} key={index}>
                                                     <DeleteFromArrayButton
                                                         onClick={() => remove(index)}
@@ -262,6 +262,13 @@ export const UsersForm: React.FC<FormProps> = () => {
                                                         name={`roleIds.${index}`}
                                                         placeholder="User *"
                                                         as="select"
+                                                        onChange={(
+                                                            e: React.ChangeEvent<HTMLSelectElement>,
+                                                        ) => {
+                                                            const newValue = Number(e.target.value);
+                                                            // eslint-disable-next-line no-param-reassign
+                                                            values.roleIds[index] = newValue;
+                                                        }}
                                                     >
                                                         {roles.map(({name, id: roleIdLocal}) => {
                                                             return (
@@ -276,7 +283,10 @@ export const UsersForm: React.FC<FormProps> = () => {
                                                     </CustomField>
                                                 </div>
                                             ))}
-                                        <Button onClick={() => push('')} view="outlined">
+                                        <Button
+                                            onClick={() => push(roles[0]?.id || 0)}
+                                            view="outlined"
+                                        >
                                             <ButtonIcon>
                                                 <Plus />
                                             </ButtonIcon>

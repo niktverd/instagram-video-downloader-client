@@ -27,12 +27,6 @@ export enum FetchRoutes2 {
     addScenario = '/ui/add-scenario',
     deleteScenario = '/ui/delete-scenario',
     // accounts
-    getAccounts = '/ui/get-accounts',
-    getAccountById = '/ui/get-account-by-id',
-    getAccountBySlug = '/ui/get-account-by-slug',
-    addAccount = '/ui/add-account',
-    patchAccount = '/ui/patch-account',
-    deleteAccount = '/ui/delete-account',
     // sources
     getAllSources = '/ui/get-all-sources',
     getOneSource = '/ui/get-one-source',

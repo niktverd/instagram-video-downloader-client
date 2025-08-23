@@ -4,7 +4,7 @@ import {AccountSchema} from './../../types/schemas/models';
 import {IAccount} from './../models/account';
 import {zodOptionalBoolean} from './utils';
 
-export const CreateAccountParamsSchema = AccountSchema.omit({id: true});
+export const CreateAccountParamsSchema = AccountSchema.omit({id: true, organizationId: true});
 export const GetAccountByIdParamsSchema = z
     .object({
         id: z.number(),
@@ -37,7 +37,7 @@ export const DeleteAccountParamsSchema = z
 
 // types
 
-export type CreateAccountParams = Omit<IAccount, 'id'>;
+export type CreateAccountParams = z.infer<typeof CreateAccountParamsSchema>;
 export type CreateAccountResponse = IAccount;
 
 export type GetAccountByIdParams = z.infer<typeof GetAccountByIdParamsSchema>;

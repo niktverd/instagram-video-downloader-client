@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllAccountsResponse, IAccount} from '../../sharedTypes';
-import {FetchRoutes2} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from './Accounts.module.css';
@@ -19,7 +19,7 @@ export const List = () => {
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet<GetAllAccountsResponse>({
-            route: FetchRoutes2.getAccounts,
+            route: fetchRoutes.accounts.list,
             query: {},
             isProd,
         });
