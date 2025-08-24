@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+import {useAuth} from '../contexts/AuthContext';
 
 import styles from './Home.module.css';
 
 export const Home = () => {
+    const [showUserId, setShowUserId] = useState(false);
+    const {currentUser} = useAuth();
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -37,7 +42,10 @@ export const Home = () => {
             </section>
 
             <footer className={styles.footer}>
-                <p>This tool is intended for academic and research purposes only.</p>
+                <p onClick={() => setShowUserId(true)}>
+                    This tool is intended for academic and research purposes only.
+                </p>
+                {showUserId && <pre>{JSON.stringify(currentUser, null, 2)}</pre>}
             </footer>
         </div>
     );
