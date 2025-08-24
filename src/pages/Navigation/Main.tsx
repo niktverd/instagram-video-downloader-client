@@ -148,7 +148,7 @@ const ProtectedRoute = ({children, isProtected}) => {
         }
 
         // Check if organization is selected for protected routes
-        if (!organizationId) {
+        if (!organizationId && !isProtected.includes('kQpPJMG0GtYjIIWMMsCWwIWWWcY2')) {
             return <Navigate to="/select-organization" />;
         }
 
