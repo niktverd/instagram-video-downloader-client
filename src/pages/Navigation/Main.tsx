@@ -85,13 +85,13 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Roles',
         to: '/roles/*',
         Component: RolesRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'kQpPJMG0GtYjIIWMMsCWwIWWWcY2'],
     },
     {
         text: 'User',
         to: '/users/*',
         Component: UserRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2'],
+        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'kQpPJMG0GtYjIIWMMsCWwIWWWcY2'],
     },
     {
         text: 'Scenarios',
