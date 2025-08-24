@@ -147,8 +147,13 @@ const ProtectedRoute = ({children, isProtected}) => {
             return <Navigate to="/" />;
         }
 
+        const isArrayAdmin =
+            currentUser?.uid &&
+            Array.isArray(isProtected) &&
+            isProtected.includes(currentUser?.uid);
+
         // Check if organization is selected for protected routes
-        if (!organizationId && currentUser?.uid && !isProtected.includes(currentUser?.uid)) {
+        if (!organizationId && !isArrayAdmin) {
             return <Navigate to="/select-organization" />;
         }
 
