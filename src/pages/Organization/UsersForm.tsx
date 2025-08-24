@@ -240,10 +240,11 @@ export const UsersForm: React.FC<FormProps> = () => {
                     <FormikForm>
                         <div style={{backgroundColor: '#111', padding: 20, marginBlockEnd: 20}}>
                             <CustomField name="userId" placeholder="User *" as="select">
-                                {users.map(({name, id: userIdLocal}) => {
+                                {users.map(({name, id: userIdLocal, email}) => {
+                                    const userLabel = `${name} (${userIdLocal}) (${email})`;
                                     return (
-                                        <option key={name} value={userIdLocal}>
-                                            {name}
+                                        <option key={userLabel} value={userIdLocal}>
+                                            {userLabel}
                                         </option>
                                     );
                                 })}
