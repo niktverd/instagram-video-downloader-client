@@ -4,7 +4,7 @@ import React, {useContext, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 export const GetUserById = () => {
@@ -14,7 +14,7 @@ export const GetUserById = () => {
 
     const handleGetUserByIdClick = async () => {
         await fetchGet({
-            route: FetchRoutes.getUserById,
+            route: FetchRoutes2.getUserById,
             query: {id: 'carcar.kz', userId},
             isProd,
         });
@@ -22,7 +22,7 @@ export const GetUserById = () => {
 
     const handleGetOwnerByMediaIdClick = async () => {
         await fetchGet({
-            route: FetchRoutes.getOwnerByMediaId,
+            route: FetchRoutes2.getOwnerByMediaId,
             query: {id: 'carcar.kz', reelVideoId: mediaId},
             isProd,
         });

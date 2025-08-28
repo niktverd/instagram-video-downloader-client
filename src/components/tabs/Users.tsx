@@ -17,7 +17,7 @@ import {
 } from '@gravity-ui/uikit';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 interface UsersFormData {
@@ -98,7 +98,7 @@ export const Users = () => {
             };
 
             const response = await fetchPost({
-                route: FetchRoutes.createUser,
+                route: FetchRoutes2.createUser,
                 body: userData,
                 isProd,
             });
@@ -133,7 +133,7 @@ export const Users = () => {
         try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const response = await fetchGet<any>({
-                route: FetchRoutes.getAllUsers,
+                route: FetchRoutes2.getAllUsers,
                 isProd,
             });
 
@@ -162,7 +162,7 @@ export const Users = () => {
 
         try {
             const response = await fetchDelete({
-                route: FetchRoutes.deleteUser,
+                route: FetchRoutes2.deleteUser,
                 query: {id: userToDelete.id},
                 isProd,
             });

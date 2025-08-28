@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Button, useToaster} from '@gravity-ui/uikit';
 
 import {IInstagramLocation} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchPost} from '../../utils/fetchHelpers';
 import {deepOmit} from '../../utils/helpers/objectHelpers';
 
@@ -165,7 +165,7 @@ const BulkForm: React.FC<BulkFormProps> = ({isProd, onSuccess}) => {
                 const cleanedLocation = deepOmit(location, ['createdAt', 'updatedAt']);
 
                 await fetchPost({
-                    route: FetchRoutes.createInstagramLocation,
+                    route: FetchRoutes2.createInstagramLocation,
                     body: cleanedLocation,
                     isProd,
                 });

@@ -17,7 +17,8 @@ import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllSourcesResponse, IAccount, IScenario, ISource} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet, fetchPost} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -66,7 +67,7 @@ export const List = () => {
             }
 
             const response = await fetchGet<GetAllSourcesResponse>({
-                route: FetchRoutes.getAllSources,
+                route: fetchRoutes.sources.list,
                 query,
                 isProd,
             });
@@ -88,7 +89,7 @@ export const List = () => {
         (async () => {
             try {
                 const accounts = await fetchGet<IAccount[]>({
-                    route: FetchRoutes.getAccounts,
+                    route: fetchRoutes.accounts.list,
                     query: {onlyEnabled: true},
                     isProd,
                 });
@@ -98,7 +99,7 @@ export const List = () => {
             } catch {}
             try {
                 const scenarios = await fetchGet({
-                    route: FetchRoutes.getScenarios,
+                    route: fetchRoutes.scenarios.list,
                     query: {},
                     isProd,
                 });
@@ -141,7 +142,7 @@ export const List = () => {
         setScheduling(true);
         try {
             await fetchPost({
-                route: FetchRoutes.scheduleSourceVideoCreation,
+                route: FetchRoutes2.scheduleSourceVideoCreation,
                 body: {
                     sourceIds: selectedSourceIds.map(Number),
                     accountIds: selectedAccountIds.map(Number),

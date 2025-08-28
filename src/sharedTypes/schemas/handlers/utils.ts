@@ -5,7 +5,8 @@ import {
     queryToNumber,
     queryToNumberArray,
     queryToNumberStrict,
-} from './../../schemas/helpers';
+    queryToStringArray,
+} from './../../types/schemas/helpers';
 
 export const zodOptionalNumber = () =>
     z
@@ -35,3 +36,8 @@ export const zodOptionalBoolean = () =>
         .transform((x) => (x === undefined ? undefined : (x as boolean))) as unknown as z.ZodType<
         boolean | undefined
     >;
+
+export const zodStringArray = () =>
+    z
+        .preprocess(queryToStringArray, z.array(z.string()))
+        .transform((x) => x as string[]) as unknown as z.ZodType<string[]>;

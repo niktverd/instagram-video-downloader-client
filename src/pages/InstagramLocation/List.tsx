@@ -13,11 +13,8 @@ import {
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {
-    GetAllInstagramLocationsResponse,
-    IInstagramLocation,
-} from '../../sharedTypes/types/instagramLocation';
-import {FetchRoutes} from '../../utils/constants';
+import {GetAllInstagramLocationsResponse, IInstagramLocation} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -44,7 +41,7 @@ const List: React.FC = () => {
                           limit: pageSize,
                       };
             const response = await fetchGet<GetAllInstagramLocationsResponse>({
-                route: FetchRoutes.getAllInstagramLocations,
+                route: fetchRoutes.instagramLocations.list,
                 query,
                 isProd,
             });

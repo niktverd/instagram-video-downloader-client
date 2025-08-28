@@ -1,7 +1,41 @@
-import {FetchRoutes, Method, defaultHeaders} from './constants';
+import {firebaseAuth} from '../configs/firebase';
+import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
+
+import {AppHeaders, FetchRoutes2, Method} from './constants';
 
 const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
+
+export const getHeaders = async (): Promise<AppHeaders> => {
+    const user = firebaseAuth.currentUser;
+    const uid = user?.uid ?? '';
+
+    let idToken: string | null = null;
+    if (user && typeof user.getIdToken === 'function') {
+        try {
+            idToken = await user.getIdToken(true); // true forces refresh
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error getting ID token:', error);
+        }
+    }
+
+    const encodedUid = btoa(uid);
+
+    const headers: AppHeaders = {
+        'Content-Type': 'application/json',
+        'x-user-token': encodedUid,
+        Authorization: `Bearer ${idToken}`,
+    };
+
+    // Read organizationId from localStorage
+    const organizationId = localStorage.getItem('organizationId');
+    if (organizationId) {
+        headers['x-organization-id'] = organizationId;
+    }
+
+    return headers;
+};
 
 const objectToSearchParams = (obj: Record<string, string | number | boolean | string[]>) => {
     const params = new URLSearchParams();
@@ -16,7 +50,7 @@ const objectToSearchParams = (obj: Record<string, string | number | boolean | st
 };
 
 const prepareFetchUrl = (
-    route: FetchRoutes,
+    route: FetchRoutesType | FetchRoutes2,
     query: Record<string, string | number | boolean | string[]>,
     isProd: boolean,
 ) => {
@@ -26,7 +60,7 @@ const prepareFetchUrl = (
 
     const searchParams = objectToSearchParams(query);
 
-    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}/api${route}?${searchParams} `;
+    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}${route}?${searchParams} `;
     // eslint-disable-next-line no-console
     console.log(url);
 
@@ -34,14 +68,14 @@ const prepareFetchUrl = (
 };
 
 type FetchGet = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | string[] | null>;
     isProd: boolean;
 };
 
 export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Get,
     });
     const json = await response.json();
@@ -50,7 +84,7 @@ export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet)
 };
 
 type FetchPost = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | string[]>;
     body?: unknown;
     isProd: boolean;
@@ -58,7 +92,7 @@ type FetchPost = {
 
 export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: FetchPost) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Post,
         body: JSON.stringify(body),
     });
@@ -69,7 +103,7 @@ export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: 
 
 export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPost) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Patch,
         body: JSON.stringify(body),
     });
@@ -79,20 +113,25 @@ export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPo
 };
 
 type FetchDelete = {
-    route: FetchRoutes;
+    route: FetchRoutesType | FetchRoutes2;
     query?: Record<string, string | number | boolean | null>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: Record<string, any>;
     isProd: boolean;
 };
 
-export const fetchDelete = async ({route, query = {}, body = {}, isProd = false}: FetchDelete) => {
+export const fetchDelete = async <T = {error: string}>({
+    route,
+    query = {},
+    body = {},
+    isProd = false,
+}: FetchDelete) => {
     const response = await fetch(prepareFetchUrl(route, query, isProd), {
-        headers: defaultHeaders,
+        headers: await getHeaders(),
         method: Method.Delete,
         body: JSON.stringify(body),
     });
     const json = await response.json();
 
-    return json;
+    return json as T;
 };

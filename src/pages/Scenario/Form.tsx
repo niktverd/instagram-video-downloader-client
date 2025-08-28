@@ -6,7 +6,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 import {deepOmit} from '../../utils/helpers/objectHelpers';
 
@@ -24,7 +24,7 @@ export const Form: React.FC = () => {
             setLoading(true);
             setError(null);
             fetchGet({
-                route: FetchRoutes.getScenario,
+                route: fetchRoutes.scenarios.get,
                 query: {id},
                 isProd,
             })
@@ -41,7 +41,7 @@ export const Form: React.FC = () => {
 
             if (id) {
                 await fetchPatch({
-                    route: FetchRoutes.patchScenario,
+                    route: fetchRoutes.scenarios.update,
                     body: {...cleanedValues, id},
                     isProd,
                 });
@@ -52,7 +52,7 @@ export const Form: React.FC = () => {
                 });
             } else {
                 await fetchPost({
-                    route: FetchRoutes.addScenario,
+                    route: fetchRoutes.scenarios.create,
                     body: {...cleanedValues},
                     isProd,
                 });

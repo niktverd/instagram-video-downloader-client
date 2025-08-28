@@ -5,11 +5,8 @@ import {useParams} from 'react-router-dom';
 
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {
-    GetInstagramMediaContainerByIdResponse,
-    IInstagramMediaContainer,
-} from '../../sharedTypes/types/instagramMediaContainer';
-import {FetchRoutes} from '../../utils/constants';
+import {GetInstagramMediaContainerByIdResponse, IInstagramMediaContainer} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../Scenario/Scenarios.module.css';
@@ -27,7 +24,7 @@ const Overview: React.FC = () => {
         setError(null);
         try {
             const data = await fetchGet<GetInstagramMediaContainerByIdResponse>({
-                route: FetchRoutes.getInstagramMediaContainerById,
+                route: fetchRoutes.instagramMediaContainers.get,
                 query: {id: Number(id)},
                 isProd,
             });

@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
-import {InstagramLocationSchema} from './../models';
+import {InstagramLocationSchema} from './../../types/schemas/models';
+import {IInstagramLocation} from './../models/instagram-location';
 
 export const CreateInstagramLocationParamsSchema = InstagramLocationSchema.omit({
     id: true,
@@ -34,3 +35,23 @@ export const DeleteInstagramLocationParamsSchema = z
         id: z.number(),
     })
     .strict();
+
+// types
+
+export type CreateInstagramLocationParams = z.infer<typeof CreateInstagramLocationParamsSchema>;
+export type CreateInstagramLocationResponse = IInstagramLocation;
+
+export type GetInstagramLocationByIdParams = z.infer<typeof GetInstagramLocationByIdParamsSchema>;
+export type GetInstagramLocationByIdResponse = IInstagramLocation;
+
+export type GetAllInstagramLocationsParams = z.infer<typeof GetAllInstagramLocationsParamsSchema>;
+export type GetAllInstagramLocationsResponse = {
+    locations: IInstagramLocation[];
+    count: number;
+};
+
+export type UpdateInstagramLocationParams = z.infer<typeof UpdateInstagramLocationParamsSchema>;
+export type UpdateInstagramLocationResponse = IInstagramLocation;
+
+export type DeleteInstagramLocationParams = z.infer<typeof DeleteInstagramLocationParamsSchema>;
+export type DeleteInstagramLocationResponse = number;

@@ -14,8 +14,8 @@ import {
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {GetAllPreparedVideosResponse, IPreparedVideo} from '../../sharedTypes/types/preparedVideo';
-import {FetchRoutes} from '../../utils/constants';
+import {GetAllPreparedVideosResponse, IPreparedVideo} from '../../sharedTypes/schemas';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 const EnhancedTable = withTableSelection(withTableSorting(withTableActions(Table)));
@@ -66,7 +66,7 @@ const List: React.FC = () => {
                 query.findDuplicates = true;
             }
             const response = await fetchGet<GetAllPreparedVideosResponse>({
-                route: FetchRoutes.getAllPreparedVideos,
+                route: fetchRoutes.preparedVideos.list,
                 query,
                 isProd,
             });

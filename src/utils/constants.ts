@@ -5,11 +5,18 @@ export enum Method {
     Delete = 'DELETE',
 }
 
-export const defaultHeaders = {
+export const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
 };
 
-export enum FetchRoutes {
+export type AppHeaders = {
+    'Content-Type': string;
+    'x-organization-id'?: string;
+    'x-user-token': string;
+    Authorization: string;
+};
+
+export enum FetchRoutes2 {
     getMediaPosts = '/ui/get-media-posts',
     splitVideoInTheMiddle = '/ui/split-video-in-the-middle',
     testGreenScreen = '/ui/test-green-screen',
@@ -20,12 +27,6 @@ export enum FetchRoutes {
     addScenario = '/ui/add-scenario',
     deleteScenario = '/ui/delete-scenario',
     // accounts
-    getAccounts = '/ui/get-accounts',
-    getAccountById = '/ui/get-account-by-id',
-    getAccountBySlug = '/ui/get-account-by-slug',
-    addAccount = '/ui/add-account',
-    patchAccount = '/ui/patch-account',
-    deleteAccount = '/ui/delete-account',
     // sources
     getAllSources = '/ui/get-all-sources',
     getOneSource = '/ui/get-one-source',
@@ -79,4 +80,8 @@ export enum FetchRoutes {
     createCloudRunScenarioExecution = '/ui/create-cloud-run-scenario-execution',
     getAllCloudRunScenarioExecution = '/ui/get-cloud-run-scenario-execution',
     updateCloudRunScenarioExecutionStatus = '/ui/update-cloud-run-scenario-execution',
+
+    runVideoProcessing = '/temporal/start-video-workflow',
+    // start-video-downloading-workflow
+    startVideoDownloadingWorkflow = '/temporal/start-video-downloading-workflow',
 }

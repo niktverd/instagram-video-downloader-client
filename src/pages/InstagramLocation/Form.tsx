@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import {ArrowLeft} from '@gravity-ui/icons';
@@ -7,8 +6,8 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import BulkForm from '../../components/InstagramLocation/BulkForm';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {IInstagramLocation} from '../../sharedTypes/types/instagramLocation';
-import {FetchRoutes} from '../../utils/constants';
+import {IInstagramLocation} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 import {deepOmit} from '../../utils/helpers/objectHelpers';
 
@@ -52,7 +51,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
         setLoading(true);
         try {
             const response = await fetchGet<IInstagramLocation>({
-                route: FetchRoutes.getInstagramLocationById,
+                route: fetchRoutes.instagramLocations.get,
                 query: {id: Number(id)},
                 isProd,
             });
@@ -68,6 +67,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                     group: response.group || '',
                 });
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             add({
                 name: 'load-error',
@@ -114,7 +114,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                 const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
                 await fetchPatch({
-                    route: FetchRoutes.updateInstagramLocation,
+                    route: fetchRoutes.instagramLocations.update,
                     body: {
                         id: Number(id),
                         ...cleanedData,
@@ -132,7 +132,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
                 const cleanedData = deepOmit(formData, ['createdAt', 'updatedAt']);
 
                 await fetchPost({
-                    route: FetchRoutes.createInstagramLocation,
+                    route: fetchRoutes.instagramLocations.create,
                     body: cleanedData,
                     isProd,
                 });
@@ -145,6 +145,7 @@ const Form: React.FC<FormProps> = ({mode = 'create'}) => {
             }
 
             navigate('/instagram-locations');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             add({
                 name: 'submit-error',

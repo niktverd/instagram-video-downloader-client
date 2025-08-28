@@ -7,7 +7,7 @@ import {Scenario} from '../../components/Scenario/Scenario';
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllScenariosResponse, IScenario} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './Scenarios.module.css';
@@ -21,7 +21,7 @@ export const Scenarios = () => {
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet<GetAllScenariosResponse>({
-            route: FetchRoutes.getScenarios,
+            route: FetchRoutes2.getScenarios,
             query: {},
             isProd,
         });
@@ -31,7 +31,7 @@ export const Scenarios = () => {
 
     const handleCreateVideoClick = useCallback(async () => {
         const json = await fetchGet({
-            route: FetchRoutes.createVideoByScenario,
+            route: FetchRoutes2.createVideoByScenario,
             query: {},
             isProd,
         });
@@ -46,7 +46,7 @@ export const Scenarios = () => {
     const handleDeleteScenario = useCallback(
         async (id) => {
             await fetchDelete({
-                route: FetchRoutes.deleteScenario,
+                route: FetchRoutes2.deleteScenario,
                 query: {id},
                 isProd,
             });
@@ -66,7 +66,7 @@ export const Scenarios = () => {
     const handleUpdateScenario = useCallback(
         async (values) => {
             await fetchPatch({
-                route: FetchRoutes.patchScenario,
+                route: FetchRoutes2.patchScenario,
                 body: {...values},
                 isProd,
             });
@@ -129,7 +129,7 @@ export const Scenarios = () => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSubmit={async (values: any) => {
                         await fetchPost({
-                            route: FetchRoutes.addScenario,
+                            route: FetchRoutes2.addScenario,
                             body: {...values},
                             isProd,
                         });

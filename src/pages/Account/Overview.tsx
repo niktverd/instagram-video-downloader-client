@@ -17,8 +17,9 @@ import {InstagramConnect} from '../../components/Account/InstagramConnect';
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IAccount, IScenario} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {UiGetInsightsResponseSchema} from '../../sharedTypes/schemas/handlers/instagramAPI';
-import {FetchRoutes} from '../../utils/constants';
+import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from '../../components/Account/Account.module.css';
@@ -37,7 +38,7 @@ export const Overview = () => {
         if (!id) return;
         setLoading(true);
         fetchGet<IAccount>({
-            route: FetchRoutes.getAccountById,
+            route: fetchRoutes.accounts.get,
             query: {id},
             isProd,
         })
@@ -47,7 +48,7 @@ export const Overview = () => {
 
     const handleGetInsights = async () => {
         const insightsLocal = await fetchGet<UiGetInsightsResponse>({
-            route: FetchRoutes.getInsights,
+            route: FetchRoutes2.getInsights,
             query: {id: account?.id},
             isProd,
         });

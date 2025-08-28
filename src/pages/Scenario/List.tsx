@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {IScenario} from '../../sharedTypes';
-import {FetchRoutes} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 export const List: React.FC = () => {
@@ -16,7 +16,7 @@ export const List: React.FC = () => {
 
     const loadScenarios = useCallback(async () => {
         const json = await fetchGet({
-            route: FetchRoutes.getScenarios,
+            route: fetchRoutes.scenarios.list,
             query: {},
             isProd,
         });
