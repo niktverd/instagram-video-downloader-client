@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
 import {IOrganization, OrganizationSchema, UserSchema} from './../models';
+import {zodOptionalNumber} from './utils';
 
 export const CreateOrganizationParamsSchema = OrganizationSchema.omit({id: true});
 
@@ -42,6 +43,14 @@ export const OrganizationRelationSchema = z.object({
     users: z.array(UserSchema),
 });
 
+export const GetSecretForInstagramLinkingParamsSchema = z.object({
+    organizationId: zodOptionalNumber(),
+});
+
+export const GetSecretForInstagramLinkingResponseSchema = z.object({
+    secret: z.string(),
+});
+
 // types
 export type CreateOrganizationParams = z.infer<typeof CreateOrganizationParamsSchema>;
 export type CreateOrganizationResponse = IOrganization;
@@ -71,3 +80,10 @@ export type DeleteUserFromOrganizationParams = z.infer<
     typeof DeleteUserFromOrganizationParamsSchema
 >;
 export type DeleteUserFromOrganizationResponse = IOrganization;
+
+export type GetSecretForInstagramLinkingParams = z.infer<
+    typeof GetSecretForInstagramLinkingParamsSchema
+>;
+export type GetSecretForInstagramLinkingResponse = z.infer<
+    typeof GetSecretForInstagramLinkingResponseSchema
+>;

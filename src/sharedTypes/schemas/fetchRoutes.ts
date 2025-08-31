@@ -3,6 +3,7 @@ import {fullRoutes as cloudRunScenarioExecutionRoutes} from './../types/routes/c
 import {fullRoutes as instagramLocationRoutes} from './../types/routes/instagramLocation';
 import {fullRoutes as instagramMediaContainerRoutes} from './../types/routes/instagramMediaContainer';
 import {fullRoutes as organizationRoutes} from './../types/routes/organization';
+import {fullRoutes as organizationSenderRoutes} from './../types/routes/organizationSender';
 import {fullRoutes as preparedVideoRoutes} from './../types/routes/preparedVideo';
 import {fullRoutes as roleRoutes} from './../types/routes/role';
 import {fullRoutes as scenarioRoutes} from './../types/routes/scenario';
@@ -20,6 +21,7 @@ export const fetchRoutes = {
     scenarios: scenarioRoutes,
     sources: sourceRoutes,
     users: userRoutes,
+    organizationSenders: organizationSenderRoutes,
 } as const;
 
 type RouteType = typeof fetchRoutes;
