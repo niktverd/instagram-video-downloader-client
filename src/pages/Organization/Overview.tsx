@@ -1,11 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 
-import {Display, Globe, MapPin} from '@gravity-ui/icons';
+import {Display, Globe, Hashtag, MapPin} from '@gravity-ui/icons';
 import {useParams} from 'react-router-dom';
 
 import {CardConfig, CardTemplate} from '../../components/CardTemplate/CardTemplate';
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {IOrganization} from '../../sharedTypes';
+import {
+    GetSecretForInstagramLinkingResponse,
+    IOrganization,
+    IOrganizationSender,
+} from '../../sharedTypes';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
@@ -17,6 +21,8 @@ export const Overview = () => {
     const [organization, setOrganization] = useState<IOrganization | null>(null);
     const [loading, setLoading] = useState(true);
     const [showJson, setShowJson] = useState(false);
+    const [secret, setSecret] = useState<string | null>(null);
+    const [organizationSenders, setOrganizationSenders] = useState<IOrganizationSender[]>([]);
 
     useEffect(() => {
         if (!id) return;
@@ -29,6 +35,17 @@ export const Overview = () => {
             .then(setOrganization)
             .finally(() => setLoading(false));
     }, [id, isProd]);
+
+    useEffect(() => {
+        if (!organization) return;
+        fetchGet<IOrganizationSender[]>({
+            route: fetchRoutes.organizationSenders.list,
+            query: {organizationId: organization.id},
+            isProd,
+        })
+            .then(setOrganizationSenders)
+            .finally(() => setLoading(false));
+    }, [organization, isProd]);
 
     if (loading) return <div>Loading...</div>;
     if (!organization) return <div>Not found</div>;
@@ -72,6 +89,36 @@ export const Overview = () => {
                     link: `/organizations/${orgId}/users`,
                 },
             ],
+        },
+        {
+            title: 'Get Secret',
+            description: 'Get secret to send in instagram messages',
+            icon: <Hashtag />,
+            colSpan: 1,
+            actions: [
+                {
+                    text: 'Get secret',
+                    onClick: async () => {
+                        const secretvalue = await fetchGet<GetSecretForInstagramLinkingResponse>({
+                            route: fetchRoutes.organizations.getSecretForInstagramLinking,
+                            query: {organizationId: orgId},
+                            isProd,
+                        });
+
+                        setSecret(secretvalue?.secret ?? null);
+                    },
+                },
+            ],
+            children: <pre className={cn.secret}>{secret ?? 'No secret'}</pre>,
+        },
+        {
+            title: 'Senders',
+            description: 'Senders',
+            icon: <MapPin />,
+            colSpan: 1,
+            children: (
+                <pre className={cn.secret}>{JSON.stringify(organizationSenders, null, 2)}</pre>
+            ),
         },
         {
             title: 'JSON',
