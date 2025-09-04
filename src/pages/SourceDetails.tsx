@@ -18,7 +18,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 
 import {AppEnvContext} from '../contexts/AppEnv';
 import {GetOneSourceResponse, ISource} from '../sharedTypes';
-import {FetchRoutes2} from '../utils/constants';
+import {fetchRoutes} from '../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../utils/fetchHelpers';
 
 export const SourceDetails = () => {
@@ -38,7 +38,7 @@ export const SourceDetails = () => {
         setError(null);
         try {
             const response = await fetchGet<GetOneSourceResponse>({
-                route: FetchRoutes2.getOneSource,
+                route: fetchRoutes.sources.get,
                 query: {id},
                 isProd,
             });

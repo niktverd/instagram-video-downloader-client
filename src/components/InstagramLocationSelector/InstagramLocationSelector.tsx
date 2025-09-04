@@ -6,7 +6,7 @@ import {Button, ButtonIcon, Table, TextInput, withTableSelection} from '@gravity
 
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllInstagramLocationsResponse, IInstagramLocation} from '../../sharedTypes';
-import {FetchRoutes2} from '../../utils/constants';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
 // Create table with selection HOC
@@ -75,7 +75,7 @@ export const InstagramLocationSelector = ({
             setLoading(true);
             try {
                 const locationsData = await fetchGet<GetAllInstagramLocationsResponse>({
-                    route: FetchRoutes2.getAllInstagramLocations,
+                    route: fetchRoutes.instagramLocations.list,
                     query: {
                         page: page + 1, // Convert to 1-based indexing for server
                         limit: pageSize,

@@ -7,6 +7,7 @@ import {Scenario} from '../../components/Scenario/Scenario';
 import {ScenarioRouter} from '../../components/Scenario/forms/ScenarioRouter';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {GetAllScenariosResponse, IScenario} from '../../sharedTypes';
+import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {FetchRoutes2} from '../../utils/constants';
 import {fetchDelete, fetchGet, fetchPatch, fetchPost} from '../../utils/fetchHelpers';
 
@@ -21,7 +22,7 @@ export const Scenarios = () => {
 
     const handleLoadClick = useCallback(async () => {
         const json = await fetchGet<GetAllScenariosResponse>({
-            route: FetchRoutes2.getScenarios,
+            route: fetchRoutes.scenarios.list,
             query: {},
             isProd,
         });
