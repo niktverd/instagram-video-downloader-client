@@ -10,7 +10,7 @@ import {fetchPost} from '../../utils/fetchHelpers';
 
 import cn from './MediaPostCard.module.css';
 
-const actionAllowed = process.env.REACT_APP_ACTION_ALLOWED;
+const actionAllowed = import.meta.env.VITE_ACTION_ALLOWED;
 
 export const MediaPostCard = (props: MediaPostModel) => {
     const {sources, id} = props;

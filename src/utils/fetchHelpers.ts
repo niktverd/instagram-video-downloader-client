@@ -3,8 +3,8 @@ import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
 
 import {AppHeaders, FetchRoutes2, Method} from './constants';
 
-const API_ENDPOINT_PROD = process.env.REACT_APP_API_ENDPOINT_PROD;
-const API_ENDPOINT_PREPROD = process.env.REACT_APP_API_ENDPOINT_PREPROD;
+const API_ENDPOINT_PROD = import.meta.env.VITE_API_ENDPOINT_PROD;
+const API_ENDPOINT_PREPROD = import.meta.env.VITE_API_ENDPOINT_PREPROD;
 
 export const getHeaders = async (): Promise<AppHeaders> => {
     const user = firebaseAuth.currentUser;

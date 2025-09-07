@@ -15,14 +15,14 @@ import './App.css';
 // const rootClassName = getRootClassName({theme});
 
 function App() {
-    const [isProd, setIsProd] = useState(process.env.REACT_APP_APP_ENV === 'prod');
+    const [isProd, setIsProd] = useState(import.meta.env.VITE_APP_ENV === 'prod');
 
     return (
         <div className={`App g-root`}>
             <AuthProfider>
                 <OrganizationProvider>
                     <h1>Instagram Schedule And Analytics</h1>
-                    {process.env.REACT_APP_APP_ENV === 'dev' ? (
+                    {import.meta.env.VITE_APP_ENV === 'dev' ? (
                         <div>
                             <span>Preprod</span>
                             <Switch checked={isProd} onUpdate={(cheched) => setIsProd(cheched)}>

@@ -28,7 +28,7 @@ export const InstagramConnect: React.FC<InstagramConnectProps> = ({accountId, to
 
         // Instagram integration backend URL from environment variables
         const integrationBackend =
-            process.env.REACT_APP_API_ENDPOINT_PREPROD || process.env.REACT_APP_API_ENDPOINT_PROD;
+            import.meta.env.VITE_API_ENDPOINT_PREPROD || import.meta.env.VITE_API_ENDPOINT_PROD;
 
         // API endpoint that will handle the Instagram authorization
         const instagramAuthUrl = `${integrationBackend}/api/instagram/login?redirectionUri=${encodeURIComponent(redirectUrl)}`;
