@@ -33,7 +33,7 @@ export const Login = () => {
             setIsSigningIn(true);
             doSignInWithGoogle().catch((err) => {
                 setIsSigningIn(false);
-                setErrorMessage(err);
+                setErrorMessage(err.message || 'An error occurred during Google sign-in');
             });
         }
     };
