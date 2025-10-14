@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {useAuth} from '../contexts/AuthContext';
+import {useAuth} from '../hooks/useAuth';
 
 import styles from './Home.module.css';
 

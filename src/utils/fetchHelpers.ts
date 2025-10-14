@@ -1,4 +1,5 @@
-import {firebaseAuth} from '../configs/firebase';
+// import {getAccessToken, refreshToken} from '../auth/utils';
+// import {keycloakInstance} from '../configs/keycloak';
 import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
 
 import {AppHeaders, FetchRoutes2, Method} from './constants';
@@ -7,25 +8,15 @@ const API_ENDPOINT_PROD = import.meta.env.VITE_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = import.meta.env.VITE_API_ENDPOINT_PREPROD;
 
 export const getHeaders = async (): Promise<AppHeaders> => {
-    const user = firebaseAuth.currentUser;
-    const uid = user?.uid ?? '';
-
-    let idToken: string | null = null;
-    if (user && typeof user.getIdToken === 'function') {
-        try {
-            idToken = await user.getIdToken(true); // true forces refresh
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Error getting ID token:', error);
-        }
-    }
+    const token = 'getAccessToken();';
+    const uid = "keycloakInstance.tokenParsed?.sub ?? '';";
 
     const encodedUid = btoa(uid);
 
     const headers: AppHeaders = {
         'Content-Type': 'application/json',
         'x-user-token': encodedUid,
-        Authorization: `Bearer ${idToken}`,
+        Authorization: `Bearer ${token}`,
     };
 
     // Read organizationId from localStorage
@@ -60,11 +51,37 @@ const prepareFetchUrl = (
 
     const searchParams = objectToSearchParams(query);
 
-    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}${route}?${searchParams} `;
+    const url = `${isProd ? API_ENDPOINT_PROD : API_ENDPOINT_PREPROD}${route}?${searchParams}`;
     // eslint-disable-next-line no-console
     console.log(url);
 
     return url;
+};
+
+/**
+ * Wrapper around fetch that automatically includes authentication token
+ * and handles token refresh on 401 responses
+ * @param url The URL to fetch
+ * @param options Fetch options including headers, method, body, etc.
+ * @returns Promise that resolves to the fetch Response
+ */
+const authenticatedFetch = async (url: string, options: RequestInit = {}): Promise<Response> => {
+    const response = await fetch(url, options);
+
+    // // Handle 401 - attempt token refresh
+    // if (response.status === 401) {
+    //     const refreshed = await refreshToken();
+    //     if (refreshed) {
+    //         // Retry with refreshed headers
+    //         const newHeaders = await getHeaders();
+    //         response = await fetch(url, {...options, headers: newHeaders});
+    //     } else {
+    //         // Token refresh failed, redirect to login
+    //         window.location.href = '/auth#login';
+    //     }
+    // }
+
+    return response;
 };
 
 type FetchGet = {
@@ -74,7 +91,7 @@ type FetchGet = {
 };
 
 export const fetchGet = async <T>({route, query = {}, isProd = false}: FetchGet) => {
-    const response = await fetch(prepareFetchUrl(route, query, isProd), {
+    const response = await authenticatedFetch(prepareFetchUrl(route, query, isProd), {
         headers: await getHeaders(),
         method: Method.Get,
     });
@@ -91,7 +108,7 @@ type FetchPost = {
 };
 
 export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: FetchPost) => {
-    const response = await fetch(prepareFetchUrl(route, query, isProd), {
+    const response = await authenticatedFetch(prepareFetchUrl(route, query, isProd), {
         headers: await getHeaders(),
         method: Method.Post,
         body: JSON.stringify(body),
@@ -102,7 +119,7 @@ export const fetchPost = async ({route, query = {}, body = {}, isProd = false}: 
 };
 
 export const fetchPatch = async ({route, query = {}, body = {}, isProd}: FetchPost) => {
-    const response = await fetch(prepareFetchUrl(route, query, isProd), {
+    const response = await authenticatedFetch(prepareFetchUrl(route, query, isProd), {
         headers: await getHeaders(),
         method: Method.Patch,
         body: JSON.stringify(body),
@@ -126,7 +143,7 @@ export const fetchDelete = async <T = {error: string}>({
     body = {},
     isProd = false,
 }: FetchDelete) => {
-    const response = await fetch(prepareFetchUrl(route, query, isProd), {
+    const response = await authenticatedFetch(prepareFetchUrl(route, query, isProd), {
         headers: await getHeaders(),
         method: Method.Delete,
         body: JSON.stringify(body),

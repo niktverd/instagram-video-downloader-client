@@ -4,7 +4,7 @@ import {Button, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {useAuth} from '../../contexts/AuthContext';
+import {useAuth} from '../../hooks/useAuth';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchPatch} from '../../utils/fetchHelpers';
 

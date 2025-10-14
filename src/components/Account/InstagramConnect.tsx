@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {Button, Modal, TextInput} from '@gravity-ui/uikit';
 
-import {useAuth} from '../../contexts/AuthContext';
+import {useAuth} from '../../hooks/useAuth';
 
 interface InstagramConnectProps {
     accountId?: string;
