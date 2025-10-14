@@ -4,8 +4,8 @@ import {Button, Card, Text, useToaster} from '@gravity-ui/uikit';
 import {useNavigate} from 'react-router-dom';
 
 import {AppEnvContext} from '../../contexts/AppEnv';
-import {useAuth} from '../../contexts/AuthContext';
 import {useOrganization} from '../../contexts/OrganizationContext';
+import {useAuth} from '../../hooks/useAuth';
 import {GetAllOrganizationsResponse, IOrganization} from '../../sharedTypes';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';

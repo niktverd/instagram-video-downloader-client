@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {firebaseAuth} from '../configs/firebase';
+import {keycloakInstance} from '../configs/keycloak';
 
 import {getHeaders} from './fetchHelpers';
 
-// Mock firebase auth
-jest.mock('../configs/firebase', () => ({
-    firebaseAuth: {
-        currentUser: null,
+// Mock keycloak
+jest.mock('../configs/keycloak', () => ({
+    keycloakInstance: {
+        authenticated: false,
+        tokenParsed: null,
+        token: null,
     },
 }));
 
@@ -36,8 +38,10 @@ describe('fetchHelpers', () => {
     beforeEach(() => {
         localStorageMock.clear();
         jest.clearAllMocks();
-        // Reset firebase auth mock
-        (firebaseAuth as any).currentUser = null;
+        // Reset keycloak mock
+        (keycloakInstance as any).authenticated = false;
+        (keycloakInstance as any).tokenParsed = null;
+        (keycloakInstance as any).token = null;
     });
 
     describe('getHeaders', () => {
@@ -47,7 +51,7 @@ describe('fetchHelpers', () => {
             expect(headers).toEqual({
                 'Content-Type': 'application/json',
                 'x-user-token': '',
-                Authorization: 'Bearer null',
+                Authorization: 'Bearer undefined',
             });
             expect(localStorageMock.getItem).toHaveBeenCalledWith('organizationId');
         });
@@ -64,7 +68,7 @@ describe('fetchHelpers', () => {
                 'Content-Type': 'application/json',
                 'x-user-token': '',
                 'x-organization-id': '123',
-                Authorization: 'Bearer null',
+                Authorization: 'Bearer undefined',
             });
         });
 
@@ -79,17 +83,17 @@ describe('fetchHelpers', () => {
             expect(headers).toEqual({
                 'Content-Type': 'application/json',
                 'x-user-token': '',
-                Authorization: 'Bearer null',
+                Authorization: 'Bearer undefined',
             });
             expect(headers['x-organization-id']).toBeUndefined();
         });
 
         it('should handle user authentication when user is logged in', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockResolvedValue('test-token'),
+            (keycloakInstance as any).authenticated = true;
+            (keycloakInstance as any).tokenParsed = {
+                sub: 'test-user-id',
             };
-            (firebaseAuth as any).currentUser = mockUser;
+            (keycloakInstance as any).token = 'test-token';
 
             const headers = await getHeaders();
 
@@ -101,11 +105,11 @@ describe('fetchHelpers', () => {
         });
 
         it('should handle user authentication with organization', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockResolvedValue('test-token'),
+            (keycloakInstance as any).authenticated = true;
+            (keycloakInstance as any).tokenParsed = {
+                sub: 'test-user-id',
             };
-            (firebaseAuth as any).currentUser = mockUser;
+            (keycloakInstance as any).token = 'test-token';
             localStorageMock.getItem.mockImplementation((key: string) => {
                 if (key === 'organizationId') return '456';
                 return null;
@@ -118,22 +122,6 @@ describe('fetchHelpers', () => {
                 'x-user-token': 'dGVzdC11c2VyLWlk',
                 'x-organization-id': '456',
                 Authorization: 'Bearer test-token',
-            });
-        });
-
-        it('should handle token refresh errors gracefully', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockRejectedValue(new Error('Token refresh failed')),
-            };
-            (firebaseAuth as any).currentUser = mockUser;
-
-            const headers = await getHeaders();
-
-            expect(headers).toEqual({
-                'Content-Type': 'application/json',
-                'x-user-token': 'dGVzdC11c2VyLWlk',
-                Authorization: 'Bearer null',
             });
         });
     });

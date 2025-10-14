@@ -2,9 +2,12 @@
 import React from 'react';
 
 import {ThemeProvider, Toaster, ToasterComponent, ToasterProvider} from '@gravity-ui/uikit';
+import {ReactKeycloakProvider} from '@react-keycloak/web';
 import ReactDOM from 'react-dom/client';
+import {BrowserRouter} from 'react-router-dom';
 
 import App from './App';
+import {keycloakInstance} from './configs/keycloak';
 import {reportWebVitals} from './utils/reportWebVitals';
 
 import '@gravity-ui/uikit/styles/fonts.css';
@@ -42,14 +45,27 @@ export const toaster = new Toaster();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    <ThemeProvider theme="dark">
-        <React.StrictMode>
-            <ToasterProvider toaster={toaster}>
-                <App />
-                <ToasterComponent />
-            </ToasterProvider>
-        </React.StrictMode>
-    </ThemeProvider>,
+    <ReactKeycloakProvider
+        authClient={keycloakInstance}
+        initOptions={{
+            onLoad: 'check-sso',
+            checkLoginIframe: false,
+            pkceMethod: 'S256',
+            scope: 'organization',
+        }}
+    >
+        <ThemeProvider theme="dark">
+            <React.StrictMode>
+                <BrowserRouter>
+                    <ToasterProvider toaster={toaster}>
+                        <App />
+                        <ToasterComponent />
+                    </ToasterProvider>
+                </BrowserRouter>
+            </React.StrictMode>
+        </ThemeProvider>
+        ,
+    </ReactKeycloakProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

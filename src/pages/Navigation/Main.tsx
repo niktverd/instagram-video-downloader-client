@@ -1,12 +1,13 @@
 import React, {JSX} from 'react';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
-import {useAuth} from '../../contexts/AuthContext';
+// import {useAuth} from '../../contexts/AuthContext';
 import {useOrganization} from '../../contexts/OrganizationContext';
+import {useAuth} from '../../hooks/useAuth';
 import {Root as AccountRoot} from '../Account';
 // import {AnalizeUserContent} from '../AnalizeUserContent';
-import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {Root as InsightsRoot} from '../Insights';
 import {InstagramCallback} from '../InstagramCallback';
@@ -176,14 +177,14 @@ const ProtectedRoute = ({children, isProtected}) => {
 };
 
 export const MainNavigation = () => {
-    const {userLoggedIn, currentUser} = useAuth();
+    const {userLoggedIn} = useAuth();
     const {organizationId, organizationName} = useOrganization();
 
     return (
         <nav>
             <ul className={cl.ul}>
                 {mainMenuConfig.map(({text, to, isProtected}) => {
-                    if (isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid})) {
+                    if (isAllowed({userLoggedIn, isProtected, userLogin: 'currentUser?.uid'})) {
                         return (
                             <li key={`${text}-${to}`}>
                                 <Link to={to.replace(/\*$/g, '')}>{text}</Link>
@@ -221,7 +222,6 @@ export const MainNavigationRoutes = () => {
                     />
                 );
             })}
-            <Route path="/auth" element={<AuthPage />} />
             <Route path="/instagram-callback" element={<InstagramCallback />} />
             <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
             <Route path="/select-organization" element={<OrganizationSelect />} />
