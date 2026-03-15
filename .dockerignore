@@ -1,0 +1,31 @@
+# Version control
+.git
+.gitignore
+
+# Dev tooling & IDE
+.cursor
+.editorconfig
+.eslintignore
+.eslintrc
+.prettierignore
+.prettierrc.js
+.stylelintrc
+
+# Runtime artefacts that must NOT be baked in
+.env
+.env.*
+!.env.example
+
+# Dependencies (reinstalled during build)
+node_modules
+
+# Build output (produced during build)
+build
+
+# Docs / scripts
+README.md
+memory-bank
+.blue-stack-scripts
+
+# OS junk
+.DS_Store
