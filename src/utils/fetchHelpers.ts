@@ -1,4 +1,4 @@
-import {firebaseAuth} from '../configs/firebase';
+import {keycloak} from '../configs/keycloakApi';
 import type {FetchRoutesType} from '../sharedTypes/schemas/fetchRoutes';
 
 import {AppHeaders, FetchRoutes2, Method} from './constants';
@@ -7,16 +7,18 @@ const API_ENDPOINT_PROD = import.meta.env.VITE_API_ENDPOINT_PROD;
 const API_ENDPOINT_PREPROD = import.meta.env.VITE_API_ENDPOINT_PREPROD;
 
 export const getHeaders = async (): Promise<AppHeaders> => {
-    const user = firebaseAuth.currentUser;
-    const uid = user?.uid ?? '';
-
     let idToken: string | null = null;
-    if (user && typeof user.getIdToken === 'function') {
+    let uid = '';
+
+    if (keycloak.authenticated) {
         try {
-            idToken = await user.getIdToken(true); // true forces refresh
+            await keycloak.updateToken(30);
+            idToken = keycloak.token || null;
+            uid = keycloak.subject || '';
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Error getting ID token:', error);
+            console.error('Failed to refresh token, or session expired', error);
+            keycloak.login();
         }
     }
 

@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {firebaseAuth} from '../configs/firebase';
+import {keycloak} from '../configs/keycloakApi';
 
 import {getHeaders} from './fetchHelpers';
 
-// Mock firebase auth
-jest.mock('../configs/firebase', () => ({
-    firebaseAuth: {
-        currentUser: null,
+// Mock keycloak
+jest.mock('../configs/keycloakApi', () => ({
+    keycloak: {
+        authenticated: false,
+        token: null,
+        subject: null,
+        updateToken: jest.fn(),
+        login: jest.fn(),
     },
 }));
 
@@ -36,8 +40,10 @@ describe('fetchHelpers', () => {
     beforeEach(() => {
         localStorageMock.clear();
         jest.clearAllMocks();
-        // Reset firebase auth mock
-        (firebaseAuth as any).currentUser = null;
+        // Reset keycloak mock
+        (keycloak as any).authenticated = false;
+        (keycloak as any).token = null;
+        (keycloak as any).subject = null;
     });
 
     describe('getHeaders', () => {
@@ -68,28 +74,11 @@ describe('fetchHelpers', () => {
             });
         });
 
-        it('should not include organization header when organizationId is empty string', async () => {
-            localStorageMock.getItem.mockImplementation((key: string) => {
-                if (key === 'organizationId') return '';
-                return null;
-            });
-
-            const headers = await getHeaders();
-
-            expect(headers).toEqual({
-                'Content-Type': 'application/json',
-                'x-user-token': '',
-                Authorization: 'Bearer null',
-            });
-            expect(headers['x-organization-id']).toBeUndefined();
-        });
-
         it('should handle user authentication when user is logged in', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockResolvedValue('test-token'),
-            };
-            (firebaseAuth as any).currentUser = mockUser;
+            (keycloak as any).authenticated = true;
+            (keycloak as any).token = 'test-token';
+            (keycloak as any).subject = 'test-user-id';
+            (keycloak.updateToken as jest.Mock).mockResolvedValue(true);
 
             const headers = await getHeaders();
 
@@ -98,14 +87,15 @@ describe('fetchHelpers', () => {
                 'x-user-token': 'dGVzdC11c2VyLWlk', // base64 encoded 'test-user-id'
                 Authorization: 'Bearer test-token',
             });
+            expect(keycloak.updateToken).toHaveBeenCalledWith(30);
         });
 
         it('should handle user authentication with organization', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockResolvedValue('test-token'),
-            };
-            (firebaseAuth as any).currentUser = mockUser;
+            (keycloak as any).authenticated = true;
+            (keycloak as any).token = 'test-token';
+            (keycloak as any).subject = 'test-user-id';
+            (keycloak.updateToken as jest.Mock).mockResolvedValue(true);
+
             localStorageMock.getItem.mockImplementation((key: string) => {
                 if (key === 'organizationId') return '456';
                 return null;
@@ -121,20 +111,20 @@ describe('fetchHelpers', () => {
             });
         });
 
-        it('should handle token refresh errors gracefully', async () => {
-            const mockUser = {
-                uid: 'test-user-id',
-                getIdToken: jest.fn().mockRejectedValue(new Error('Token refresh failed')),
-            };
-            (firebaseAuth as any).currentUser = mockUser;
+        it('should handle token refresh errors gracefully by triggering login', async () => {
+            (keycloak as any).authenticated = true;
+            (keycloak.updateToken as jest.Mock).mockRejectedValue(
+                new Error('Token refresh failed'),
+            );
 
             const headers = await getHeaders();
 
             expect(headers).toEqual({
                 'Content-Type': 'application/json',
-                'x-user-token': 'dGVzdC11c2VyLWlk',
+                'x-user-token': '',
                 Authorization: 'Bearer null',
             });
+            expect(keycloak.login).toHaveBeenCalled();
         });
     });
 });

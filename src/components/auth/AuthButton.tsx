@@ -1,23 +1,21 @@
 import React from 'react';
 
 import {Button} from '@gravity-ui/uikit';
-import {useNavigate} from 'react-router-dom';
 
-import {doSignOut} from '../../auth/utils';
+import {keycloak} from '../../configs/keycloakApi';
 import {useAuth} from '../../contexts/AuthContext';
 
 export const AuthButton = () => {
     const {userLoggedIn} = useAuth();
-    const navigate = useNavigate();
 
     return (
         <Button
             view={userLoggedIn ? 'normal' : 'action'}
             onClick={() => {
                 if (userLoggedIn) {
-                    doSignOut();
+                    keycloak.logout();
                 } else {
-                    navigate('/auth');
+                    keycloak.login({redirectUri: window.location.origin});
                 }
             }}
         >

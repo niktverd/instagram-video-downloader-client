@@ -3,6 +3,7 @@ import React, {useContext, useState} from 'react';
 import {Button, TextInput, useToaster} from '@gravity-ui/uikit';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 
+import {keycloak} from '../../configs/keycloakApi';
 import {AppEnvContext} from '../../contexts/AppEnv';
 import {useAuth} from '../../contexts/AuthContext';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
@@ -42,7 +43,10 @@ export const InstagramCallback = () => {
             <div style={{textAlign: 'center', padding: '2rem'}}>
                 <h2>Authentication Required</h2>
                 <p>Please log in to connect your Instagram account</p>
-                <Button view="action" onClick={() => navigate('/auth')}>
+                <Button
+                    view="action"
+                    onClick={() => keycloak.login({redirectUri: window.location.origin})}
+                >
                     Go to Login
                 </Button>
             </div>

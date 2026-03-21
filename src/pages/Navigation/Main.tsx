@@ -6,7 +6,6 @@ import {useAuth} from '../../contexts/AuthContext';
 import {useOrganization} from '../../contexts/OrganizationContext';
 import {Root as AccountRoot} from '../Account';
 // import {AnalizeUserContent} from '../AnalizeUserContent';
-import {AuthPage} from '../AuthPage/AuthPage';
 import {Home} from '../Home';
 import {Root as InsightsRoot} from '../Insights';
 import {InstagramCallback} from '../InstagramCallback';
@@ -221,7 +220,6 @@ export const MainNavigationRoutes = () => {
                     />
                 );
             })}
-            <Route path="/auth" element={<AuthPage />} />
             <Route path="/instagram-callback" element={<InstagramCallback />} />
             <Route path="/instagram-callback/:accountId" element={<InstagramCallback />} />
             <Route path="/select-organization" element={<OrganizationSelect />} />
