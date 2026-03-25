@@ -85,3 +85,5 @@ export enum FetchRoutes2 {
     // start-video-downloading-workflow
     startVideoDownloadingWorkflow = '/temporal/start-video-downloading-workflow',
 }
+
+export const SUPER_ADMIN = 'SUPER_ADMIN';

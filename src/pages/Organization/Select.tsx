@@ -1,41 +1,48 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {Button, Card, Text, useToaster} from '@gravity-ui/uikit';
+import {uniq} from 'lodash';
 import {useNavigate} from 'react-router-dom';
 
-import {AppEnvContext} from '../../contexts/AppEnv';
+import {keycloak} from '../../configs/keycloakApi';
 import {useAuth} from '../../contexts/AuthContext';
 import {useOrganization} from '../../contexts/OrganizationContext';
-import {GetAllOrganizationsResponse, IOrganization} from '../../sharedTypes';
-import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
-import {fetchGet} from '../../utils/fetchHelpers';
 
 import cn from './Organization.module.css';
 
 export const Select = () => {
-    const [organizations, setOrganizations] = useState<IOrganization[]>([]);
+    const [organizations, setOrganizations] = useState<{id: string; name: string}[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const {add} = useToaster();
-    const {isProd} = useContext(AppEnvContext);
     const {setOrganization} = useOrganization();
     const navigate = useNavigate();
     const {currentUser} = useAuth();
 
     const handleLoadOrganizations = useCallback(async () => {
-        if (!currentUser?.uid) {
+        if (!currentUser?.uid && !keycloak.tokenParsed) {
+            console.log('No user or token', keycloak.tokenParsed);
             return;
         }
 
         try {
             setLoading(true);
             setError(null);
-            const json = await fetchGet<GetAllOrganizationsResponse>({
-                route: fetchRoutes.organizations.listByUid,
-                query: {uid: currentUser?.uid},
-                isProd,
-            });
-            setOrganizations(json);
+            const tokenOrgs = keycloak.tokenParsed?.groups || [];
+            let orgsArray = Array.isArray(tokenOrgs) ? tokenOrgs : [];
+            if (!Array.isArray(tokenOrgs) && typeof tokenOrgs === 'object') {
+                orgsArray = Object.keys(tokenOrgs);
+            }
+            const firstLevelOrgs = orgsArray
+                .map((org: string) => org.split('/')[1])
+                .filter(Boolean);
+
+            const mappedOrgs = uniq(firstLevelOrgs).map((org: string) => ({
+                id: org,
+                name: org,
+            }));
+
+            setOrganizations(mappedOrgs);
         } catch {
             setError('Failed to load organizations. Please try again.');
             add({
@@ -47,15 +54,16 @@ export const Select = () => {
         } finally {
             setLoading(false);
         }
-    }, [add, currentUser?.uid, isProd]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [add, currentUser?.uid, keycloak.tokenParsed]);
 
     useEffect(() => {
         handleLoadOrganizations();
     }, [handleLoadOrganizations]);
 
     const handleOrganizationSelect = useCallback(
-        (organization: IOrganization) => {
-            setOrganization(organization.id.toString(), organization.name);
+        (organization: {id: string; name: string}) => {
+            setOrganization(organization.id, organization.name);
             add({
                 name: 'organization-selected',
                 title: 'Success',

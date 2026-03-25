@@ -2,8 +2,10 @@ import React, {JSX} from 'react';
 
 import {Link, Navigate, Route, Routes} from 'react-router-dom';
 
+import {keycloak} from '../../configs/keycloakApi';
 import {useAuth} from '../../contexts/AuthContext';
 import {useOrganization} from '../../contexts/OrganizationContext';
+import {SUPER_ADMIN} from '../../utils/constants';
 import {Root as AccountRoot} from '../Account';
 // import {AnalizeUserContent} from '../AnalizeUserContent';
 import {Home} from '../Home';
@@ -24,26 +26,26 @@ import {Root as UserRoot} from '../User';
 import cl from './Main.module.css';
 
 type IsAllowedArgs = {
-    userLoggedIn: boolean;
     isProtected?: boolean | string[];
-    userLogin?: string;
 };
 
-const isAllowed = ({isProtected, userLoggedIn, userLogin}: IsAllowedArgs) => {
+const isAllowed = ({isProtected}: IsAllowedArgs) => {
     if (isProtected) {
-        if (userLoggedIn) {
+        if (keycloak.authenticated) {
             if (typeof isProtected === 'boolean') {
                 return true;
-            } else if (userLogin) {
-                return isProtected.includes(userLogin);
+            } else if (Array.isArray(isProtected)) {
+                return (
+                    (keycloak.subject && isProtected.includes(keycloak.subject)) ||
+                    isProtected.some(
+                        (role) => keycloak.hasRealmRole(role) || keycloak.hasResourceRole(role),
+                    )
+                );
             }
-        } else {
-            return false;
         }
         return false;
-    } else {
-        return true;
     }
+    return true;
 };
 
 type MainMenuConfigType = {
@@ -66,13 +68,13 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         text: 'Organizations',
         to: '/organizations/*',
         Component: OrganizationsRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
+        isProtected: [SUPER_ADMIN],
     },
     {
         text: 'Roles',
         to: '/roles/*',
         Component: RolesRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
+        isProtected: [SUPER_ADMIN],
     },
     {
         text: 'User',
@@ -80,17 +82,17 @@ export const mainMenuConfig: MainMenuConfigType[] = [
         Component: UserRoot,
         isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
     },
-    {
-        text: 'Roles',
-        to: '/roles/*',
-        Component: RolesRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
-    },
+    // {
+    //     text: 'Roles',
+    //     to: '/roles/*',
+    //     Component: RolesRoot,
+    //     // isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
+    // },
     {
         text: 'User',
         to: '/users/*',
         Component: UserRoot,
-        isProtected: ['oKDGdx26d2SuT3yYi5fikiVWdvJ2', 'wEatYPLUiBh853nIVW9qSu4Uo2C3'],
+        isProtected: [SUPER_ADMIN],
     },
     {
         text: 'Scenarios',
@@ -144,7 +146,7 @@ export const mainMenuConfig: MainMenuConfigType[] = [
 ];
 
 const ProtectedRoute = ({children, isProtected}) => {
-    const {userLoggedIn, currentUser, loading} = useAuth();
+    const {loading} = useAuth();
     const {organizationId} = useOrganization();
 
     if (loading) {
@@ -152,16 +154,13 @@ const ProtectedRoute = ({children, isProtected}) => {
     }
 
     if (isProtected) {
-        const isAuthAllowed = isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid});
+        const isAuthAllowed = isAllowed({isProtected});
 
         if (!isAuthAllowed) {
             return <Navigate to="/" />;
         }
 
-        const isArrayAdmin =
-            currentUser?.uid &&
-            Array.isArray(isProtected) &&
-            isProtected.includes(currentUser?.uid);
+        const isArrayAdmin = Array.isArray(isProtected);
 
         // Check if organization is selected for protected routes
         if (!organizationId && !isArrayAdmin) {
@@ -175,14 +174,14 @@ const ProtectedRoute = ({children, isProtected}) => {
 };
 
 export const MainNavigation = () => {
-    const {userLoggedIn, currentUser} = useAuth();
+    const {userLoggedIn} = useAuth();
     const {organizationId, organizationName} = useOrganization();
 
     return (
         <nav>
             <ul className={cl.ul}>
                 {mainMenuConfig.map(({text, to, isProtected}) => {
-                    if (isAllowed({userLoggedIn, isProtected, userLogin: currentUser?.uid})) {
+                    if (isAllowed({isProtected})) {
                         return (
                             <li key={`${text}-${to}`}>
                                 <Link to={to.replace(/\*$/g, '')}>{text}</Link>
