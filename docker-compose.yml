@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      VITE_APP_ENV: ${VITE_APP_ENV:-prod}
+      VITE_API_ENDPOINT_PROD: ${VITE_API_ENDPOINT_PROD}
+      VITE_API_ENDPOINT_PREPROD: ${VITE_API_ENDPOINT_PREPROD:-}
+      VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:-}
+      VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM:-}
+      VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:-}
+      VITE_ACTION_ALLOWED: ${VITE_ACTION_ALLOWED:-false}
+    expose:
+      - "3000"
+    restart: unless-stopped
