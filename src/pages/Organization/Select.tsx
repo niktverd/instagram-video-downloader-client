@@ -28,7 +28,7 @@ export const Select = () => {
         try {
             setLoading(true);
             setError(null);
-            const tokenOrgs = keycloak.tokenParsed?.groups || [];
+            const tokenOrgs = keycloak.tokenParsed?.teams || [];
             let orgsArray = Array.isArray(tokenOrgs) ? tokenOrgs : [];
             if (!Array.isArray(tokenOrgs) && typeof tokenOrgs === 'object') {
                 orgsArray = Object.keys(tokenOrgs);
