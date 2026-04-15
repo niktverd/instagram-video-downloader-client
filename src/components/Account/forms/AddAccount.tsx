@@ -6,15 +6,35 @@ import {Button, ButtonIcon} from '@gravity-ui/uikit';
 import {Form, Formik} from 'formik';
 
 import {AppEnvContext} from '../../../contexts/AppEnv';
-import {GetAllScenariosResponse, IInstagramLocation, IScenario} from '../../../sharedTypes';
+import {
+    GetAllScenariosResponse,
+    IAccount,
+    IInstagramLocation,
+    IScenario,
+} from '../../../sharedTypes';
 import {fetchRoutes} from '../../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../../utils/fetchHelpers';
 import {deepOmit} from '../../../utils/helpers/objectHelpers';
 import {CustomField} from '../../CustomField/CustomField';
 import {InstagramLocationSelector} from '../../InstagramLocationSelector';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AddAccount = ({initialValues, onSubmit}: any) => {
+type AccountFormValues = Partial<IAccount> & {
+    slug: string;
+    enabled: boolean;
+    needWarmup: boolean;
+    token: string;
+    availableScenarios: IScenario[];
+    instagramLocations: IInstagramLocation[];
+};
+
+interface AddAccountProps {
+    initialValues?: Partial<IAccount>;
+    onSubmit?: (values: AccountFormValues) => void | Promise<void>;
+}
+
+const NEED_WARMUP_HELPER_TEXT = 'Limits automatic publishing to once per 24 hours.';
+
+export const AddAccount = ({initialValues, onSubmit}: AddAccountProps) => {
     const [scenarios, setScenarios] = useState<IScenario[]>([]);
     const {isProd} = useContext(AppEnvContext);
 
@@ -36,33 +56,41 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
     const defaultValues = {
         slug: '',
         enabled: true,
+        needWarmup: false,
         token: '',
         availableScenarios: [],
         instagramLocations: [],
     };
 
-    // Ensure that initial values have the required arrays
-    const preparedInitialValues = initialValues
-        ? {
-              ...defaultValues,
-              ...initialValues,
-              availableScenarios: initialValues.availableScenarios || [],
-              instagramLocations: initialValues.instagramLocations || [],
-          }
-        : defaultValues;
+    const preparedInitialValues: AccountFormValues = {
+        ...defaultValues,
+        ...initialValues,
+        slug: initialValues?.slug ?? defaultValues.slug,
+        enabled: initialValues?.enabled ?? defaultValues.enabled,
+        needWarmup: initialValues?.needWarmup ?? defaultValues.needWarmup,
+        token: initialValues?.token ?? defaultValues.token,
+        availableScenarios: initialValues?.availableScenarios ?? defaultValues.availableScenarios,
+        instagramLocations: initialValues?.instagramLocations ?? defaultValues.instagramLocations,
+    };
 
     // Transform form data before submitting
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values: AccountFormValues) => {
         // Remove createdAt and updatedAt fields from all objects recursively
         const cleanedValues = deepOmit(values, ['createdAt', 'updatedAt']);
-        onSubmit?.(cleanedValues);
+        onSubmit?.({
+            ...cleanedValues,
+            needWarmup: values.needWarmup ?? false,
+        });
     };
 
     return (
         <div>
             <h1>Account Form</h1>
-            <Formik initialValues={preparedInitialValues} onSubmit={handleSubmit}>
+            <Formik
+                initialValues={preparedInitialValues}
+                onSubmit={handleSubmit}
+                enableReinitialize
+            >
                 {({values, setFieldValue}) => {
                     // Handle Instagram location selection changes
                     const handleInstagramLocationChange = (locations: IInstagramLocation[]) => {
@@ -73,6 +101,12 @@ export const AddAccount = ({initialValues, onSubmit}: any) => {
                         <Form>
                             <CustomField type="text" name="slug" label="Slug" />
                             <CustomField type="checkbox" name="enabled" label="Enabled" />
+                            <CustomField
+                                type="checkbox"
+                                name="needWarmup"
+                                label="Need Warmup"
+                                helperText={NEED_WARMUP_HELPER_TEXT}
+                            />
                             <CustomField type="text" name="token" label="Token" />
 
                             {/* Scenarios Section */}

@@ -43,6 +43,23 @@ export type GetOrganizationsActivityResponse = z.infer<
     typeof GetOrganizationsActivityResponseSchema
 >;
 
+export const CanAccountPublishActivityArgsSchema = z.object({
+    accountId: z.number(),
+    organizationId: z.number(),
+    needWarmup: z.boolean(),
+});
+
+export const CanAccountPublishActivityResponseSchema = z.object({
+    success: z.boolean(),
+    canPublish: z.boolean(),
+    reason: z.string().optional(),
+});
+
+export type CanAccountPublishActivityArgs = z.infer<typeof CanAccountPublishActivityArgsSchema>;
+export type CanAccountPublishActivityResponse = z.infer<
+    typeof CanAccountPublishActivityResponseSchema
+>;
+
 export const RunProcessingActivityArgsSchema = z.object({
     source: SourceSchema,
     account: AccountSchema,

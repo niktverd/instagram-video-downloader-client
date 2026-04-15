@@ -1,5 +1,5 @@
-// deprecated
 export enum ScenarioName {
+    // deprecated
     // ScenarioAddBannerAtTheEnd1 = 'add-banner-at-the-end-1',
     // ScenarioAddBannerAtTheEnd2 = 'add-banner-at-the-end-2',
     ScenarioAddBannerAtTheEndUnique = 'add-banner-at-the-end-unique',

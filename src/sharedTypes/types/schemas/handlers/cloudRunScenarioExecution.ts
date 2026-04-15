@@ -3,7 +3,7 @@ import {z} from 'zod';
 import {
     CloudRunScenarioExecutionSchema,
     ICloudRunScenarioExecution,
-} from './../../../types/schemas/models/cloudRunScenarioExecution';
+} from '../models/cloudRunScenarioExecution';
 
 export const CloudRunScenarioExecutionParamsSchema = CloudRunScenarioExecutionSchema.omit({
     id: true,

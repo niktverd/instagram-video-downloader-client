@@ -6,7 +6,7 @@ import {
     queryToNumberArray,
     queryToNumberStrict,
     queryToStringArray,
-} from './../../types/schemas/helpers';
+} from '../../types/schemas/helpers';
 
 export const zodOptionalNumber = () => z.preprocess(queryToNumber, z.number().optional());
 

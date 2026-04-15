@@ -1,8 +1,8 @@
 import {z} from 'zod';
 
-import {IScenario} from './../../../schemas/models/scenario';
-import {ScenarioType} from './../../../types/enums';
-import {ScenarioSchema} from './../../../types/schemas/models';
+import {IScenario} from '../../../schemas/models/scenario';
+import {ScenarioType} from '../../enums';
+import {ScenarioSchema} from '../models';
 
 export const CreateScenarioParamsSchema = ScenarioSchema.omit({id: true});
 

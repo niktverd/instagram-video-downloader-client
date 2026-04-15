@@ -1,14 +1,14 @@
-import {fullRoutes as accountRoutes} from './../../types/routes/account';
-import {fullRoutes as cloudRunScenarioExecutionRoutes} from './../../types/routes/cloudRunScenarioExecution';
-import {fullRoutes as instagramLocationRoutes} from './../../types/routes/instagramLocation';
-import {fullRoutes as instagramMediaContainerRoutes} from './../../types/routes/instagramMediaContainer';
-import {fullRoutes as organizationRoutes} from './../../types/routes/organization';
-import {fullRoutes as organizationSenderRoutes} from './../../types/routes/organizationSender';
-import {fullRoutes as preparedVideoRoutes} from './../../types/routes/preparedVideo';
-import {fullRoutes as roleRoutes} from './../../types/routes/role';
-import {fullRoutes as scenarioRoutes} from './../../types/routes/scenario';
-import {fullRoutes as sourceRoutes} from './../../types/routes/source';
-import {fullRoutes as userRoutes} from './../../types/routes/user';
+import {fullRoutes as accountRoutes} from '../routes/account';
+import {fullRoutes as cloudRunScenarioExecutionRoutes} from '../routes/cloudRunScenarioExecution';
+import {fullRoutes as instagramLocationRoutes} from '../routes/instagramLocation';
+import {fullRoutes as instagramMediaContainerRoutes} from '../routes/instagramMediaContainer';
+import {fullRoutes as organizationRoutes} from '../routes/organization';
+import {fullRoutes as organizationSenderRoutes} from '../routes/organizationSender';
+import {fullRoutes as preparedVideoRoutes} from '../routes/preparedVideo';
+import {fullRoutes as roleRoutes} from '../routes/role';
+import {fullRoutes as scenarioRoutes} from '../routes/scenario';
+import {fullRoutes as sourceRoutes} from '../routes/source';
+import {fullRoutes as userRoutes} from '../routes/user';
 
 export const fetchRoutes = {
     accounts: accountRoutes,

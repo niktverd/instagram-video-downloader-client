@@ -22,6 +22,8 @@ import {UiGetInsightsResponseSchema} from '../../sharedTypes/schemas/handlers/in
 import {FetchRoutes2} from '../../utils/constants';
 import {fetchGet} from '../../utils/fetchHelpers';
 
+import {getWarmupStatusText} from './warmup';
+
 import cn from '../../components/Account/Account.module.css';
 
 type UiGetInsightsResponse = z.infer<typeof UiGetInsightsResponseSchema>;
@@ -67,6 +69,7 @@ export const Overview = () => {
         slug,
         token: instagramToken,
         userIdIG,
+        needWarmup,
     } = account;
 
     // Config for account info card
@@ -82,6 +85,7 @@ export const Overview = () => {
                     <p>{accId}</p>
                     {token && <p className={cn.token}>Token: {token.slice(0, 3)}****</p>}
                     {userIdIG && <p className={cn.token}>IG User ID: {userIdIG}</p>}
+                    <p>Warmup: {getWarmupStatusText(needWarmup)}</p>
                 </div>
             ),
         },

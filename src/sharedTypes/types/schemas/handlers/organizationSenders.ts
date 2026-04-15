@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
-import {IOrganizationSender} from './../../../schemas/models';
+import {IOrganizationSender} from '../../../schemas/models';
+
 import {zodOptionalNumber} from './utils';
 
 export const GetOrganizationsBySenderIdParamsSchema = z.object({

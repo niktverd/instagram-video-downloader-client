@@ -1,7 +1,8 @@
 import {z} from 'zod';
 
-import {PreparedVideoSchema} from './../../types/schemas/models';
-import {IPreparedVideo} from './../models/preparedVideo';
+import {PreparedVideoSchema} from '../../types/schemas/models';
+import {IPreparedVideo} from '../models/preparedVideo';
+
 import {
     zodOptionalBoolean,
     zodOptionalNumber,

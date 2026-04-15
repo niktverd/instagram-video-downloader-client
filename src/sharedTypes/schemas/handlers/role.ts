@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-import {IRole, RoleSchema} from './../models';
+import {IRole, RoleSchema} from '../models';
 
 export const CreateRoleParamsSchema = RoleSchema.omit({id: true});
 

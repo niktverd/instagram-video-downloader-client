@@ -13,7 +13,7 @@ import {
     UiGetInstagramUserIdByMediaIdResponseSchema,
     UiGetUserContentParamsSchema,
     UiGetUserContentResponseSchema,
-} from './../types/schemas/handlers/instagramAPI';
+} from './schemas/handlers/instagramAPI';
 
 export type GetInstagramAccountInsightsParams = z.infer<
     typeof GetInstagramAccountInsightsParamsSchema

@@ -8,6 +8,8 @@ import {GetAllAccountsResponse, IAccount} from '../../sharedTypes';
 import {fetchRoutes} from '../../sharedTypes/schemas/fetchRoutes';
 import {fetchGet} from '../../utils/fetchHelpers';
 
+import {getWarmupStatusText} from './warmup';
+
 import cn from './Accounts.module.css';
 
 export const List = () => {
@@ -52,6 +54,7 @@ export const List = () => {
     const columns = [
         {id: 'slug', name: 'Slug'},
         {id: 'enabled', name: 'Enabled'},
+        {id: 'needWarmup', name: 'Warmup'},
         {id: 'token', name: 'Token'},
         {id: 'availableScenarios', name: 'Scenarios'},
         {id: 'actions', name: 'Actions'},
@@ -60,6 +63,7 @@ export const List = () => {
     const data = filteredAccounts.map((account) => ({
         ...account,
         enabled: account.enabled ? 'Yes' : 'No',
+        needWarmup: getWarmupStatusText(account.needWarmup),
         token: account.token ? account.token.slice(0, 3) + '****' : '',
         availableScenarios: (
             <Tooltip

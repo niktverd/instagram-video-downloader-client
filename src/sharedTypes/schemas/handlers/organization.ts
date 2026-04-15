@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
-import {IOrganization, OrganizationSchema, UserSchema} from './../models';
+import {IOrganization, OrganizationSchema, UserSchema} from '../models';
+
 import {zodOptionalNumber} from './utils';
 
 export const CreateOrganizationParamsSchema = OrganizationSchema.omit({id: true});

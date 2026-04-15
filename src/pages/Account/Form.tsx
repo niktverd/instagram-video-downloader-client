@@ -38,7 +38,7 @@ export const Form = ({mode}: FormProps) => {
     return (
         <AddAccount
             initialValues={mode === 'edit' ? initialValues : undefined}
-            onSubmit={async (values: IAccount) => {
+            onSubmit={async (values) => {
                 // Recursively remove createdAt and updatedAt fields at all levels
                 const cleanedValues = deepOmit(values, ['createdAt', 'updatedAt']);
 

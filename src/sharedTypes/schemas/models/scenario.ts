@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
-import {InstagramLocationSource, ScenarioType} from './../../types/enums';
+import {InstagramLocationSource, ScenarioType} from '../../types/enums';
+
 import {createEntitySchema} from './base';
 import {InstagramLocationSchema} from './instagram-location';
 

@@ -1,7 +1,8 @@
 import {z} from 'zod';
 
-import {CloudRunScenarioExecutionStatusEnum} from './../../../types/enums';
-import {zodNumber, zodOptionalNumber} from './../../../types/schemas/handlers/utils';
+import {CloudRunScenarioExecutionStatusEnum} from '../../enums';
+import {zodNumber, zodOptionalNumber} from '../handlers/utils';
+
 import {createEntitySchema} from './base';
 
 export const CloudRunScenarioExecutionSchema = createEntitySchema({

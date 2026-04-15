@@ -21,6 +21,7 @@ export const Select = () => {
 
     const handleLoadOrganizations = useCallback(async () => {
         if (!currentUser?.uid && !keycloak.tokenParsed) {
+            // eslint-disable-next-line no-console
             console.log('No user or token', keycloak.tokenParsed);
             return;
         }

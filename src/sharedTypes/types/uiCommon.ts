@@ -9,7 +9,7 @@ import {
     SplitVideoInTheMiddleResponseSchema,
     TestGreenScreenParamsSchema,
     TestGreenScreenResponseSchema,
-} from './../types/schemas/handlers/uiCommon';
+} from './schemas/handlers/uiCommon';
 
 export type GetAllMediaPostsParams = z.infer<typeof GetAllMediaPostsParamsSchema>;
 export type GetAllMediaPostsResponse = z.infer<typeof GetAllMediaPostsResponseSchema>;

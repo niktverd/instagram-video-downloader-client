@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
-import {InstagramLocationSchema} from './../../types/schemas/models';
-import {IInstagramLocation} from './../models/instagram-location';
+import {InstagramLocationSchema} from '../../types/schemas/models';
+import {IInstagramLocation} from '../models/instagram-location';
 
 export const CreateInstagramLocationParamsSchema = InstagramLocationSchema.omit({
     id: true,
